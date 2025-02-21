@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 import loginImg from "../images/loginmob.png";
+import OtpScreen from "../reusable/otp-screen/OtpScreen";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -49,25 +50,7 @@ const Register = () => {
 
   return (
     <>
-      <div className="otpScreen">
-        <div className="otpEnter">
-          <div className="otpContainer">
-            <h1>OTP Verification</h1>
-            <p>Enter the OTP you received on email</p>
-            <div className="otp-input">
-              <input type="text" min="0" max="9" required />
-              <input type="text" min="0" max="9" required />
-              <input type="text" min="0" max="9" required />
-              <input type="text" min="0" max="9" required />
-            </div>
-            <button>Verify</button>
-            <div className="resend-text">
-              Didn't receive the code?
-              <span className="resend-link"> Resend Code</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <OtpScreen />
       <div className="login">
         <div className="flex h-100">
           <div className="col-40 login-left">

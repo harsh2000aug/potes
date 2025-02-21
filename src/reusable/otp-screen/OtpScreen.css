@@ -1,0 +1,80 @@
+.otpScreen {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}
+.otpEnter {
+  position: absolute;
+  background: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  padding: 15px;
+  border-radius: 5px;
+}
+.otpEnter i {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+}
+.otp-input {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+.otp-input input {
+  width: 50px;
+  height: 50px;
+  margin: 0 8px;
+  text-align: center;
+  font-size: 1.5rem;
+  border: 2px solid #edddcc;
+  border-radius: 12px;
+  background-color: #edddcc;
+  color: #000;
+  transition: all 0.3s ease;
+  outline: none;
+}
+.otpContainer {
+  text-align: center;
+}
+.otpContainer h1 {
+  font-size: 22px;
+}
+.otpContainer p {
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+.otpContainer button {
+  background: #edddcc;
+  color: #000;
+  border: 2px solid #edddcc;
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 5px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+.expired {
+  animation: pulse 2s infinite;
+  color: #ff4444;
+}
+.resend-text {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #000;
+}
+.resend-link {
+  color: #6665f1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
