@@ -1,5 +1,4 @@
 import React from "react";
-import user from "../images/user.png";
 import Sidebar from "../reusable/Sidebar";
 import TopArea from "../reusable/TopArea";
 

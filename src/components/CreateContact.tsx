@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Sidebar from "../reusable/Sidebar";
-import user from "../images/user.png";
 import TopArea from "../reusable/TopArea";
 
 const CreateContact = () => {
