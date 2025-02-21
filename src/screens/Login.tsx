@@ -22,7 +22,7 @@ const Login = () => {
         setLoading(false);
         setTimeout(() => {
           window.location.reload();
-        }, 2000);
+        }, 1000);
       })
       .catch(() => {
         setLoading(false);
