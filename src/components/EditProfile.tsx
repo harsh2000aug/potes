@@ -50,35 +50,6 @@ const EditProfile = () => {
               </div>
             </div>
           </div>
-          <div className="p-image">
-            <i className="fa fa-camera upload-button"></i>
-            <input className="file-upload" type="file" accept="image/*" />
-          </div>
-        </div>
-        <div className="form-group flex space-bw">
-          <div className="col-50">
-            <label htmlFor="">First Name</label>
-            <input type="text" />
-          </div>
-          <div className="col-50">
-            <label htmlFor="">Last Name</label>
-            <input type="text" />
-          </div>
-        </div>
-        <div className="form-group flex space-bw">
-          <div className="col-50">
-            <label htmlFor="">Email</label>
-            <input type="text" />
-          </div>
-          <div className="col-50">
-            <label htmlFor="">Password</label>
-            <input type="password" />
-          </div>
-        </div>
-        <div className="form-group">
-          <div className="col-33 btn">
-            <button type="button">Apply Changes</button>
-          </div>
         </div>
       </div>
     </div>
