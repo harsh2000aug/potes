@@ -12,6 +12,7 @@ import OpenProfile from "./components/OpenProfile";
 import AllNotes from "./components/AllNotes";
 import EditNote from "./components/EditNote";
 import EditProfile from "./components/EditProfile";
+import UserProfile from "./components/UserProfile";
 
 function App() {
   return (
@@ -29,7 +30,8 @@ function App() {
         <Route path="/profile" element={<OpenProfile />} />
         <Route path="/all-notes" element={<AllNotes />} />
         <Route path="/edit-note" element={<EditNote />} />
-        <Route path="/edit-profile" element={<EditProfile />}></Route>
+        <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/user-profile" element={<UserProfile />}></Route>
       </Routes>
     </BrowserRouter>
   );

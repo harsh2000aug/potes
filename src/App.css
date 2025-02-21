@@ -81,6 +81,8 @@ li {
 }
 .btn button i {
   margin-right: 5px;
+  color: #000;
+  font-size: 14px;
 }
 /* login page css */
 .login {
@@ -163,6 +165,8 @@ li {
   width: 250px;
   padding: 20px;
   background: #bfb0a0;
+  height: 100vh;
+  overflow-y: auto;
 }
 .sidebar .logo {
   margin-bottom: 25px;
