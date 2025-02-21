@@ -1,17 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 import loginImg from "../images/loginmob.png";
+import { loginApiCall } from "../store/Services/Auth";
+import toast from "react-hot-toast";
+import FullScreenLoader from "../components/FullScreenLoader/FullScreenLoader";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [loading, setLoading]: any = useState(false);
+  const loginApiHandler = (body: any) => {
+    setLoading(true);
+    loginApiCall({
+      body,
+    })
+      .then((res: any) => {
+        toast.success(res?.msg);
+        localStorage.setItem("accessToken", res?.token?.access);
+        setLoading(false);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch(() => {
+        setLoading(false);
+        toast.error("Invalid Credentials");
+      });
+  };
 
   const validationSchema = Yup.object({
-    email: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required"),
+    username: Yup.string().required("Username is required"),
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
@@ -19,13 +39,12 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: "",
+      username: "",
       password: "",
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log("Form values:", values);
-      // Handle login logic here
+      loginApiHandler(values);
     },
   });
 
@@ -35,6 +54,7 @@ const Login = () => {
 
   return (
     <div className="login">
+      {loading && <FullScreenLoader />}
       <div className="flex h-100">
         <div className="col-40 login-left">
           <h1>Organize, Connect, and Stay in Touch Effortlessly!</h1>
@@ -45,17 +65,17 @@ const Login = () => {
           <form onSubmit={formik.handleSubmit}>
             <div className="form-control">
               <div className="coolinput">
-                <label className="text">Email:</label>
+                <label className="text">username:</label>
                 <input
                   type="text"
-                  name="email"
+                  name="username"
                   className="input"
-                  value={formik.values.email}
+                  value={formik.values.username}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.email && formik.errors.email ? (
-                  <div className="error">{formik.errors.email}</div>
+                {formik.touched.username && formik.errors.username ? (
+                  <div className="error">{formik.errors.username}</div>
                 ) : null}
               </div>
             </div>

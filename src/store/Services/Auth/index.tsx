@@ -12,3 +12,9 @@ export const registerApi = ({ body }: any) =>
     uriEndPoint: authEndpoints.registerApi.v1,
     body,
   });
+
+export const verifyOtp = ({ body }: any) =>
+  callApi({
+    uriEndPoint: authEndpoints.verifyOtp.v1,
+    body,
+  });

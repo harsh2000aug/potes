@@ -7,13 +7,38 @@ import loginImg from "../images/loginmob.png";
 import { registerApi } from "../store/Services/Auth";
 import toast from "react-hot-toast";
 import FullScreenLoader from "../components/FullScreenLoader/FullScreenLoader";
+import OtpScreen from "../reusable/otp-screen/OtpScreen";
 
 const Register = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [sendOtp, setSendOTP] = useState(false);
+  const [formData, setFormData]: any = useState({});
 
-  // Formik with Yup validation
+  const apiCallHandler = (values: any) => {
+    setLoading(true);
+    setFormData(values);
+    registerApi({
+      body: {
+        first_name: values.firstName,
+        last_name: values.lastName,
+        username: values.username,
+        email: values.email,
+        password: values.password,
+        password2: values.confirmPassword,
+      },
+    })
+      .then((res: any) => {
+        toast.success(res.msg);
+        setLoading(false);
+        setSendOTP(true);
+      })
+      .catch((err: any) => {
+        toast.error(err?.data?.error);
+        setLoading(false);
+      });
+  };
+
   const formik: any = useFormik({
     initialValues: {
       firstName: "",
@@ -47,26 +72,7 @@ const Register = () => {
         .required("Confirm password is required"),
     }),
     onSubmit: (values: any) => {
-      setLoading(true);
-      registerApi({
-        body: {
-          first_name: values.firstName,
-          last_name: values.lastName,
-          username: values.username,
-          email: values.email,
-          password: values.password,
-          password2: values.confirmPassword,
-        },
-      })
-        .then((res: any) => {
-          toast.success(res.msg);
-          setLoading(false);
-          setSendOTP(true);
-        })
-        .catch((err: any) => {
-          toast.error(err.data?.error);
-          setLoading(false);
-        });
+      apiCallHandler(values);
     },
   });
 
@@ -74,25 +80,12 @@ const Register = () => {
     <>
       {loading && <FullScreenLoader />}
       {sendOtp && (
-        <div className="otpScreen">
-          <div className="otpEnter">
-            <div className="otpContainer">
-              <h1>OTP Verification</h1>
-              <p>Enter the OTP you received on email</p>
-              <div className="otp-input">
-                <input type="text" min="0" max="9" required />
-                <input type="text" min="0" max="9" required />
-                <input type="text" min="0" max="9" required />
-                <input type="text" min="0" max="9" required />
-              </div>
-              <button>Verify</button>
-              <div className="resend-text">
-                Didn't receive the code?
-                <span className="resend-link"> Resend Code</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <OtpScreen
+          onClose={setSendOTP}
+          formData={formData}
+          apiCallHandler={apiCallHandler}
+          setLoading={setLoading}
+        />
       )}
       <div className="login">
         <div className="flex h-100">
