@@ -58,7 +58,7 @@ const CreateContact = () => {
               </div>
               <div className="profile-pic-upload">
                 <div className="circle">
-                  <img className="profile-pic" src={user} />
+                  <img className="profile-pic" src={user} alt="" />
                 </div>
                 <div className="p-image">
                   <i className="fa fa-camera upload-button"></i>
@@ -251,9 +251,9 @@ const CreateContact = () => {
                 </div>
               </div>
               <div className="form-group">
-                  <div className="col-33 btn">
-                      <button type='button'>Submit</button>
-                  </div>
+                <div className="col-33 btn">
+                  <button type="button">Submit</button>
+                </div>
               </div>
             </div>
           </div>
