@@ -56,7 +56,7 @@ const CreateContact = () => {
               <div className="top-text">
                 <h3>Create a Contact</h3>
               </div>
-              <div className="profile-pic-upload">
+              {/* <div className="profile-pic-upload">
                 <div className="circle">
                   <img className="profile-pic" src={user} alt="" />
                 </div>
@@ -64,7 +64,7 @@ const CreateContact = () => {
                   <i className="fa fa-camera upload-button"></i>
                   <input className="file-upload" type="file" accept="image/*" />
                 </div>
-              </div>
+              </div> */}
               <div className="family">
                 <h4>Personal Information</h4>
                 <div className="form-group flex space-bw">
