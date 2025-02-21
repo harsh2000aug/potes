@@ -84,7 +84,7 @@ const CreateNote = () => {
                 <label>Enter the Note</label>
                 <textarea
                   value={text}
-                  onChange={(e) => setText(e.target.value)}
+                  onChange={(e) => {setText(e.target.value); setFinalTranscript(e.target.value);}}
                 ></textarea>
                 <button
                   onClick={isListening ? stopListening : startListening}
