@@ -315,7 +315,7 @@ const CreateContact = () => {
               <div className="interest">
                 <h4>Interests</h4>
 
-                <div className="form-group flex space-bw">
+                <div className="form-group flex">
                   {interests.map((interest: any, index: any) => (
                     <div key={index} className="col-33">
                       <label>Interest</label>
