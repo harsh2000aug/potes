@@ -20,7 +20,7 @@ const OtpScreen = ({ onClose, formData, apiCallHandler, setLoading }: any) => {
           setLoading(false);
           setTimeout(() => {
             window.location.reload();
-          }, 1000);
+          }, 500);
         })
         .catch((err: any) => {
           toast.error(err?.data?.error);
