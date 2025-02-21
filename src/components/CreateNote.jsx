@@ -53,7 +53,7 @@ const CreateNote = () => {
         recognitionRef.current.stop();
       }
     };
-  }, [finalTranscript]); //Important:  Add finalTranscript as a dependency
+  }, [finalTranscript]);
 
   const startListening = () => {
     if (recognitionRef.current && !isListening) {
