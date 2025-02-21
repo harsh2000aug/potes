@@ -6,7 +6,7 @@ import Directory from "./components/Directory";
 import CreateContact from "./components/CreateContact";
 import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
-import CreateNote from "./components/CreateNote";
+import CreateNote from "./components/CreateNote.jsx";
 import SearchResult from "./components/SearchResult";
 import OpenProfile from "./components/OpenProfile";
 import AllNotes from "./components/AllNotes";
