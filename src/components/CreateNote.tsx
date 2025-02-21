@@ -16,9 +16,12 @@ const CreateNote = () => {
                             <label htmlFor="">Select a Contact</label>
                             <input type="text" />
                         </div>
-                        <div className="form-group">
+                        <div className="form-group mic-btn">
                             <label htmlFor="">Enter the Note</label>
                             <textarea name="" id=""></textarea>
+                            <button>
+                                <i className="fa-solid fa-microphone"></i>
+                            </button>
                         </div>
                         <div className="form-group">
                             <label htmlFor="">Set a Reminder</label>

@@ -15,7 +15,7 @@ const EditProfile = () => {
                         <div className="top-text">
                             <h3>User Profile</h3>
                         </div>
-                        <div className="profile-pic-upload">
+                        {/* <div className="profile-pic-upload">
                             <div className="circle">
                             <img className="profile-pic" src={user} />
                             </div>
@@ -23,7 +23,7 @@ const EditProfile = () => {
                             <i className="fa fa-camera upload-button"></i>
                             <input className="file-upload" type="file" accept="image/*" />
                             </div>
-                        </div>
+                        </div> */}
                         <div className="form-group flex space-bw">
                             <div className="col-50">
                                 <label htmlFor="">First Name</label>
