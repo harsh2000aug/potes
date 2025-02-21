@@ -76,6 +76,16 @@ const CreateContact = () => {
                     <input type="date" />
                   </div>
                 </div>
+                <div className="form-group flex space-bw">
+                  <div className="col-50">
+                    <label htmlFor="">Email</label>
+                    <input type="text" />
+                  </div>
+                  <div className="col-50">
+                    <label htmlFor="">Phone No.</label>
+                    <input type="text" />
+                  </div>
+                </div>
                 <h4>Family Details</h4>
                 <div>
                   <div className="form-group flex space-bw">

@@ -22,7 +22,7 @@ const Login = () => {
         setLoading(false);
         setTimeout(() => {
           window.location.reload();
-        }, 2000);
+        }, 1000);
       })
       .catch(() => {
         setLoading(false);
@@ -65,7 +65,7 @@ const Login = () => {
           <form onSubmit={formik.handleSubmit}>
             <div className="form-control">
               <div className="coolinput">
-                <label className="text">username:</label>
+                <label className="text">Username:</label>
                 <input
                   type="text"
                   name="username"
@@ -99,6 +99,16 @@ const Login = () => {
               <input type="submit" className="submitBtn" value="Log In" />
             </div>
           </form>
+          <h4
+            style={{
+              fontSize: "14px",
+              textAlign: "right",
+              textDecoration: "underline",
+              cursor: "pointer",
+            }}
+          >
+            Forgot Password?
+          </h4>
           <h5>
             Don't have an account? <b onClick={goToRegister}>Register</b>
           </h5>
