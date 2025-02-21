@@ -1,8 +1,8 @@
-import Axios from "axios";
+import axios from "axios";
 import queryString from "querystring";
 
 export const hostname = () => {
-  let hostUrl = "http://192.168.0.19:8000/api";
+  let hostUrl = "http://192.168.0.105:8000/api";
 
   return hostUrl;
 };
@@ -85,7 +85,7 @@ const callAxios = async (
       ...defHeaders,
     };
   }
-  return Axios({
+  return axios({
     method: uriEndPoint.method,
     url: makeUrl({ ...uriEndPoint, pathParams, query }, apiHostUrl),
     headers: {

@@ -141,7 +141,6 @@ const CreateContact = () => {
               </div>
               <div className="experience">
                 <h4>Professional Experience</h4>
-
                 {experiences.map((exp: any, index: any) => (
                   <div key={index} className="form-group">
                     <div className="form-group flex space-bw">
@@ -175,7 +174,6 @@ const CreateContact = () => {
                     </div>
                   </div>
                 ))}
-
                 <div className="profile-p">
                   <p onClick={addExperience} style={{ cursor: "pointer" }}>
                     Add Previous Employment <i className="fa-solid fa-plus"></i>

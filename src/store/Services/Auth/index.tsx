@@ -6,3 +6,9 @@ export const loginApiCall = ({ body }: any) =>
     uriEndPoint: authEndpoints.loginApi.v1,
     body,
   });
+
+export const registerApi = ({ body }: any) =>
+  callApi({
+    uriEndPoint: authEndpoints.registerApi.v1,
+    body,
+  });
