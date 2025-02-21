@@ -1,4 +1,4 @@
-import Axios from "axios";
+import axios from "axios";
 import queryString from "querystring";
 
 export const hostname = () => {
@@ -85,7 +85,7 @@ const callAxios = async (
       ...defHeaders,
     };
   }
-  return Axios({
+  return axios({
     method: uriEndPoint.method,
     url: makeUrl({ ...uriEndPoint, pathParams, query }, apiHostUrl),
     headers: {

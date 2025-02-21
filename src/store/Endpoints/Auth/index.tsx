@@ -8,4 +8,11 @@ export const authEndpoints = {
       uri: "/login/",
     },
   },
+  RegisterApi: {
+    v1: {
+      ...defaults.methods.POST,
+      ...defaults.versions.v1,
+      uri: "/register/",
+    },
+  },
 };
