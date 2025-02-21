@@ -22,7 +22,7 @@ const TopArea = () => {
                 </div>
             </div>
             <div className="user-profile">
-                <img src={user} alt="" />
+            <i className="fa-regular fa-circle-user"></i>
             </div>
         </div>
     </div>

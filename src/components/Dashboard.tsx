@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import user from "../images/user.png";
 import Sidebar from "../reusable/Sidebar";
 import TopArea from "../reusable/TopArea";
-
+import {  FaUserCircle } from "react-icons/fa";
 const Dashboard = () => {
   const [openIndex, setOpenIndex] = useState(null);
 
@@ -45,21 +45,21 @@ const Dashboard = () => {
                     {openIndex === 0 && (
                       <div className="openNoti">
                         <div className="notifications-pannel flex space-bw al-center">
-                          <img src={user} alt="" />
+                        <i className="fa-regular fa-circle-user"></i>
                           <p>
                             <b>Lorem Ipsum</b> Placeholder text commonly used in
                             design.
                           </p>
                         </div>
                         <div className="notifications-pannel flex space-bw al-center">
-                          <img src={user} alt="" />
+                        <i className="fa-regular fa-circle-user"></i>
                           <p>
                             <b>Lorem Ipsum</b> Placeholder text commonly used in
                             design.
                           </p>
                         </div>
                         <div className="notifications-pannel flex space-bw al-center">
-                          <img src={user} alt="" />
+                        <i className="fa-regular fa-circle-user"></i>
                           <p>
                             <b>Lorem Ipsum</b> Placeholder text commonly used in
                             design.
@@ -92,21 +92,21 @@ const Dashboard = () => {
                     {openIndex === 1 && (
                       <div className="openNoti">
                         <div className="notifications-pannel flex space-bw">
-                          <img src={user} alt="" />
+                        <i className="fa-regular fa-circle-user"></i>
                           <p>
                             <b>Lorem Ipsum</b> Placeholder text commonly used in
                             design.
                           </p>
                         </div>
                         <div className="notifications-pannel flex space-bw">
-                          <img src={user} alt="" />
+                        <i className="fa-regular fa-circle-user"></i>
                           <p>
                             <b>Lorem Ipsum</b> Placeholder text commonly used in
                             design.
                           </p>
                         </div>
                         <div className="notifications-pannel flex space-bw">
-                          <img src={user} alt="" />
+                        <i className="fa-regular fa-circle-user"></i>
                           <p>
                             <b>Lorem Ipsum</b> Placeholder text commonly used in
                             design.
@@ -139,21 +139,21 @@ const Dashboard = () => {
                     {openIndex === 2 && (
                       <div className="openNoti">
                         <div className="notifications-pannel flex space-bw">
-                          <img src={user} alt="" />
+                        <i className="fa-regular fa-circle-user"></i>
                           <p>
                             <b>Lorem Ipsum</b> Placeholder text commonly used in
                             design.
                           </p>
                         </div>
                         <div className="notifications-pannel flex space-bw">
-                          <img src={user} alt="" />
+                        <i className="fa-regular fa-circle-user"></i>
                           <p>
                             <b>Lorem Ipsum</b> Placeholder text commonly used in
                             design.
                           </p>
                         </div>
                         <div className="notifications-pannel flex space-bw">
-                          <img src={user} alt="" />
+                        <i className="fa-regular fa-circle-user"></i>
                           <p>
                             <b>Lorem Ipsum</b> Placeholder text commonly used in
                             design.
@@ -179,7 +179,7 @@ const Dashboard = () => {
                     <li>
                       <div className="flex space-bw al-center">
                         <div className="flex al-center">
-                          <img src={user} alt="" />
+                        <i className="fa-regular fa-circle-user"></i>
                           <p>Michael</p>
                         </div>
                         <p>MM/DD/YYYY</p>
@@ -188,7 +188,7 @@ const Dashboard = () => {
                     <li>
                       <div className="flex space-bw al-center">
                         <div className="flex al-center">
-                          <img src={user} alt="" />
+                        <i className="fa-regular fa-circle-user"></i>
                           <p>Jordan</p>
                         </div>
                         <p>MM/DD/YYYY</p>
@@ -197,7 +197,7 @@ const Dashboard = () => {
                     <li>
                       <div className="flex space-bw al-center">
                         <div className="flex al-center">
-                          <img src={user} alt="" />
+                        <i className="fa-regular fa-circle-user"></i>
                           <p>Harish Chaudhary</p>
                         </div>
                         <p>MM/DD/YYYY</p>

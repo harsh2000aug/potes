@@ -26,7 +26,7 @@ const Directory = () => {
                             <tr>
                                 <td>
                                     <div className="flex al-center">
-                                        <img src={user} alt="" />
+                                    <i className="fa-regular fa-circle-user"></i>
                                         <p>Michael</p>
                                     </div>
                                 </td>
@@ -43,7 +43,7 @@ const Directory = () => {
                             <tr>
                                 <td>
                                     <div className="flex al-center">
-                                        <img src={user} alt="" />
+                                    <i className="fa-regular fa-circle-user"></i>
                                         <p>Michael</p>
                                     </div>
                                 </td>
@@ -60,7 +60,7 @@ const Directory = () => {
                             <tr>
                                 <td>
                                     <div className="flex al-center">
-                                        <img src={user} alt="" />
+                                    <i className="fa-regular fa-circle-user"></i>
                                         <p>Michael</p>
                                     </div>
                                 </td>
