@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "../reusable/Sidebar";
 import TopArea from "../reusable/TopArea";
+import { createContactApi } from "../store/Services/AllApi";
 
 const CreateContact = () => {
   const [children, setChildren]: any = useState([]);
@@ -10,7 +11,17 @@ const CreateContact = () => {
   const [educationList, setEducationList]: any = useState([
     { university: "", details: "" },
   ]);
-  const [interests, setInterests]: any = useState(["", "", ""]);
+  const [interests, setInterests]: any = useState([""]);
+  const [personalDetail, setPersonalDetail]: any = useState({
+    full_name: "",
+    birthday: "",
+    email: "",
+    phone_no: "",
+    spouse_name: "",
+    spouse_bdy: "",
+    spouse_details: "",
+  });
+
   const addChild = () => {
     setChildren([...children, { name: "", birthday: "", details: "" }]);
   };
@@ -44,6 +55,19 @@ const CreateContact = () => {
     updatedInterests[index] = value;
     setInterests(updatedInterests);
   };
+
+  const createContactApiHandler = () => {
+    createContactApi({
+      body: {},
+    })
+      ?.then((res: any) => {
+        console.log("res", res);
+      })
+      ?.catch((err: any) => {
+        console.log("err", err);
+      });
+  };
+
   return (
     <div className="directory">
       <div className="flex h-100">
@@ -69,21 +93,53 @@ const CreateContact = () => {
                 <div className="form-group flex space-bw">
                   <div className="col-50">
                     <label htmlFor="">Full Name</label>
-                    <input type="text" />
+                    <input
+                      type="text"
+                      value={personalDetail.full_name}
+                      onChange={(e: any) =>
+                        setPersonalDetail((oldVal: any) => {
+                          return { ...oldVal, full_name: e.target.value };
+                        })
+                      }
+                    />
                   </div>
                   <div className="col-50">
                     <label htmlFor="">Birthday</label>
-                    <input type="date" />
+                    <input
+                      type="date"
+                      value={personalDetail.birthday}
+                      onChange={(e: any) =>
+                        setPersonalDetail((oldVal: any) => {
+                          return { ...oldVal, birthday: e.target.value };
+                        })
+                      }
+                    />
                   </div>
                 </div>
                 <div className="form-group flex space-bw">
                   <div className="col-50">
                     <label htmlFor="">Email</label>
-                    <input type="text" />
+                    <input
+                      type="text"
+                      value={personalDetail.email}
+                      onChange={(e: any) =>
+                        setPersonalDetail((oldVal: any) => {
+                          return { ...oldVal, email: e.target.value };
+                        })
+                      }
+                    />
                   </div>
                   <div className="col-50">
                     <label htmlFor="">Phone No.</label>
-                    <input type="text" />
+                    <input
+                      type="text"
+                      value={personalDetail.phone_no}
+                      onChange={(e: any) =>
+                        setPersonalDetail((oldVal: any) => {
+                          return { ...oldVal, phone_no: e.target.value };
+                        })
+                      }
+                    />
                   </div>
                 </div>
                 <h4>Family Details</h4>
@@ -91,16 +147,39 @@ const CreateContact = () => {
                   <div className="form-group flex space-bw">
                     <div className="col-50">
                       <label>Spouse Name</label>
-                      <input type="text" />
+                      <input
+                        type="text"
+                        value={personalDetail.spouse_name}
+                        onChange={(e: any) =>
+                          setPersonalDetail((oldVal: any) => {
+                            return { ...oldVal, spouse_name: e.target.value };
+                          })
+                        }
+                      />
                     </div>
                     <div className="col-50">
                       <label>Birthday</label>
-                      <input type="date" />
+                      <input
+                        type="date"
+                        value={personalDetail.spouse_bdy}
+                        onChange={(e: any) =>
+                          setPersonalDetail((oldVal: any) => {
+                            return { ...oldVal, spouse_bdy: e.target.value };
+                          })
+                        }
+                      />
                     </div>
                   </div>
                   <div className="form-group">
                     <label>Spouse Details</label>
-                    <textarea></textarea>
+                    <textarea
+                      value={personalDetail.spouse_details}
+                      onChange={(e: any) =>
+                        setPersonalDetail((oldVal: any) => {
+                          return { ...oldVal, spouse_details: e.target.value };
+                        })
+                      }
+                    />
                   </div>
                   {/* Children Section */}
                   {children.map((child: any, index: any) => (
@@ -236,7 +315,7 @@ const CreateContact = () => {
               <div className="interest">
                 <h4>Interests</h4>
 
-                <div className="form-group flex space-bw">
+                <div className="form-group flex">
                   {interests.map((interest: any, index: any) => (
                     <div key={index} className="col-33">
                       <label>Interest</label>

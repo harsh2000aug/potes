@@ -483,3 +483,7 @@ li {
   font-size: 12px;
   margin-top: 5px;
 }
+
+.mic-btn button.active_mic i{
+  color: rgb(5, 207, 5);
+}
