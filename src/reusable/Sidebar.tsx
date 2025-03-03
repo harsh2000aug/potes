@@ -3,6 +3,16 @@ import logo from "../images/logo.png";
 import { useNavigate } from "react-router-dom";
 const menuTab: any = [
   {
+    name: "Create Contact",
+    icon: "fa-solid fa-plus",
+    isButton: true,
+  },
+  {
+    name: "Create Note",
+    icon: "fa-solid fa-plus",
+    isButton: true,
+  },
+  {
     name: "Home",
     icon: "fa-solid fa-house",
   },
@@ -21,16 +31,6 @@ const menuTab: any = [
   {
     name: "Logout",
     icon: "fa-solid fa-right-from-bracket",
-  },
-  {
-    name: "Create Contact",
-    icon: "fa-solid fa-plus",
-    isButton: true, // Marking these items as buttons
-  },
-  {
-    name: "Create Note",
-    icon: "fa-solid fa-plus",
-    isButton: true, // Marking these items as buttons
   },
 ];
 const Sidebar = ({ current }: any) => {
@@ -63,7 +63,27 @@ const Sidebar = ({ current }: any) => {
       </div>
       <div className="menu">
         <ul>
-          {menuTab.map((item: any) => (
+          {menuTab.slice(0, 4).map((item: any) => (
+            <li
+              key={item.name}
+              className={`${item.isButton ? "btns" : ""} ${
+                current === item.name ? "active" : ""
+              }`.trim()}
+            >
+              {item.isButton ? (
+                <button onClick={() => tabChangeHandler(item.name)}>
+                  <i className={item.icon}></i> {item.name}
+                </button>
+              ) : (
+                <span onClick={() => tabChangeHandler(item.name)}>
+                  <i className={item.icon}></i> {item.name}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+        <ul className="p-absolute">
+          {menuTab.slice(4).map((item: any) => (
             <li
               key={item.name}
               className={`${item.isButton ? "btns" : ""} ${

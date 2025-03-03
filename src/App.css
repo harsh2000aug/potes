@@ -26,7 +26,11 @@ li {
   align-items: center;
 }
 .col-33 {
-  width: 32.33%;
+  width: calc(33.33% - 10px);
+  margin-right: 10px;
+}
+.col-33:last-child {
+  margin-right: 0;
 }
 .col-40 {
   width: 39%;
@@ -38,7 +42,7 @@ li {
   width: 59%;
 }
 .common-back {
-  background: #36413e;
+  background: #727272;
   padding: 20px;
   border-radius: 20px;
 }
@@ -71,7 +75,7 @@ li {
   position: relative;
 }
 .btn button {
-  background: #edddcc;
+  background: #fff;
   outline: none;
   border: none;
   padding: 10px 20px;
@@ -164,7 +168,7 @@ li {
 .sidebar {
   width: 250px;
   padding: 20px;
-  background: #bfb0a0;
+  background: #727272;
   height: 100vh;
   overflow-y: auto;
 }
@@ -192,9 +196,9 @@ li {
   margin-right: 10px;
 }
 .sidebar .menu ul li button {
-  background: #36413e;
+  background: #44dbd6;
   padding: 15px;
-  color: #fff;
+  color: #000;
   outline: none;
   border: none;
   border-radius: 10px;
@@ -204,6 +208,10 @@ li {
 }
 .sidebar .menu ul li.btns {
   padding: 0;
+}
+.sidebar .menu .p-absolute {
+  position: absolute;
+  bottom: 0;
 }
 .main-area {
   width: calc(100% - 250px);
@@ -222,10 +230,10 @@ li {
   width: 350px;
 }
 .search-box {
-  border: 1px solid #000;
+  border: 1px solid #fff;
   border-radius: 25px;
   padding: 5px 15px;
-  background: #edddcc;
+  background: #fff;
 }
 
 .search-field {
@@ -244,7 +252,7 @@ li {
   font-size: 14px;
   padding-right: 0px;
   outline: none;
-  background: #edddcc;
+  background: #fff;
 }
 
 .search-box-icon {
@@ -265,7 +273,7 @@ li {
   height: 35px;
   top: 1px;
   right: 4px;
-  background: #edddcc;
+  background: #fff;
   border: none;
   cursor: pointer;
   border-bottom-right-radius: 25px;
@@ -347,7 +355,7 @@ li {
   width: 100%;
   outline: none;
   border: none;
-  background: #edddcc;
+  background: #fff;
   border-radius: 5px;
   font-size: 14px;
   padding: 10px;
@@ -363,6 +371,14 @@ li {
   height: 100px;
   overflow-y: auto;
 }
+.delete-class i {
+  position: absolute;
+  right: 5px;
+  margin-right: 0;
+  top: 0px;
+  font-size: 14px;
+  color: #44dbd6;
+}
 .profile-pic-upload {
   width: 130px;
   height: 130px;
@@ -371,12 +387,13 @@ li {
 }
 .profile-p p {
   color: #fff;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   cursor: pointer;
   font-size: 14px;
 }
 .profile-p p i {
   margin-left: 5px;
+  font-size: 14px;
 }
 .profile-pic {
   width: 200px !important;
@@ -484,6 +501,6 @@ li {
   margin-top: 5px;
 }
 
-.mic-btn button.active_mic i{
+.mic-btn button.active_mic i {
   color: rgb(5, 207, 5);
 }

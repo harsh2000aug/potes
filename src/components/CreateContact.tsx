@@ -5,12 +5,8 @@ import { createContactApi } from "../store/Services/AllApi";
 
 const CreateContact = () => {
   const [children, setChildren]: any = useState([]);
-  const [experiences, setExperiences]: any = useState([
-    { employer: "", details: "" },
-  ]);
-  const [educationList, setEducationList]: any = useState([
-    { university: "", details: "" },
-  ]);
+  const [experiences, setExperiences]: any = useState([]);
+  const [educationList, setEducationList]: any = useState([]);
   const [interests, setInterests]: any = useState([""]);
   const [personalDetail, setPersonalDetail]: any = useState({
     full_name: "",
@@ -66,6 +62,22 @@ const CreateContact = () => {
       ?.catch((err: any) => {
         console.log("err", err);
       });
+  };
+
+  const removeChild = (index: number) => {
+    setChildren(children.filter((_: any, i: any) => i !== index));
+  };
+
+  const removeExperience = (index: number) => {
+    setExperiences(experiences.filter((_: any, i: any) => i !== index));
+  };
+
+  const removeEducation = (index: number) => {
+    setEducationList(educationList.filter((_: any, i: any) => i !== index));
+  };
+
+  const removeInterest = (index: number) => {
+    setInterests(interests.filter((_: any, i: any) => i !== index));
   };
 
   return (
@@ -183,8 +195,12 @@ const CreateContact = () => {
                   </div>
                   {/* Children Section */}
                   {children.map((child: any, index: any) => (
-                    <div key={index}>
-                      <div className="flex space-bw form-group ">
+                    <div key={index} className="p-relate delete-class">
+                      <i
+                        className="fa-solid fa-trash"
+                        onClick={() => removeChild(index)}
+                      ></i>
+                      <div className="flex space-bw form-group">
                         <div className="col-50">
                           <label>Child Name</label>
                           <input
@@ -231,7 +247,11 @@ const CreateContact = () => {
               <div className="experience">
                 <h4>Professional Experience</h4>
                 {experiences.map((exp: any, index: any) => (
-                  <div key={index} className="form-group">
+                  <div key={index} className="p-relate delete-class">
+                    <i
+                      className="fa-solid fa-trash"
+                      onClick={() => removeExperience(index)}
+                    ></i>
                     <div className="form-group flex space-bw">
                       <div className="col-50">
                         <label>Employer Name</label>
@@ -265,15 +285,18 @@ const CreateContact = () => {
                 ))}
                 <div className="profile-p">
                   <p onClick={addExperience} style={{ cursor: "pointer" }}>
-                    Add Previous Employment <i className="fa-solid fa-plus"></i>
+                    Add Employment <i className="fa-solid fa-plus"></i>
                   </p>
                 </div>
               </div>
               <div className="education">
                 <h4>Education</h4>
-
                 {educationList.map((edu: any, index: any) => (
-                  <div key={index} className="form-group">
+                  <div key={index} className="p-relate delete-class">
+                    <i
+                      className="fa-solid fa-trash"
+                      onClick={() => removeEducation(index)}
+                    ></i>
                     <div className="form-group flex space-bw">
                       <div className="col-50">
                         <label>University Name</label>
@@ -314,10 +337,13 @@ const CreateContact = () => {
               </div>
               <div className="interest">
                 <h4>Interests</h4>
-
                 <div className="form-group flex">
                   {interests.map((interest: any, index: any) => (
-                    <div key={index} className="col-33">
+                    <div key={index} className="col-33 p-relate delete-class">
+                      <i
+                        className="fa-solid fa-trash"
+                        onClick={() => removeInterest(index)}
+                      ></i>
                       <label>Interest</label>
                       <input
                         type="text"

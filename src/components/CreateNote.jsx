@@ -98,8 +98,8 @@ const CreateNote = () => {
                 <input type="date" />
               </div>
               <div className="form-group">
-                <div className="col-33">
-                  <input type="submit" />
+                <div class="col-33 btn">
+                  <button type="button">Submit</button>
                 </div>
               </div>
             </div>
