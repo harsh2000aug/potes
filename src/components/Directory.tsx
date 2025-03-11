@@ -1,8 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
 import TopArea from "../reusable/TopArea";
+import { allContactApi, profileContactApi } from "../store/Services/AllApi";
+import { useNavigate } from "react-router-dom";
 
 const Directory = () => {
+  const [allContacts, setAllContacts]: any = useState([]);
+  useEffect(() => {
+    allContactApi().then((res: any) => {
+      setAllContacts(res);
+    });
+  }, []);
+
+  const profileHandler = (userId: any) => {
+    profileContactApi({
+      query: {
+        id: userId,
+      },
+    }).then((res: any) => {
+      navigate("/profile", { state: { profileData: res } });
+    });
+  };
+  const navigate = useNavigate();
+
   return (
     <div className="directory">
       <div className="flex h-100">
@@ -27,39 +47,23 @@ const Directory = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>
-                      <div className="flex al-center">
-                        <i className="fa-regular fa-circle-user"></i>
-                        <p>Michael</p>
-                      </div>
-                    </td>
-                    <td>customer@email.com</td>
-                    <td>+91-999999999</td>
-                    <td>03/19/2000</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div className="flex al-center">
-                        <i className="fa-regular fa-circle-user"></i>
-                        <p>Michael</p>
-                      </div>
-                    </td>
-                    <td>customer@email.com</td>
-                    <td>+91-999999999</td>
-                    <td>03/19/2000</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div className="flex al-center">
-                        <i className="fa-regular fa-circle-user"></i>
-                        <p>Michael</p>
-                      </div>
-                    </td>
-                    <td>customer@email.com</td>
-                    <td>+91-999999999</td>
-                    <td>03/19/2000</td>
-                  </tr>
+                  {allContacts.map((itm: any) => (
+                    <tr
+                      style={{ cursor: "pointer" }}
+                      key={itm.id}
+                      onClick={() => profileHandler(itm.id)}
+                    >
+                      <td>
+                        <div className="flex al-center">
+                          <i className="fa-regular fa-circle-user"></i>
+                          <p>{itm.full_name || "-"}</p>
+                        </div>
+                      </td>
+                      <td>{itm.email || "-"}</td>
+                      <td>{itm.phone || "-"}</td>
+                      <td>{itm.birthday || "-"}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

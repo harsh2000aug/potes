@@ -51,7 +51,7 @@ const Sidebar = ({ current }: any) => {
     } else if (val === "Create Contact") {
       navigate("/create-contact");
     } else if (val === "Create Note") {
-      navigate("/create-note");
+      navigate("/create-a-note");
     } else if (val === "Logout") {
       logoutBtnHandler();
     }

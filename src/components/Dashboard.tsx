@@ -1,12 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Sidebar from "../reusable/Sidebar";
 import TopArea from "../reusable/TopArea";
+import { showBirthdays, showReminders } from "../store/Services/AllApi";
 const Dashboard = () => {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [birthdays, setBirthdays]: any = useState([]);
+  const [reminders, setReminders]: any = useState([]);
+  const [remindersTomm, setRemindersTomm]: any = useState([]);
+  const [remindersUpcoming, setRemindersUpcoming]: any = useState([]);
+  const [today, setToday]: any = useState(false);
+  const [tommorow, setTommorow]: any = useState(false);
+  const [upcoming, setUpcoming]: any = useState(false);
 
-  const toggleNotifications = (index: any) => {
-    setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
+  useEffect(() => {
+    showBirthdays()
+      .then((res: any) => {
+        setBirthdays(res.birthdays);
+      })
+      .catch((err: any) => {
+        console.log("err", err);
+      });
+  }, []);
+  useEffect(() => {
+    showReminders()
+      .then((res: any) => {
+        setReminders(res.reminders.today);
+        setRemindersTomm(res.reminders.tomorrow);
+        setRemindersUpcoming(res.reminders.upcoming);
+      })
+      .catch((err: any) => {
+        console.log("err", err);
+      });
+  }, []);
+
+  const handleToday = () => {
+    setToday(!today);
+  };
+
+  const handleTommorow = () => {
+    setTommorow(!tommorow);
+  };
+
+  const handleUpcoming = () => {
+    setUpcoming(!upcoming);
   };
 
   return (
@@ -19,151 +55,149 @@ const Dashboard = () => {
             <div className="flex space-bw">
               <div className="col-50 common-back">
                 <h3>Reminders</h3>
-                <ul>
-                  {/* Today */}
-                  <li
-                    className="p-relate"
-                    onClick={() => toggleNotifications(0)}
-                    style={{ cursor: "pointer" }}
+                {/* today */}
+                <div className="today mb-15">
+                  <div
+                    className="flex space-bw al-center"
+                    onClick={handleToday}
                   >
-                    <div className="flex space-bw al-center">
-                      <div className="p-relate">
-                        <p>Today</p>
-                        <div className="number-list">
-                          <p>3</p>
-                        </div>
+                    <div className="p-relate">
+                      <p>Today</p>
+                      <div className="number-list">
+                        <p>{reminders.length}</p>
                       </div>
-                      <i
-                        className="fa-solid fa-chevron-down"
-                        style={{
-                          color: "#fff",
-                          fontSize: "14px",
-                        }}
-                      ></i>
                     </div>
-                    {openIndex === 0 && (
-                      <div className="openNoti">
-                        <div className="notifications-pannel flex space-bw al-center">
-                          <i className="fa-regular fa-circle-user"></i>
-                          <p>
-                            <b>Lorem Ipsum</b> Placeholder text commonly used in
-                            design.
-                          </p>
-                        </div>
-                        <div className="notifications-pannel flex space-bw al-center">
-                          <i className="fa-regular fa-circle-user"></i>
-                          <p>
-                            <b>Lorem Ipsum</b> Placeholder text commonly used in
-                            design.
-                          </p>
-                        </div>
-                        <div className="notifications-pannel flex space-bw al-center">
-                          <i className="fa-regular fa-circle-user"></i>
-                          <p>
-                            <b>Lorem Ipsum</b> Placeholder text commonly used in
-                            design.
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </li>
+                    <i
+                      className={
+                        today
+                          ? "fa-solid fa-chevron-up"
+                          : "fa-solid fa-chevron-down"
+                      }
+                      style={{
+                        color: "#fff",
+                        fontSize: "14px",
+                      }}
+                    ></i>
+                  </div>
+                  <div
+                    style={{
+                      display: today ? "block" : "none",
+                    }}
+                  >
+                    <ul>
+                      {reminders?.map((itm: any) => (
+                        <li
+                          key={itm.id}
+                          className="p-relate"
+                          style={{ cursor: "pointer" }}
+                        >
+                          <div className="openNoti">
+                            <div className="notifications-pannel flex space-bw al-center">
+                              <i className="fa-regular fa-circle-user"></i>
+                              <p>{itm.note}</p>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
 
-                  {/* Tomorrow */}
-                  <li
-                    className="p-relate"
-                    onClick={() => toggleNotifications(1)}
-                    style={{ cursor: "pointer" }}
+                {/* tommorow */}
+                <div className="tomorrow mb-15">
+                  <div
+                    className="flex space-bw al-center"
+                    onClick={handleTommorow}
                   >
-                    <div className="flex space-bw al-center">
-                      <div className="p-relate">
-                        <p>Tomorrow</p>
-                        <div className="number-list">
-                          <p>3</p>
-                        </div>
+                    <div className="p-relate">
+                      <p>Tommorow</p>
+                      <div className="number-list">
+                        <p>{remindersTomm.length}</p>
                       </div>
-                      <i
-                        className="fa-solid fa-chevron-down"
-                        style={{
-                          color: "#fff",
-                          fontSize: "14px",
-                        }}
-                      ></i>
                     </div>
-                    {openIndex === 1 && (
-                      <div className="openNoti">
-                        <div className="notifications-pannel flex space-bw">
-                          <i className="fa-regular fa-circle-user"></i>
-                          <p>
-                            <b>Lorem Ipsum</b> Placeholder text commonly used in
-                            design.
-                          </p>
-                        </div>
-                        <div className="notifications-pannel flex space-bw">
-                          <i className="fa-regular fa-circle-user"></i>
-                          <p>
-                            <b>Lorem Ipsum</b> Placeholder text commonly used in
-                            design.
-                          </p>
-                        </div>
-                        <div className="notifications-pannel flex space-bw">
-                          <i className="fa-regular fa-circle-user"></i>
-                          <p>
-                            <b>Lorem Ipsum</b> Placeholder text commonly used in
-                            design.
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </li>
+                    <i
+                      className={
+                        tommorow
+                          ? "fa-solid fa-chevron-up"
+                          : "fa-solid fa-chevron-down"
+                      }
+                      style={{
+                        color: "#fff",
+                        fontSize: "14px",
+                      }}
+                    ></i>
+                  </div>
+                  <div
+                    style={{
+                      display: tommorow ? "block" : "none",
+                    }}
+                  >
+                    <ul>
+                      {remindersTomm?.map((itm: any) => (
+                        <li
+                          key={itm.id}
+                          className="p-relate"
+                          style={{ cursor: "pointer" }}
+                        >
+                          <div className="openNoti">
+                            <div className="notifications-pannel flex space-bw al-center">
+                              <i className="fa-regular fa-circle-user"></i>
+                              <p>{itm.note}</p>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
 
-                  {/* Upcoming */}
-                  <li
-                    className="p-relate"
-                    onClick={() => toggleNotifications(2)}
-                    style={{ cursor: "pointer" }}
+                {/* upcoming */}
+                <div className="upcoming">
+                  <div
+                    className="flex space-bw al-center"
+                    onClick={handleUpcoming}
                   >
-                    <div className="flex space-bw al-center">
-                      <div className="p-relate">
-                        <p>Upcoming</p>
-                        <div className="number-list">
-                          <p>10</p>
-                        </div>
+                    <div className="p-relate">
+                      <p>Upcoming</p>
+                      <div className="number-list">
+                        <p>{remindersUpcoming.length}</p>
                       </div>
-                      <i
-                        className="fa-solid fa-chevron-down"
-                        style={{
-                          color: "#fff",
-                          fontSize: "14px",
-                        }}
-                      ></i>
                     </div>
-                    {openIndex === 2 && (
-                      <div className="openNoti">
-                        <div className="notifications-pannel flex space-bw">
-                          <i className="fa-regular fa-circle-user"></i>
-                          <p>
-                            <b>Lorem Ipsum</b> Placeholder text commonly used in
-                            design.
-                          </p>
-                        </div>
-                        <div className="notifications-pannel flex space-bw">
-                          <i className="fa-regular fa-circle-user"></i>
-                          <p>
-                            <b>Lorem Ipsum</b> Placeholder text commonly used in
-                            design.
-                          </p>
-                        </div>
-                        <div className="notifications-pannel flex space-bw">
-                          <i className="fa-regular fa-circle-user"></i>
-                          <p>
-                            <b>Lorem Ipsum</b> Placeholder text commonly used in
-                            design.
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </li>
-                </ul>
+                    <i
+                      className={
+                        upcoming
+                          ? "fa-solid fa-chevron-up"
+                          : "fa-solid fa-chevron-down"
+                      }
+                      style={{
+                        color: "#fff",
+                        fontSize: "14px",
+                      }}
+                    ></i>
+                  </div>
+                  <div
+                    style={{
+                      display: upcoming ? "block" : "none",
+                    }}
+                  >
+                    <ul>
+                      {remindersUpcoming?.map((itm: any) => (
+                        <li
+                          key={itm.id}
+                          className="p-relate"
+                          style={{ cursor: "pointer" }}
+                        >
+                          <div className="openNoti">
+                            <div className="notifications-pannel flex space-bw al-center">
+                              <i className="fa-regular fa-circle-user"></i>
+                              <p>{itm.note}</p>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
               <div className="col-50">
                 <div className="common-back mb-15">
@@ -175,35 +209,19 @@ const Dashboard = () => {
                   </ul>
                 </div>
                 <div className="common-back">
-                  <h3>Birthdays & Anniversary</h3>
+                  <h3>Birthdays</h3>
                   <ul>
-                    <li>
-                      <div className="flex space-bw al-center">
-                        <div className="flex al-center">
-                          <i className="fa-regular fa-circle-user"></i>
-                          <p>Michael</p>
+                    {birthdays?.map((itm: any) => (
+                      <li key={itm.id}>
+                        <div className="flex space-bw al-center">
+                          <div className="flex al-center">
+                            <i className="fa-regular fa-circle-user"></i>
+                            <p>{itm.full_name}</p>
+                          </div>
+                          <p>{itm.birthday}</p>
                         </div>
-                        <p>MM/DD/YYYY</p>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex space-bw al-center">
-                        <div className="flex al-center">
-                          <i className="fa-regular fa-circle-user"></i>
-                          <p>Jordan</p>
-                        </div>
-                        <p>MM/DD/YYYY</p>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex space-bw al-center">
-                        <div className="flex al-center">
-                          <i className="fa-regular fa-circle-user"></i>
-                          <p>Harish Chaudhary</p>
-                        </div>
-                        <p>MM/DD/YYYY</p>
-                      </div>
-                    </li>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>

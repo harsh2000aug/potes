@@ -57,6 +57,18 @@ li {
   font-weight: 400;
   margin-bottom: 20px;
 }
+
+.common-back.createContact h4 {
+  font-size: 18px;
+  color: #fff;
+  font-weight: 400;
+  margin-bottom: 20px;
+  text-align: center;
+  /* border: 1px solid; */
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: #959595 0px 1px 5px;
+}
 .common-back p {
   color: #fff;
 }
@@ -87,6 +99,13 @@ li {
   margin-right: 5px;
   color: #000;
   font-size: 14px;
+}
+.border {
+  border-bottom: 1px dotted;
+  padding-bottom: 20px;
+}
+.border:last-child {
+  border-bottom: none;
 }
 /* login page css */
 .login {
@@ -304,6 +323,9 @@ li {
 .body-area ul li p {
   color: #fff;
   font-size: 16px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 .body-area .number-list {
   width: 15px;
@@ -351,7 +373,8 @@ li {
   margin-bottom: 5px;
 }
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group select {
   width: 100%;
   outline: none;
   border: none;
@@ -458,26 +481,60 @@ li {
 .allNotes h4 {
   color: #000;
   font-weight: 600;
+  margin-bottom: 0;
 }
-.date {
-  width: 100px;
+.allNotes i {
+  color: #000;
+  font-size: 14px;
 }
+.allNotes p {
+  color: #000;
+}
+.note-head {
+  margin-bottom: 20px;
+}
+/* .date {
+  width: 95px;
+} */
 .date p {
   color: #000;
   font-weight: 700;
   font-size: 14px;
 }
 .note {
-  width: calc(100% - 100px);
+  width: 100%;
+  position: relative;
+}
+.note span {
+  font-size: 10px;
+  position: absolute;
+  font-weight: 700;
+  right: 0;
 }
 .note p {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
   color: #000;
+  font-size: 14px;
+}
+
+.note .editDelete {
+  position: absolute;
+  right: 0;
+  margin-right: -10px;
+  top: -2px;
+  cursor: pointer;
+}
+.note i {
+  color: #000;
+  font-size: 12px;
 }
 .mic-btn {
   position: relative;
 }
 .mic-btn button {
-  background: #edddcc;
+  background: #fff;
   outline: none;
   border: none;
   width: 25px;
@@ -502,5 +559,122 @@ li {
 }
 
 .mic-btn button.active_mic i {
-  color: rgb(5, 207, 5);
+  color: #05cf05;
+}
+#personal,
+#family,
+#exp,
+#edu,
+#interest {
+  display: none;
+}
+.modal {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}
+.modal-dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9;
+  background: #fff;
+}
+.modal-confirm {
+  width: 50%;
+}
+.modal-confirm .modal-content {
+  padding: 20px;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  font-size: 14px;
+}
+.modal-confirm .modal-header {
+  border-bottom: none;
+  position: relative;
+}
+.modal-confirm h4 {
+  text-align: center;
+  font-size: 26px;
+  margin: 20px 0;
+}
+.modal-confirm .close {
+  position: absolute;
+  top: -5px;
+  right: -2px;
+  border: none;
+  outline: none;
+  background: transparent;
+  float: right;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 0.5;
+}
+.modal-confirm .modal-body {
+  color: #999;
+}
+.modal-confirm .modal-footer {
+  border: none;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 13px;
+  padding: 10px 0px 0px;
+}
+.modal-confirm .modal-footer a {
+  color: #999;
+}
+.modal-confirm .icon-box {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  border-radius: 50%;
+  z-index: 9;
+  text-align: center;
+  border: 3px solid #f15e5e;
+}
+.modal-confirm .icon-box i {
+  color: #f15e5e;
+  font-size: 46px;
+  display: inline-block;
+  margin-top: 13px;
+}
+.modal-confirm .btn {
+  color: #fff;
+  border-radius: 4px;
+  background: #60c7c1;
+  text-decoration: none;
+  transition: all 0.4s;
+  line-height: normal;
+  min-width: 120px;
+  border: none;
+  min-height: 40px;
+  border-radius: 3px;
+}
+.modal-confirm .btn-secondary {
+  background: #c1c1c1;
+  margin-right: 20px;
+}
+.modal-confirm .btn-secondary:hover,
+.modal-confirm .btn-secondary:focus {
+  background: #a8a8a8;
+}
+.modal-confirm .btn-danger {
+  background: #f15e5e;
+}
+.modal-confirm .btn-danger:hover,
+.modal-confirm .btn-danger:focus {
+  background: #ee3535;
+}
+.trigger-btn {
+  display: inline-block;
+  margin: 100px auto;
 }

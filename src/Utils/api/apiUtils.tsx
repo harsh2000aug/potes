@@ -1,8 +1,9 @@
-import axios from "axios";
+import Axios from "axios";
 import queryString from "querystring";
 
 export const hostname = () => {
-  let hostUrl = "http://192.168.0.19:8001/api";
+  // let hostUrl = "http://.168.0.19:8000/api";
+  let hostUrl = "http://192.168.0.100:8001/api";
 
   return hostUrl;
 };
@@ -41,7 +42,7 @@ export const getDefaultHeaders = async (multipart: boolean) => {
 
 /**
  * Returns true if the input apiResponse has errors.
- * @param {*} apiResponse
+  @param {} apiResponse
  */
 export const hasErrors = (apiResponse: any) => {
   const { error } = apiResponse;
@@ -75,7 +76,15 @@ export const hasErrors = (apiResponse: any) => {
  * @returns {Promise<object>} Body Data from the server.
  */
 const callAxios = async (
-  { uriEndPoint, pathParams, query, body, apiHostUrl, multipart }: any,
+  {
+    uriEndPoint,
+    pathParams,
+    query,
+    body,
+    apiHostUrl,
+    multipart,
+    withCredentials,
+  }: any,
   options?: CallApiOptions
 ) => {
   const defHeaders = await getDefaultHeaders(multipart);
@@ -85,7 +94,7 @@ const callAxios = async (
       ...defHeaders,
     };
   }
-  return axios({
+  return Axios({
     method: uriEndPoint.method,
     url: makeUrl({ ...uriEndPoint, pathParams, query }, apiHostUrl),
     headers: {
@@ -93,8 +102,10 @@ const callAxios = async (
       ...uriEndPoint.headerProps,
     },
     data: body || undefined,
+    withCredentials: withCredentials || false, // Add withCredentials here
   });
 };
+
 /**
  * Extract the error messages from a failed API response.
  * @param {} apiResponse
@@ -133,6 +144,7 @@ export const callApi = (
     body,
     apiHostUrl,
     multipart,
+    withCredentials,
   }: CallApiType,
   options?: CallApiOptions
 ) =>
@@ -145,6 +157,7 @@ export const callApi = (
         body,
         apiHostUrl,
         multipart,
+        withCredentials,
       },
       options
     )
@@ -187,10 +200,12 @@ interface CallApiType {
   body?: HeaderPropsOrPathParamsOrQueryOrBody;
   apiHostUrl?: string;
   multipart?: boolean;
+  withCredentials?: any;
 }
 
 interface CallApiOptions {
   hideDefaultHeaders: boolean;
+  withCredentials?: any;
 }
 export interface UriEndPoint {
   pathParams?: UriEndPoint;
@@ -199,6 +214,7 @@ export interface UriEndPoint {
   version: string;
   headerProps?: HeaderPropsOrPathParamsOrQueryOrBody;
   apiKey?: string;
+  withCredentials?: any;
 }
 interface HeaderPropsOrPathParamsOrQueryOrBody {}
 

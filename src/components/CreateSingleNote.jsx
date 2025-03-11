@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
+import TopArea from "../reusable/TopArea";
 import { allContactApi, createNotesApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
@@ -8,14 +9,16 @@ const CreateNote = () => {
   const [text, setText] = useState("");
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef(null);
-  const [finalTranscript, setFinalTranscript] = useState(""); 
-  const [storeRes, setStoreRes] = useState([]); 
+  const [finalTranscript, setFinalTranscript] = useState("");
+  const [storeRes, setStoreRes] = useState([]);
   const [selectedContact, setSelectedContact] = useState("");
+  
   const [reminder, setReminder] = useState("");
   const location = useLocation();
-  const [interval,setInterval]=useState("")
   const profileData = location.state?.profileName;
-  const profileIdUser=location.state?.profileId;
+  const [interval,setInterval]=useState("")
+  
+
   useEffect(() => {
     if (
       !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
@@ -25,7 +28,7 @@ const CreateNote = () => {
     }
 
     const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
+      window.SpeechRecognition || window.webkitSpeechRecognition;
     recognitionRef.current = new SpeechRecognition();
     recognitionRef.current.continuous = false;
     recognitionRef.current.interimResults = true;
@@ -46,7 +49,10 @@ const CreateNote = () => {
         interimTranscript += result[0].transcript;
 
         if (result.isFinal) {
-          setFinalTranscript((prevFinalTranscript) => prevFinalTranscript + result[0].transcript + " "); //append final result with a space.
+          setFinalTranscript(
+            (prevFinalTranscript) =>
+              prevFinalTranscript + result[0].transcript + " "
+          ); //append final result with a space.
         }
       }
       setText(finalTranscript + interimTranscript);
@@ -75,27 +81,34 @@ const CreateNote = () => {
     }
   };
 
-  const createNoteHandler=()=>{
-    if ( !text ) {
+  const createNoteHandler = () => {
+    if (!text) {
       toast.error("Please fill Notes before submitting.");
       return;
     }
     createNotesApi({
-      body:{
-        contact: profileIdUser,
+      body: {
+        contact: selectedContact,
         note: text,
-        reminder_type:interval || null,
         reminder: reminder || null,
-      }
-    }).then((res)=>{
+        reminder_type:interval
+      },
+    }).then((res) => {
       toast.success(res.msg);
+      setSelectedContact("");
+      setInterval("");
       setText("");
       setFinalTranscript("");
-      setInterval("");
-    })
-    
-    }
-  
+    }).catch((err) => console.log('err', err));
+  };
+
+  useEffect(()=>{
+    allContactApi()
+    .then((res) => {
+      setStoreRes(res);
+    });
+  },[])
+
   return (
     <div className="contactUs">
       <div className="flex h-100">
@@ -106,13 +119,29 @@ const CreateNote = () => {
               <h3>Create a Note</h3>
               <div className="form-group">
                 <label>Contact Name</label>
-                <input type="text" value={profileData} />
+                <select
+                  name=""
+                  id=""
+                  value={selectedContact}
+                  onChange={(e) => setSelectedContact(e.target.value)}
+                >
+                  <option>Select any contact</option>
+                  {Array.isArray(storeRes) &&
+                    storeRes.map((itm) => (
+                      <option key={itm?.id} value={itm?.id} >
+                        {itm?.full_name}
+                      </option>
+                    ))}
+                </select>
               </div>
               <div className="form-group mic-btn">
                 <label>Enter the Note</label>
                 <textarea
                   value={text}
-                  onChange={(e) => {setText(e.target.value); setFinalTranscript(e.target.value);}}
+                  onChange={(e) => {
+                    setText(e.target.value);
+                    setFinalTranscript(e.target.value);
+                  }}
                 ></textarea>
                 <button
                   onClick={isListening ? stopListening : startListening}
@@ -127,22 +156,26 @@ const CreateNote = () => {
                   <select name="interval" id="interval" value={interval} onChange={(e)=>setInterval(e.target.value)}>
                     <option value="">Select Interval</option>
                     <option value="Monthly">Monthly</option>
-                    <option value="Quarterly">Quarterly</option>
+                     <option value="Quarterly">Quarterly</option>
                     <option value="Yearly">Yearly</option>
                     <option value="Custom">Custom</option>
-                  </select> 
+                  </select>
                 </div>
-                {interval ==="custom" &&                 
-                <div className="col-50">
+                {interval==="Custom" &&  <div className="col-50">
                   <label>Set a Reminder</label>
-                  <input type="date" value={reminder}
-                      onChange={(e) => setReminder(e.target.value)} />
+                  <input
+                    type="date"
+                    value={reminder}
+                    onChange={(e) => setReminder(e.target.value)}
+                  />
                 </div>}
-
+               
               </div>
               <div className="form-group">
-                <div class="col-33 btn">
-                  <button type="button" onClick={createNoteHandler}>Submit</button>
+                <div className="col-33 btn">
+                  <button type="button" onClick={createNoteHandler}>
+                    Submit
+                  </button>
                 </div>
               </div>
             </div>
