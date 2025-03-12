@@ -58,6 +58,31 @@ const OpenProfile = () => {
                   <li>
                     <b>Phone:</b> {profileData.phone}
                   </li>
+                  <li>
+                    <b>Spouse Name:</b> {profileData.spouse_name || "-"}
+                  </li>
+                  <li>
+                    <b>Spouse Birthday:</b> {profileData.spouse_birthday || "-"}
+                  </li>
+                  <li>
+                    <b>Employment:</b>{" "}
+                    {profileData.previous_employers.length > 0
+                      ? profileData.previous_employers.map((itm: any) => (
+                          <p key={itm.id}>{itm.details}</p>
+                        ))
+                      : "-"}
+                  </li>
+                  <li>
+                    <b>University:</b>{" "}
+                    {/* {profileData.universities > 0
+                      ? profileData.universities.details
+                      : "-"} */}
+                    {profileData.universities.length > 0
+                      ? profileData.universities.map((itm: any) => (
+                          <p key={itm.id}>{itm.details}</p>
+                        ))
+                      : "-"}
+                  </li>
                 </ul>
                 <img src={user} alt="" />
               </div>

@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 
 import Sidebar from "../reusable/Sidebar";
 import TopArea from "../reusable/TopArea";
-import { showBirthdays, showReminders } from "../store/Services/AllApi";
+import {
+  showBirthdays,
+  showReminders,
+  yearsAgo,
+} from "../store/Services/AllApi";
 const Dashboard = () => {
   const [birthdays, setBirthdays]: any = useState([]);
   const [reminders, setReminders]: any = useState([]);
@@ -11,6 +15,7 @@ const Dashboard = () => {
   const [today, setToday]: any = useState(false);
   const [tommorow, setTommorow]: any = useState(false);
   const [upcoming, setUpcoming]: any = useState(false);
+  const [contactAndNotes, setContactAndNotes]: any = useState({});
 
   useEffect(() => {
     showBirthdays()
@@ -44,6 +49,16 @@ const Dashboard = () => {
   const handleUpcoming = () => {
     setUpcoming(!upcoming);
   };
+
+  useEffect(() => {
+    yearsAgo()
+      .then((res: any) => {
+        setContactAndNotes(res);
+      })
+      .catch((err: any) => {
+        console.log("err", err);
+      });
+  }, []);
 
   return (
     <div className="dashboard">
@@ -201,11 +216,14 @@ const Dashboard = () => {
               </div>
               <div className="col-50">
                 <div className="common-back mb-15">
-                  <h3>This Happened an days ago</h3>
+                  <h3>This Happened an year ago</h3>
                   <ul>
-                    <li>
-                      <p>Garvit made ui</p>
-                    </li>
+                    {contactAndNotes.notes?.map((itm: any) => (
+                      <li key={itm}>
+                        <span>{itm?.contact_full_name}</span>
+                        <p>{itm.note}</p>
+                      </li>
+                    ))}
                   </ul>
                 </div>
                 <div className="common-back">

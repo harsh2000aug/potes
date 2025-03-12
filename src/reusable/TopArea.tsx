@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const TopArea = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="top-area">
       <div className="flex space-bw al-center">
@@ -20,7 +23,7 @@ const TopArea = () => {
             </div>
           </div>
         </div>
-        <div className="user-profile">
+        <div className="user-profile" onClick={() => navigate("/edit-profile")}>
           <i className="fa-regular fa-circle-user"></i>
         </div>
       </div>

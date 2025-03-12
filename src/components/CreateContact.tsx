@@ -311,7 +311,7 @@ const CreateContact = () => {
                   ))}
                   <div className="profile-p">
                     <p onClick={addChild} style={{ cursor: "pointer" }}>
-                      Add children <i className="fa-solid fa-plus"></i>
+                      Children <i className="fa-solid fa-plus"></i>
                     </p>
                   </div>
                 </div>
@@ -359,7 +359,7 @@ const CreateContact = () => {
                 ))}
                 <div className="profile-p" id="exp">
                   <p onClick={addExperience} style={{ cursor: "pointer" }}>
-                    Add Employment <i className="fa-solid fa-plus"></i>
+                    Employment <i className="fa-solid fa-plus"></i>
                   </p>
                 </div>
               </div>
@@ -407,7 +407,7 @@ const CreateContact = () => {
 
                 <div className="profile-p" id="edu">
                   <p onClick={addEducation} style={{ cursor: "pointer" }}>
-                    Add Education <i className="fa-solid fa-plus"></i>
+                    Education <i className="fa-solid fa-plus"></i>
                   </p>
                 </div>
               </div>
@@ -442,7 +442,7 @@ const CreateContact = () => {
                 </div>
                 <div className="profile-p" id="interest">
                   <p onClick={addInterest} style={{ cursor: "pointer" }}>
-                    Add Interest <i className="fa-solid fa-plus"></i>
+                    Interest <i className="fa-solid fa-plus"></i>
                   </p>
                 </div>
               </div>

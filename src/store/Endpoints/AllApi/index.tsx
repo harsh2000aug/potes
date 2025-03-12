@@ -65,4 +65,53 @@ export const allApi = {
       uri: "/reminders/",
     },
   },
+  yearsAgo: {
+    v1: {
+      ...defaults.methods.GET,
+      ...defaults.versions.v1,
+      uri: "/event/",
+    },
+  },
+  editProfile: {
+    v1: {
+      ...defaults.methods.GET,
+      ...defaults.versions.v1,
+      uri: "/profile/",
+    },
+  },
+  changePass: {
+    v1: {
+      ...defaults.methods.POST,
+      ...defaults.versions.v1,
+      uri: "/change-password/",
+    },
+  },
+  forgotPasswordEmail: {
+    v1: {
+      ...defaults.methods.POST,
+      ...defaults.versions.v1,
+      uri: "/send-otp/",
+    },
+  },
+  forgotPasswordOtpEmail: {
+    v1: {
+      ...defaults.methods.POST,
+      ...defaults.versions.v1,
+      uri: "/verify-email-otp/",
+    },
+  },
+  forgotPasswordChange: {
+    v1: {
+      ...defaults.methods.POST,
+      ...defaults.versions.v1,
+      uri: "/reset-password/",
+    },
+  },
+  changePassword: {
+    v1: {
+      ...defaults.methods.POST,
+      ...defaults.versions.v1,
+      uri: "/change-password/",
+    },
+  },
 };

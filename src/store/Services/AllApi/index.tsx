@@ -45,3 +45,36 @@ export const showReminders = () =>
   callApi({
     uriEndPoint: allApi.showReminders.v1,
   });
+export const yearsAgo = () =>
+  callApi({
+    uriEndPoint: allApi.yearsAgo.v1,
+  });
+export const editProfile = () =>
+  callApi({
+    uriEndPoint: allApi.editProfile.v1,
+  });
+export const changePass = ({ body }: any) =>
+  callApi({
+    uriEndPoint: allApi.changePass.v1,
+    body,
+  });
+export const forgotPasswordEmail = ({ body }: any) =>
+  callApi({
+    uriEndPoint: allApi.forgotPasswordEmail.v1,
+    body,
+  });
+export const forgotPasswordOtpEmail = ({ body }: any) =>
+  callApi({
+    uriEndPoint: allApi.forgotPasswordOtpEmail.v1,
+    body,
+  });
+export const forgotPasswordChange = ({ body }: any) =>
+  callApi({
+    uriEndPoint: allApi.forgotPasswordChange.v1,
+    body,
+  });
+export const changePassword = ({ body }: any) =>
+  callApi({
+    uriEndPoint: allApi.changePassword.v1,
+    body,
+  });

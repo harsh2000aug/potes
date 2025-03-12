@@ -19,74 +19,80 @@ const AllNotes = () => {
   
   
   useEffect(() => {
-    if (
-      !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
-    ) {
+    if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
       alert("Your browser does not support Speech Recognition.");
       return;
     }
-
+  
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
     recognitionRef.current = new SpeechRecognition();
     recognitionRef.current.continuous = false;
     recognitionRef.current.interimResults = true;
     recognitionRef.current.lang = "en-US";
-
+  
     recognitionRef.current.onstart = () => {
       setIsListening(true);
     };
-
+  
     recognitionRef.current.onend = () => {
       setIsListening(false);
     };
-
+  
     recognitionRef.current.onresult = (event) => {
       let interimTranscript = "";
+      let finalText = "";
+  
       for (let i = event.resultIndex; i < event.results.length; i++) {
         let result = event.results[i];
-        interimTranscript += result[0].transcript;
-
         if (result.isFinal) {
-          setFinalTranscript(
-            (prevFinalTranscript) =>
-              prevFinalTranscript + result[0].transcript + " "
-          ); //append final result with a space.
+          finalText += result[0].transcript + " ";
+        } else {
+          interimTranscript += result[0].transcript;
         }
       }
-      setText(finalTranscript + interimTranscript);
+  
+      // ✅ Only update `editText` when final result is available
+      if (finalText) {
+        setEditText((prevText) => prevText + finalText);
+        setFinalTranscript(""); // ✅ Clear to avoid re-adding
+      }
+  
+      // ✅ Update interim transcript in real-time without saving it
+      if (interimTranscript) {
+        setText(finalText + interimTranscript);
+      }
     };
-
+  
     recognitionRef.current.onerror = (event) => {
       console.error("Speech Recognition Error:", event.error);
     };
-
+  
     return () => {
       if (recognitionRef.current) {
         recognitionRef.current.stop();
       }
     };
-  }, [finalTranscript]);
-
+  }, []); 
+  
   const startListening = () => {
     if (recognitionRef.current && !isListening) {
       recognitionRef.current.start();
     }
   };
-
+  
   const stopListening = () => {
     if (recognitionRef.current && isListening) {
       recognitionRef.current.stop();
     }
   };
-
   const fetchNotes = () => {
     getNotesApi({
       query: {
         id: profileIdApi,
       },
     }).then((res) => {
-      console.log("allNotes", res);
+     
       setAllNotes(res);
     });
   };
