@@ -93,3 +93,8 @@ export const mainSearchApi = ({ query }: any) =>
     uriEndPoint: allApi.mainSearch.v1,
     query,
   });
+export const contactUsApi = ({ body }: any) =>
+  callApi({
+    uriEndPoint: allApi.contactUsApi.v1,
+    body,
+  });

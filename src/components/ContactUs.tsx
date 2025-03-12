@@ -1,43 +1,99 @@
-import React from 'react'
-import Sidebar from '../reusable/Sidebar'
-import TopArea from '../reusable/TopArea'
+import React, { useState } from "react";
+import Sidebar from "../reusable/Sidebar";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { contactUsApi } from "../store/Services/AllApi";
 
 const ContactUs = () => {
+  const [contactUs, setContactUs]: any = useState();
+  const initialValues = {
+    fullName: "",
+    email: "",
+    message: "",
+  };
+
+  const validationSchema = Yup.object({
+    fullName: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Full Name is required"),
+    email: Yup.string()
+      .email("Invalid email format")
+      .required("Email is required"),
+    message: Yup.string()
+      .min(10, "Message should be at least 10 characters")
+      .required("Message is required"),
+  });
+
+  const handleSubmit = (values: any, { resetForm }: any) => {
+    contactUsApi({
+      body: {
+        full_name: values.fullName,
+        email: values.email,
+        message: values.message,
+      },
+    });
+  };
   return (
     <div className="contactUs">
-        <div className="flex h-100">
-            <Sidebar current={"Contact Us"} />
-            <div className="main-area">
-                <TopArea />
-                <div className="body-area">
-                    <div className="common-back">
-                        <h3>Contact Us</h3>
-                        <div className="form-group flex space-bw">
-                            <div className="col-50">
-                                <label htmlFor="">Full Name</label>
-                                <input type="text" />
-                            </div>
-                            <div className="col-50">
-                                <label htmlFor="">Email</label>
-                                <input type="text" />
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="">Message</label>
-                            <textarea name="" id=""></textarea>
-                        </div>
-                        <div className='form-group'>
-                            <div className="col-33">
-                                <input type="submit" />
-                            </div>
-                        </div>
+      <div className="flex h-100">
+        <Sidebar current={"Contact Us"} />
+        <div className="main-area">
+          <div className="body-area">
+            <div className="common-back">
+              <h3>Contact Us</h3>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+              >
+                {({ isSubmitting }) => (
+                  <Form>
+                    <div className="form-group flex space-bw">
+                      <div className="col-50">
+                        <label htmlFor="fullName">Full Name</label>
+                        <Field type="text" name="fullName" />
+                        <ErrorMessage
+                          name="fullName"
+                          component="div"
+                          className="error"
+                        />
+                      </div>
+                      <div className="col-50">
+                        <label htmlFor="email">Email</label>
+                        <Field type="text" name="email" />
+                        <ErrorMessage
+                          name="email"
+                          component="div"
+                          className="error"
+                        />
+                      </div>
                     </div>
-                </div>
+                    <div className="form-group">
+                      <label htmlFor="message">Message</label>
+                      <Field as="textarea" name="message" />
+                      <ErrorMessage
+                        name="message"
+                        component="div"
+                        className="error"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <div className="col-33 btn">
+                        <button type="submit" disabled={isSubmitting}>
+                          {isSubmitting ? "Submitting..." : "Submit"}
+                        </button>
+                      </div>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
             </div>
+          </div>
         </div>
-
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default ContactUs
+export default ContactUs;

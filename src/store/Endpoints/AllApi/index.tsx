@@ -127,4 +127,11 @@ export const allApi = {
       uri: "/search/",
     },
   },
+  contactUsApi: {
+    v1: {
+      ...defaults.methods.POST,
+      ...defaults.versions.v1,
+      uri: "/contact-us/",
+    },
+  },
 };
