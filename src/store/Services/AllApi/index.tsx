@@ -6,9 +6,10 @@ export const createContactApi = ({ body }: any) =>
     uriEndPoint: allApi.createContact.v1,
     body,
   });
-export const allContactApi = () =>
+export const allContactApi = ({ query }: any) =>
   callApi({
     uriEndPoint: allApi.allContact.v1,
+    query,
   });
 export const profileContactApi = ({ query }: any) =>
   callApi({
@@ -77,4 +78,10 @@ export const changePassword = ({ body }: any) =>
   callApi({
     uriEndPoint: allApi.changePassword.v1,
     body,
+  });
+
+export const mainSearchApi = ({ query }: any) =>
+  callApi({
+    uriEndPoint: allApi.mainSearch.v1,
+    query,
   });

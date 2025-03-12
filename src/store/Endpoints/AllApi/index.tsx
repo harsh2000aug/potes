@@ -114,4 +114,11 @@ export const allApi = {
       uri: "/change-password/",
     },
   },
+  mainSearch: {
+    v1: {
+      ...defaults.methods.GET,
+      ...defaults.versions.v1,
+      uri: "/search/",
+    },
+  },
 };
