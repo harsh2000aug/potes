@@ -134,4 +134,11 @@ export const allApi = {
       uri: "/contact-us/",
     },
   },
+  staticData: {
+    v1: {
+      ...defaults.methods.GET,
+      ...defaults.versions.v1,
+      uri: "/topics/",
+    },
+  },
 };

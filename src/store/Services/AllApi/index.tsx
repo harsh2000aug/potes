@@ -99,3 +99,8 @@ export const contactUsApi = ({ body }: any) =>
     uriEndPoint: allApi.contactUsApi.v1,
     body,
   });
+export const staticDataApi = ({ query }: any) =>
+  callApi({
+    uriEndPoint: allApi.staticData.v1,
+    query,
+  });

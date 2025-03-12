@@ -1,7 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
+import { staticDataApi } from "../store/Services/AllApi";
 
 const AboutUs = () => {
+  const [apiResponse, setApiReponse]: any = useState({});
+  const apiCaller = () => {
+    staticDataApi({
+      query: {
+        topic: "about",
+      },
+    })
+      .then((res: any) => {
+        setApiReponse(res?.data);
+      })
+      .catch((err: any) => console.log("err", err));
+  };
+
+  useEffect(() => {
+    apiCaller();
+  }, []);
   return (
     <div className="aboutUs">
       <div className="flex h-100">
@@ -10,12 +27,7 @@ const AboutUs = () => {
           <div className="body-area">
             <div className="common-back">
               <h3>About Us</h3>
-              <p>
-                Potes is a platform designed to help you organize and manage
-                your personal and professional contacts with ease. From tracking
-                detailed contact information to adding notes and reminders,
-                Potes ensures you stay connected and organized effortlessly.
-              </p>
+              <p>{apiResponse?.content}</p>
             </div>
           </div>
         </div>
