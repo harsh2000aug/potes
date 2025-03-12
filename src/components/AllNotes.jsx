@@ -3,6 +3,7 @@ import Sidebar from "../reusable/Sidebar";
 import { useLocation } from "react-router-dom";
 import { deleteNotes, editNote, getNotesApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
+import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
 
 const AllNotes = () => {
   const location = useLocation();
@@ -14,35 +15,37 @@ const AllNotes = () => {
   const [text, setText] = useState("");
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef(null);
-  const [finalTranscript, setFinalTranscript] = useState(""); 
-  const [editText,setEditText]=useState("")
-  
-  
+  const [finalTranscript, setFinalTranscript] = useState("");
+  const [editText, setEditText] = useState("");
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
+    if (
+      !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
+    ) {
       alert("Your browser does not support Speech Recognition.");
       return;
     }
-  
+
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
     recognitionRef.current = new SpeechRecognition();
     recognitionRef.current.continuous = false;
     recognitionRef.current.interimResults = true;
     recognitionRef.current.lang = "en-US";
-  
+
     recognitionRef.current.onstart = () => {
       setIsListening(true);
     };
-  
+
     recognitionRef.current.onend = () => {
       setIsListening(false);
     };
-  
+
     recognitionRef.current.onresult = (event) => {
       let interimTranscript = "";
       let finalText = "";
-  
+
       for (let i = event.resultIndex; i < event.results.length; i++) {
         let result = event.results[i];
         if (result.isFinal) {
@@ -51,77 +54,102 @@ const AllNotes = () => {
           interimTranscript += result[0].transcript;
         }
       }
-  
+
       // ✅ Only update `editText` when final result is available
       if (finalText) {
         setEditText((prevText) => prevText + finalText);
         setFinalTranscript(""); // ✅ Clear to avoid re-adding
       }
-  
+
       // ✅ Update interim transcript in real-time without saving it
       if (interimTranscript) {
         setText(finalText + interimTranscript);
       }
     };
-  
+
     recognitionRef.current.onerror = (event) => {
       console.error("Speech Recognition Error:", event.error);
     };
-  
+
     return () => {
       if (recognitionRef.current) {
         recognitionRef.current.stop();
       }
     };
-  }, []); 
-  
+  }, []);
+
   const startListening = () => {
     if (recognitionRef.current && !isListening) {
       recognitionRef.current.start();
     }
   };
-  
+
   const stopListening = () => {
     if (recognitionRef.current && isListening) {
       recognitionRef.current.stop();
     }
   };
   const fetchNotes = () => {
+    setLoading(true);
     getNotesApi({
       query: {
         id: profileIdApi,
       },
-    }).then((res) => {
-     
-      setAllNotes(res);
-    });
+    })
+      .then((res) => {
+        setAllNotes(res);
+      })
+      .catch((err) => {
+        toast.error(err.data.error);
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   useEffect(() => {
     fetchNotes();
   }, []);
 
   const handleDelete = (id) => {
+    setLoading(true);
     deleteNotes({
       query: { id },
-    }).then((res) => {
-      console.log(res);
-      setPopupOpen(false);
-      fetchNotes();
-    });
+    })
+      .then((res) => {
+        console.log(res);
+        setPopupOpen(false);
+        fetchNotes();
+      })
+      .catch((err) => {
+        toast.error(err.data.error);
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
-const editNoteApi=()=>{
-  editNote({
-    query:{id:userId},
-    body:{
-      note:editText
-    }
-  }).then((res)=>{
-    toast.success("Noted Edited successfully")
-    setOpenEdit(false)
-    fetchNotes();
-  })
-}
-  
+  const editNoteApi = () => {
+    setLoading(true);
+    editNote({
+      query: { id: userId },
+      body: {
+        note: editText,
+      },
+    })
+      .then((res) => {
+        toast.success("Noted Edited successfully");
+        setOpenEdit(false);
+        fetchNotes();
+      })
+      .catch((err) => {
+        toast.error(err.data.error);
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <>
@@ -157,10 +185,12 @@ const editNoteApi=()=>{
       )}
       {openEdit && (
         <div id="myModal" className="modal">
-          <div className="modal-dialog modal-confirm"
-          style={{
-            background:"none",
-          }}>
+          <div
+            className="modal-dialog modal-confirm"
+            style={{
+              background: "none",
+            }}
+          >
             <div className="common-back">
               <h3>Edit Note</h3>
               <div className="form-group mic-btn">
@@ -181,10 +211,14 @@ const editNoteApi=()=>{
               </div>
               <div className="form-group flex space-bw">
                 <div className="col-50 btn">
-                  <button type="button" onClick={editNoteApi}>Submit</button>
+                  <button type="button" onClick={editNoteApi}>
+                    Submit
+                  </button>
                 </div>
                 <div className="col-50 btn">
-                  <button type="button" onClick={()=>setOpenEdit(false)}>Cancel</button>
+                  <button type="button" onClick={() => setOpenEdit(false)}>
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>
@@ -192,6 +226,7 @@ const editNoteApi=()=>{
         </div>
       )}
       <div className="all-Notes">
+        {loading && <FullScreenLoader />}
         <div className="flex h-100">
           <Sidebar />
           <div className="main-area">
@@ -221,10 +256,14 @@ const editNoteApi=()=>{
                                 setPopupOpen(true);
                               }}
                             ></i>
-                            <i onClick={()=>{setOpenEdit(true)
-                              setEditText(itm.note)
-                              setUserId(itm.id)
-                            }} className="fa-solid fa-pencil"></i>
+                            <i
+                              onClick={() => {
+                                setOpenEdit(true);
+                                setEditText(itm.note);
+                                setUserId(itm.id);
+                              }}
+                              className="fa-solid fa-pencil"
+                            ></i>
                           </div>
                         </div>
                       </div>

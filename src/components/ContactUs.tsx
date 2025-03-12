@@ -4,9 +4,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { contactUsApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
+import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
 
 const ContactUs = () => {
   const [contactUs, setContactUs]: any = useState();
+  const [loading, setLoading]: any = useState(false);
   const initialValues = {
     fullName: "",
     email: "",
@@ -27,6 +29,7 @@ const ContactUs = () => {
   });
 
   const handleSubmit = (values: any, { resetForm }: any) => {
+    setLoading(true);
     contactUsApi({
       body: {
         full_name: values.fullName,
@@ -38,10 +41,14 @@ const ContactUs = () => {
         toast.success(res.msg);
         resetForm();
       })
-      .catch((err: any) => console.log("err", err));
+      .catch((err: any) => console.log("err", err))
+      .finally(() => {
+        setLoading(false);
+      });
   };
   return (
     <div className="contactUs">
+      {loading && <FullScreenLoader />}
       <div className="flex h-100">
         <Sidebar current={"Contact Us"} />
         <div className="main-area">

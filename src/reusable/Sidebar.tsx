@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../images/logo.png";
 import { useNavigate } from "react-router-dom";
 const menuTab: any = [
@@ -34,6 +34,10 @@ const menuTab: any = [
   },
 ];
 const Sidebar = ({ current }: any) => {
+  const [logoutPopup, setLogoutPopup]: any = useState(false);
+  const PopupHandler = () => {
+    setLogoutPopup(!logoutPopup);
+  };
   const logoutBtnHandler = () => {
     localStorage.clear();
     window.location.reload();
@@ -53,57 +57,75 @@ const Sidebar = ({ current }: any) => {
     } else if (val === "Create Note") {
       navigate("/create-a-note");
     } else if (val === "Logout") {
-      logoutBtnHandler();
+      // logoutBtnHandler();
+      setLogoutPopup(true);
     }
   };
   return (
-    <div className="sidebar">
-      <div className="logo">
-        <img src={logo} alt="Logo" />
+    <>
+      <div className="sidebar">
+        <div className="logo">
+          <img src={logo} alt="Logo" />
+        </div>
+        <div className="menu">
+          <ul>
+            {menuTab.slice(0, 4).map((item: any) => (
+              <li
+                key={item.name}
+                className={`${item.isButton ? "btns" : ""} ${
+                  current === item.name ? "active" : ""
+                }`.trim()}
+              >
+                {item.isButton ? (
+                  <button onClick={() => tabChangeHandler(item.name)}>
+                    <i className={item.icon}></i> {item.name}
+                  </button>
+                ) : (
+                  <span onClick={() => tabChangeHandler(item.name)}>
+                    <i className={item.icon}></i> {item.name}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+          <ul className="p-absolute">
+            {menuTab.slice(4).map((item: any) => (
+              <li
+                key={item.name}
+                className={`${item.isButton ? "btns" : ""} ${
+                  current === item.name ? "active" : ""
+                }`.trim()}
+              >
+                {item.isButton ? (
+                  <button onClick={() => tabChangeHandler(item.name)}>
+                    <i className={item.icon}></i> {item.name}
+                  </button>
+                ) : (
+                  <span onClick={() => tabChangeHandler(item.name)}>
+                    <i className={item.icon}></i> {item.name}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-      <div className="menu">
-        <ul>
-          {menuTab.slice(0, 4).map((item: any) => (
-            <li
-              key={item.name}
-              className={`${item.isButton ? "btns" : ""} ${
-                current === item.name ? "active" : ""
-              }`.trim()}
-            >
-              {item.isButton ? (
-                <button onClick={() => tabChangeHandler(item.name)}>
-                  <i className={item.icon}></i> {item.name}
-                </button>
-              ) : (
-                <span onClick={() => tabChangeHandler(item.name)}>
-                  <i className={item.icon}></i> {item.name}
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
-        <ul className="p-absolute">
-          {menuTab.slice(4).map((item: any) => (
-            <li
-              key={item.name}
-              className={`${item.isButton ? "btns" : ""} ${
-                current === item.name ? "active" : ""
-              }`.trim()}
-            >
-              {item.isButton ? (
-                <button onClick={() => tabChangeHandler(item.name)}>
-                  <i className={item.icon}></i> {item.name}
-                </button>
-              ) : (
-                <span onClick={() => tabChangeHandler(item.name)}>
-                  <i className={item.icon}></i> {item.name}
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+      {logoutPopup && (
+        <div id="logoutPopup" className="overlay">
+          <div className="popup">
+            <h2>Are you sure you want to logout?</h2>
+            <div className="btn-group">
+              <button className="cancel-btn" onClick={PopupHandler}>
+                Cancel
+              </button>
+              <button className="logout-btn" onClick={logoutBtnHandler}>
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
 import user from "../images/user.png";
+import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
 
 const EditProfile = () => {
   const [editUserProfile, setEditUserProfile]: any = useState([]);
@@ -22,6 +23,7 @@ const EditProfile = () => {
   const [contactImage, setContactImage] = useState<string>(user);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [loading, setLoading]: any = useState(false);
 
   const handleIconClick = () => {
     if (fileInputRef.current) {
@@ -37,7 +39,6 @@ const EditProfile = () => {
     try {
       await changeProfileName({
         body: formData,
-        multipart: true,
       });
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -60,6 +61,7 @@ const EditProfile = () => {
   }, [imageFile]);
 
   const profileViewHandler = () => {
+    setLoading(true);
     editProfile()
       .then((res: any) => {
         setEditUserProfile(res);
@@ -67,7 +69,10 @@ const EditProfile = () => {
         setChangeLastName(res.last_name);
         setContactImage(res?.profile_pic);
       })
-      .catch((err) => console.log("err", err));
+      .catch((err) => console.log("err", err))
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -75,6 +80,7 @@ const EditProfile = () => {
   }, []);
 
   const handleupdate = () => {
+    setLoading(true);
     changeProfileName({
       body: {
         first_name: changeFirstName,
@@ -88,6 +94,9 @@ const EditProfile = () => {
       })
       .catch((err) => {
         toast.error(err.data.error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -113,24 +122,33 @@ const EditProfile = () => {
     oldPassword: Yup.string().required("Old password is required"),
     newPassword: Yup.string()
       .required("New password is required")
-      .min(6, "Password must be at least 8 characters"),
+      .min(8, "Password must be at least 8 characters"),
     confirmPassword: Yup.string()
       .required("Confirm password is required")
       .oneOf([Yup.ref("newPassword")], "Passwords must match"),
   });
 
   const handleSubmit = (values: any) => {
+    setLoading(true);
     changePass({
       body: {
         curr_password: values.oldPassword,
         new_password1: values.newPassword,
         new_password2: values.confirmPassword,
       },
-    }).then((res: any) => toast.success(res.msg));
+    })
+      .then((res: any) => {
+        toast.success(res.msg);
+        setChangePopup(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
     <div className="editProfile">
+      {loading && <FullScreenLoader />}
       <div className="flex h-100">
         <Sidebar />
         <div className="main-area">

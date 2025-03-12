@@ -82,11 +82,11 @@ export const forgotPasswordChange = ({ body }: any) =>
     uriEndPoint: allApi.forgotPasswordChange.v1,
     body,
   });
-export const changeProfileName = ({ body, multipart = false }: any) =>
+export const changeProfileName = ({ body }: any) =>
   callApi({
     uriEndPoint: allApi.changeProfileName.v1,
     body,
-    multipart,
+    multipart: true,
   });
 
 export const mainSearchApi = ({ query }: any) =>

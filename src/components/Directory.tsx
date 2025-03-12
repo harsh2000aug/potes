@@ -5,23 +5,34 @@ import { allContactApi, profileContactApi } from "../store/Services/AllApi";
 import { useNavigate } from "react-router-dom";
 import { Pagination } from "antd";
 import { table } from "console";
+import toast from "react-hot-toast";
+import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
 
 const Directory = () => {
   const [allContacts, setAllContacts]: any = useState(undefined);
   const [currentPage, setCurrentPage]: any = useState(1);
   const [totalPages, setTotalPages]: any = useState(0);
   const [search, setSearch]: any = useState("");
+  const [loading, setLoading]: any = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     allContactApi({
       query: {
         page: currentPage,
         name: search,
       },
-    }).then((res: any) => {
-      setAllContacts(res?.results);
-      setTotalPages(res?.total_pages || 0);
-    });
+    })
+      .then((res: any) => {
+        setAllContacts(res?.results);
+        setTotalPages(res?.total_pages || 0);
+      })
+      .catch((err: any) => {
+        toast.error(err.data.error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [currentPage, search]);
 
   const onPageChange = (page: any) => {
@@ -41,6 +52,7 @@ const Directory = () => {
 
   return (
     <div className="directory">
+      {loading && <FullScreenLoader />}
       <div className="flex h-100">
         <Sidebar current={"Directory"} />
         <div className="main-area">

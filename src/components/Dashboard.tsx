@@ -18,6 +18,7 @@ const Dashboard = () => {
   const [tommorow, setTommorow]: any = useState(false);
   const [upcoming, setUpcoming]: any = useState(false);
   const [contactAndNotes, setContactAndNotes]: any = useState({});
+  const [loading, setLoading]: any = useState(false);
   const navigate = useNavigate();
   const profileHandler = (userId: any) => {
     profileContactApi({
@@ -30,12 +31,16 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     showBirthdays()
       .then((res: any) => {
         setBirthdays(res.birthdays);
       })
       .catch((err: any) => {
         console.log("err", err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
     showReminders()
       .then((res: any) => {
@@ -45,6 +50,9 @@ const Dashboard = () => {
       })
       .catch((err: any) => {
         console.log("err", err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
 
     yearsAgo()
@@ -239,9 +247,14 @@ const Dashboard = () => {
                             fontWeight: "700",
                           }}
                         >
-                          {itm?.contact_full_name}
+                          {itm?.contact_full_name} :
                         </span>
-                        <p>{itm.note}</p>
+                        <p>
+                          {" "}
+                          {itm.note.length > 60
+                            ? `${itm.note.slice(0, 60)}...`
+                            : itm.note}
+                        </p>
                       </li>
                     ))}
                   </ul>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
 import { allContactOptionApi, createNotesApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
+import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
 
 const CreateNote = () => {
   const [text, setText] = useState("");
@@ -11,8 +12,8 @@ const CreateNote = () => {
   const [storeRes, setStoreRes] = useState([]);
   const [selectedContact, setSelectedContact] = useState("");
   const [reminder, setReminder] = useState("");
-  const [interval,setInterval]=useState("")
-  
+  const [interval, setInterval] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (
@@ -81,31 +82,37 @@ const CreateNote = () => {
       toast.error("Please fill Notes before submitting.");
       return;
     }
+    setLoading(true);
     createNotesApi({
       body: {
         contact: selectedContact,
         note: text,
         reminder: reminder || null,
-        reminder_type:interval
+        reminder_type: interval,
       },
-    }).then((res) => {
-      toast.success(res.msg);
-      setSelectedContact("");
-      setInterval("");
-      setText("");
-      setFinalTranscript("");
-    }).catch((err) => console.log('err', err));
+    })
+      .then((res) => {
+        toast.success(res.msg);
+        setSelectedContact("");
+        setInterval("");
+        setText("");
+        setFinalTranscript("");
+      })
+      .catch((err) => console.log("err", err))
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
-  useEffect(()=>{
-    allContactOptionApi()
-    .then((res) => {
+  useEffect(() => {
+    allContactOptionApi().then((res) => {
       setStoreRes(res?.contacts);
     });
-  },[])
+  }, []);
 
   return (
     <div className="contactUs">
+      {loading && <FullScreenLoader />}
       <div className="flex h-100">
         <Sidebar current="Create Note" />
         <div className="main-area">
@@ -123,7 +130,7 @@ const CreateNote = () => {
                   <option>Select any contact</option>
                   {Array.isArray(storeRes) &&
                     storeRes.map((itm) => (
-                      <option key={itm?.id} value={itm?.id} >
+                      <option key={itm?.id} value={itm?.id}>
                         {itm?.full_name}
                       </option>
                     ))}
@@ -148,23 +155,29 @@ const CreateNote = () => {
               <div className="form-group flex space-bw">
                 <div className="col-50">
                   <label>Intervals</label>
-                  <select name="interval" id="interval" value={interval} onChange={(e)=>setInterval(e.target.value)}>
+                  <select
+                    name="interval"
+                    id="interval"
+                    value={interval}
+                    onChange={(e) => setInterval(e.target.value)}
+                  >
                     <option value="">Select Interval</option>
                     <option value="Monthly">Monthly</option>
-                     <option value="Quarterly">Quarterly</option>
+                    <option value="Quarterly">Quarterly</option>
                     <option value="Yearly">Yearly</option>
                     <option value="Custom">Custom</option>
                   </select>
                 </div>
-                {interval==="Custom" &&  <div className="col-50">
-                  <label>Set a Reminder</label>
-                  <input
-                    type="date"
-                    value={reminder}
-                    onChange={(e) => setReminder(e.target.value)}
-                  />
-                </div>}
-               
+                {interval === "Custom" && (
+                  <div className="col-50">
+                    <label>Set a Reminder</label>
+                    <input
+                      type="date"
+                      value={reminder}
+                      onChange={(e) => setReminder(e.target.value)}
+                    />
+                  </div>
+                )}
               </div>
               <div className="form-group">
                 <div className="col-33 btn">
