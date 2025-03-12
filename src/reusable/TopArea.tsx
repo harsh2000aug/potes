@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { mainSearchApi } from "../store/Services/AllApi";
+import { editProfile, mainSearchApi } from "../store/Services/AllApi";
 
-const TopArea = ({ search, setSearch }: any) => {
+const TopArea = ({ search, setSearch, imageFile }: any) => {
   const navigate = useNavigate();
   const [everySearch, setEverySearch]: any = useState("");
   const [apiResponse, setApiResponse]: any = useState({});
+  const [getImage, setGetImage]: any = useState("");
 
   const searchContentApiHandler = async () => {
     if (everySearch !== "") {
@@ -24,6 +25,14 @@ const TopArea = ({ search, setSearch }: any) => {
   useEffect(() => {
     searchContentApiHandler();
   }, [everySearch]);
+
+  useEffect(() => {
+    editProfile()
+      .then((res: any) => {
+        setGetImage(res?.profile_pic);
+      })
+      .catch((err: any) => console.log("err", err));
+  }, []);
 
   return (
     <div className="top-area">
@@ -63,7 +72,13 @@ const TopArea = ({ search, setSearch }: any) => {
           )}
         </div>
         <div className="user-profile" onClick={() => navigate("/edit-profile")}>
-          <i className="fa-regular fa-circle-user"></i>
+          {imageFile ? (
+            <img src={imageFile} alt="" />
+          ) : getImage ? (
+            <img src={getImage} alt="" />
+          ) : (
+            <i className="fa-regular fa-circle-user"></i>
+          )}
         </div>
       </div>
     </div>

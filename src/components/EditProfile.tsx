@@ -29,6 +29,21 @@ const EditProfile = () => {
     }
   };
 
+  const handleProfileUpdate = async () => {
+    const formData = new FormData();
+    if (imageFile) {
+      formData.append("profile_pic", imageFile, imageFile.name);
+    }
+    try {
+      await changeProfileName({
+        body: formData,
+        multipart: true,
+      });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+
   const changeImageHandler = (event: any) => {
     const file: File | null = event.target.files[0];
     if (file) {
@@ -40,12 +55,17 @@ const EditProfile = () => {
     }
   };
 
+  useEffect(() => {
+    handleProfileUpdate();
+  }, [imageFile]);
+
   const profileViewHandler = () => {
     editProfile()
       .then((res: any) => {
         setEditUserProfile(res);
         setChangeFirstName(res.first_name);
         setChangeLastName(res.last_name);
+        setContactImage(res?.profile_pic);
       })
       .catch((err) => console.log("err", err));
   };
@@ -70,6 +90,7 @@ const EditProfile = () => {
         toast.error(err.data.error);
       });
   };
+
   const [showPassword, setShowPassword] = useState({
     oldPassword: false,
     newPassword: false,
@@ -113,7 +134,7 @@ const EditProfile = () => {
       <div className="flex h-100">
         <Sidebar />
         <div className="main-area">
-          <TopArea />
+          <TopArea imageFile={contactImage} />
           <div className="body-area">
             <div className="common-back">
               <div className="top-text">

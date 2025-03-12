@@ -25,13 +25,19 @@ const Dashboard = () => {
       .catch((err: any) => {
         console.log("err", err);
       });
-  }, []);
-  useEffect(() => {
     showReminders()
       .then((res: any) => {
         setReminders(res.reminders.today);
         setRemindersTomm(res.reminders.tomorrow);
         setRemindersUpcoming(res.reminders.upcoming);
+      })
+      .catch((err: any) => {
+        console.log("err", err);
+      });
+
+    yearsAgo()
+      .then((res: any) => {
+        setContactAndNotes(res);
       })
       .catch((err: any) => {
         console.log("err", err);
@@ -49,16 +55,6 @@ const Dashboard = () => {
   const handleUpcoming = () => {
     setUpcoming(!upcoming);
   };
-
-  useEffect(() => {
-    yearsAgo()
-      .then((res: any) => {
-        setContactAndNotes(res);
-      })
-      .catch((err: any) => {
-        console.log("err", err);
-      });
-  }, []);
 
   return (
     <div className="dashboard">
