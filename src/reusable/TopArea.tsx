@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { editProfile, mainSearchApi } from "../store/Services/AllApi";
+import {
+  editProfile,
+  mainSearchApi,
+  profileContactApi,
+} from "../store/Services/AllApi";
+import $ from "jquery";
 
 const TopArea = ({ search, setSearch, imageFile }: any) => {
   const navigate = useNavigate();
@@ -8,18 +13,31 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
   const [apiResponse, setApiResponse]: any = useState({});
   const [getImage, setGetImage]: any = useState("");
 
+  const profileHandler = (userId: any) => {
+    profileContactApi({
+      query: {
+        id: userId,
+      },
+    }).then((res: any) => {
+      navigate("/profile", { state: { profileData: res } });
+    });
+  };
+
   const searchContentApiHandler = async () => {
     if (everySearch !== "") {
       try {
-        const res: any = mainSearchApi({
+        const res: any = await mainSearchApi({
           query: {
             q: everySearch,
           },
         });
         setApiResponse(res);
+        $(".searchDown").css("display", "block");
       } catch (err) {
         console.log("err", err);
       }
+    } else {
+      $(".searchDown").css("display", "none");
     }
   };
   useEffect(() => {
@@ -33,6 +51,12 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
       })
       .catch((err: any) => console.log("err", err));
   }, []);
+
+  const sendParticularNote = (noteData: any) => {
+    navigate("/notes", {
+      state: { profileId: noteData?.contact?.id, currentNote: noteData },
+    });
+  };
 
   return (
     <div className="top-area">
@@ -65,8 +89,30 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
           {window.location.pathname !== "/directory" && (
             <div className="searchDown">
               <ul>
-                <li>Hi my name is kumar</li>
-                <li>I am a web developer</li>
+                <h3>Contact</h3>
+                {apiResponse?.contacts?.map((itm: any) => {
+                  return (
+                    <li onClick={() => profileHandler(itm.id)}>
+                      {itm.full_name}
+                    </li>
+                  );
+                })}
+                <h3>Notes</h3>
+                {apiResponse?.notes?.map((itm: any) => {
+                  return (
+                    <li
+                      className="flex"
+                      onClick={() => sendParticularNote(itm)}
+                    >
+                      <span>{itm?.contact?.full_name}</span>
+                      <p>
+                        {itm?.note?.length < 30
+                          ? itm?.note
+                          : `${itm?.note?.slice(0, 30)}...`}
+                      </p>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           )}

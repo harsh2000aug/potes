@@ -8,6 +8,7 @@ import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
 const AllNotes = () => {
   const location = useLocation();
   const profileIdApi = location.state?.profileId;
+  const currentNote = location.state?.currentNote;
   const [allNotes, setAllNotes] = useState([]);
   const [popupOpen, setPopupOpen] = useState(false);
   const [userId, setUserId] = useState("");
@@ -18,6 +19,9 @@ const AllNotes = () => {
   const [finalTranscript, setFinalTranscript] = useState("");
   const [editText, setEditText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [interval, setInterval] = useState("");
+  const [reminder, setReminder] = useState("");
+
 
   useEffect(() => {
     if (
@@ -90,22 +94,26 @@ const AllNotes = () => {
     }
   };
   const fetchNotes = () => {
-    setLoading(true);
-    getNotesApi({
-      query: {
-        id: profileIdApi,
-      },
-    })
-      .then((res) => {
-        setAllNotes(res);
+      setLoading(true);
+      getNotesApi({
+        query: {
+          id: profileIdApi,
+        },
       })
-      .catch((err) => {
-        toast.error(err.data.error);
-        console.log(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+        .then((res) => {
+          if (currentNote) {
+            setAllNotes(res?.filter((item) => item?.id === currentNote?.id));
+          }else {
+            setAllNotes(res);
+          }
+        })
+        .catch((err) => {
+          toast.error(err.data.error);
+          console.log(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
   };
   useEffect(() => {
     fetchNotes();
@@ -134,7 +142,9 @@ const AllNotes = () => {
     editNote({
       query: { id: userId },
       body: {
-        note: editText,
+        note: editText,        
+        reminder_type: interval || null,
+        reminder: reminder || null,
       },
     })
       .then((res) => {
@@ -209,15 +219,43 @@ const AllNotes = () => {
                   <i className="fa-solid fa-microphone"></i>
                 </button>
               </div>
-              <div className="form-group flex space-bw">
-                <div className="col-50 btn">
-                  <button type="button" onClick={editNoteApi}>
-                    Submit
-                  </button>
+              <div className="form-group">
+                <div className="mb-15">
+                <label>Intervals</label>
+                <select
+                  name="interval"
+                  id="interval"
+                  value={interval}
+                  onChange={(e) => setInterval(e.target.value)}
+                >
+                  <option value="">Select Interval</option>
+                  <option value="Monthly">Monthly</option>
+                  <option value="Quarterly">Quarterly</option>
+                  <option value="Yearly">Yearly</option>
+                  <option value="Custom">Custom</option>
+                </select>
                 </div>
+                {interval === "Custom" && (
+                  <div>
+                    <label>Set a Reminder</label>
+                    <input
+                      type="date"
+                      value={reminder}
+                      onChange={(e) => setReminder(e.target.value)}
+                    />
+                  </div>
+                )}
+              </div>
+              
+              <div className="form-group flex space-bw">
                 <div className="col-50 btn">
                   <button type="button" onClick={() => setOpenEdit(false)}>
                     Cancel
+                  </button>
+                </div>
+                <div className="col-50 btn">
+                  <button type="button" onClick={editNoteApi}>
+                    Submit
                   </button>
                 </div>
               </div>
@@ -241,8 +279,8 @@ const AllNotes = () => {
                     Notes
                   </h4>
                   <div>
-                    {allNotes.map((itm) => (
-                      <div className="mb-15 p-relate border">
+                    {allNotes.map((itm, index) => (
+                      <div className="mb-15 p-relate border" key={index}>
                         <div className="date">
                           <p>{itm.reminder}</p>
                         </div>
@@ -259,6 +297,8 @@ const AllNotes = () => {
                             <i
                               onClick={() => {
                                 setOpenEdit(true);
+                                setInterval(itm?.reminder_type);
+                                setReminder(itm?.reminder);
                                 setEditText(itm.note);
                                 setUserId(itm.id);
                               }}

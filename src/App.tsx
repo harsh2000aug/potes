@@ -51,7 +51,7 @@ function App() {
           <Route path="/create-note" element={<CreateNote />} />
           <Route path="/search-result" element={<SearchResult />} />
           <Route path="/profile" element={<OpenProfile />} />
-          <Route path="/all-notes" element={<AllNotes />} />
+          <Route path="/notes" element={<AllNotes />} />
           <Route path="/edit-note" element={<EditNote />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/user-profile" element={<UserProfile />} />

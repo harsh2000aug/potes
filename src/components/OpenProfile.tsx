@@ -155,7 +155,7 @@ const OpenProfile = () => {
                   <div className="circle">
                     <img
                       className="profile-pic"
-                      src={profileData.photo}
+                      src={profileData?.photo ? profileData?.photo : user}
                       alt="Profile"
                     />
                   </div>
@@ -174,21 +174,38 @@ const OpenProfile = () => {
                 <div>
                   <div className="flex space-bw note-head">
                     <h4>Notes</h4>
-                    <i
-                      className="fa-solid fa-keyboard"
+                    <div
+                      className="flex al-center"
                       onClick={() =>
-                        navigate("/all-notes", {
+                        navigate("/notes", {
                           state: { profileId: profileData.id },
                         })
                       }
-                      style={{
-                        display:
-                          profileData?.contact_notes.length > 0
-                            ? "block"
-                            : "none",
-                        cursor: "pointer",
-                      }}
-                    ></i>
+                    >
+                      <p
+                        style={{
+                          fontSize: "14px",
+                          marginRight: "5px",
+                          cursor: "pointer",
+                          display:
+                            profileData?.contact_notes.length > 0
+                              ? "block"
+                              : "none",
+                        }}
+                      >
+                        All notes
+                      </p>
+                      <i
+                        className="fa-solid fa-keyboard"
+                        style={{
+                          display:
+                            profileData?.contact_notes.length > 0
+                              ? "block"
+                              : "none",
+                          cursor: "pointer",
+                        }}
+                      ></i>
+                    </div>
                   </div>
                 </div>
                 <div>

@@ -164,6 +164,7 @@ const CreateNote = () => {
                     />
                   </div>
                 )}
+                
               </div>
               <div className="form-group">
                 <div class="col-33 btn">
