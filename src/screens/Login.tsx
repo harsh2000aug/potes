@@ -45,7 +45,7 @@ const Login = () => {
   const validationSchema = Yup.object({
     username: Yup.string().required("Username is required"),
     password: Yup.string()
-      .min(8, "Password must be at least 6 characters")
+      .min(8, "Password must be at least 8 characters")
       .required("Password is required"),
   });
   const validationSchema1 = Yup.object().shape({
@@ -92,7 +92,7 @@ const Login = () => {
     })
       .then((res: any) => {
         toast.success(res.msg);
-        navigate("/forgot");
+        navigate("/forgot", { state: { email: userEmail, otp: otpCode } });
       })
       .catch((err: any) => toast.error(err.data.error));
   };

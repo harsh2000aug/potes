@@ -107,11 +107,11 @@ export const allApi = {
       uri: "/reset-password/",
     },
   },
-  changePassword: {
+  changeProfileName: {
     v1: {
-      ...defaults.methods.POST,
+      ...defaults.methods.PUT,
       ...defaults.versions.v1,
-      uri: "/change-password/",
+      uri: "/profile/",
     },
   },
 };

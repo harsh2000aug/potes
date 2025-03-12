@@ -8,7 +8,7 @@ const Directory = () => {
   const [allContacts, setAllContacts]: any = useState([]);
   useEffect(() => {
     allContactApi().then((res: any) => {
-      setAllContacts(res);
+      setAllContacts(res.results);
     });
   }, []);
 

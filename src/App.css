@@ -314,9 +314,9 @@ li {
 }
 .btn-icon-content {
   width: 52px;
-  height: 35px;
-  top: 1px;
-  right: 4px;
+  height: 37px;
+  top: 0px;
+  right: 0px;
   background: #fff;
   border: none;
   cursor: pointer;
