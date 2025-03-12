@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
 import TopArea from "../reusable/TopArea";
 import {
+  profileContactApi,
   showBirthdays,
   showReminders,
   yearsAgo,
 } from "../store/Services/AllApi";
+import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
   const [birthdays, setBirthdays]: any = useState([]);
   const [reminders, setReminders]: any = useState([]);
@@ -16,6 +18,16 @@ const Dashboard = () => {
   const [tommorow, setTommorow]: any = useState(false);
   const [upcoming, setUpcoming]: any = useState(false);
   const [contactAndNotes, setContactAndNotes]: any = useState({});
+  const navigate = useNavigate();
+  const profileHandler = (userId: any) => {
+    profileContactApi({
+      query: {
+        id: userId,
+      },
+    }).then((res: any) => {
+      navigate("/profile", { state: { profileData: res } });
+    });
+  };
 
   useEffect(() => {
     showBirthdays()
@@ -215,7 +227,11 @@ const Dashboard = () => {
                   <h3>This Happened an year ago</h3>
                   <ul>
                     {contactAndNotes.notes?.map((itm: any) => (
-                      <li key={itm} className="flex">
+                      <li
+                        key={itm}
+                        className="flex"
+                        onClick={() => profileHandler(itm?.contact)}
+                      >
                         <span
                           style={{
                             color: "#fff",

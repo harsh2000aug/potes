@@ -28,6 +28,7 @@ const Directory = () => {
     setCurrentPage(page);
   };
 
+  const navigate = useNavigate();
   const profileHandler = (userId: any) => {
     profileContactApi({
       query: {
@@ -37,7 +38,6 @@ const Directory = () => {
       navigate("/profile", { state: { profileData: res } });
     });
   };
-  const navigate = useNavigate();
 
   return (
     <div className="directory">
