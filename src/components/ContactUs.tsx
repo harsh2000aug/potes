@@ -3,6 +3,7 @@ import Sidebar from "../reusable/Sidebar";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { contactUsApi } from "../store/Services/AllApi";
+import toast from "react-hot-toast";
 
 const ContactUs = () => {
   const [contactUs, setContactUs]: any = useState();
@@ -32,7 +33,12 @@ const ContactUs = () => {
         email: values.email,
         message: values.message,
       },
-    });
+    })
+      .then((res: any) => {
+        toast.success(res.msg);
+        resetForm();
+      })
+      .catch((err: any) => console.log("err", err));
   };
   return (
     <div className="contactUs">
