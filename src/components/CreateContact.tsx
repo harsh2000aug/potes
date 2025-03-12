@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
 import { createContactApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
@@ -16,7 +16,20 @@ const CreateContact = () => {
   const [openExp, setOpenExp]: any = useState(true);
   const [openEdu, setOpenEdu]: any = useState(true);
   const [openInterest, setOpenInterest]: any = useState(true);
-  const [contactImage, setContactImage]: any = useState("");
+
+  const [contactImage, setContactImage] = useState<string>(user);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleIconClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  useEffect(() => {
+    console.log("contactImage", contactImage);
+  }, [contactImage]);
 
   const [personalDetail, setPersonalDetail]: any = useState({
     full_name: "",
@@ -64,29 +77,45 @@ const CreateContact = () => {
     setInterests(updatedInterests);
   };
 
-  const createContactApiHandler = () => {
-    createContactApi({
-      body: {
-        full_name: personalDetail.full_name,
-        phone: personalDetail.phone_no,
-        birthday: personalDetail.birthday || null,
-        email: personalDetail.email,
-        spouse_name: personalDetail.spouse_name,
-        spouse_birthday: personalDetail.spouse_bdy || null,
-        spouse_details: personalDetail.spouse_details,
-        children: children,
-        previous_employers: experiences,
-        universities: educationList,
-      },
-    })
-      ?.then((res: any) => {
-        console.log("res", res);
-        toast.success(res.msg);
-        navigate("/directory");
-      })
-      ?.catch((err: any) => {
-        console.log("err", err);
+  const changeImageHandler = (event: any) => {
+    const file: File | null = event.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setContactImage(URL.createObjectURL(file));
+    } else {
+      setContactImage("/path/to/default/user/image.png");
+      setImageFile(null);
+    }
+  };
+
+  const createContactApiHandler = async () => {
+    const formData = new FormData();
+    formData.append("full_name", personalDetail.full_name);
+    formData.append("phone", personalDetail.phone_no);
+    if (personalDetail.birthday)
+      formData.append("birthday", personalDetail.birthday);
+    formData.append("email", personalDetail.email);
+    formData.append("spouse_name", personalDetail.spouse_name);
+    if (personalDetail.spouse_bdy)
+      formData.append("spouse_birthday", personalDetail.spouse_bdy);
+    formData.append("spouse_details", personalDetail.spouse_details);
+    formData.append("children", JSON.stringify(children));
+    formData.append("previous_employers", JSON.stringify(experiences));
+    formData.append("universities", JSON.stringify(educationList));
+
+    if (imageFile) {
+      formData.append("photo", imageFile, imageFile.name);
+    }
+
+    try {
+      const response: any = await createContactApi({
+        body: formData,
       });
+      toast.success(response.msg);
+      navigate("/directory");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   const removeChild = (index: number) => {
@@ -147,10 +176,6 @@ const CreateContact = () => {
     }
   };
 
-  const changeImageHandler = () => {
-    console.log("first");
-  };
-
   return (
     <div className="directory">
       <div className="flex h-100">
@@ -169,14 +194,21 @@ const CreateContact = () => {
                 <div id="personal">
                   <div className="profile-pic-upload">
                     <div className="circle">
-                      <img className="profile-pic" src={user} alt="" />
+                      <img
+                        className="profile-pic"
+                        src={contactImage}
+                        alt="Profile"
+                      />
                     </div>
-                    <div className="p-image" onClick={changeImageHandler}>
+                    <div className="p-image" onClick={handleIconClick}>
                       <i className="fa fa-camera upload-button"></i>
                       <input
                         className="file-upload"
                         type="file"
                         accept="image/*"
+                        onChange={changeImageHandler}
+                        ref={fileInputRef}
+                        style={{ display: "none" }}
                       />
                     </div>
                   </div>

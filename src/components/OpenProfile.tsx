@@ -84,7 +84,10 @@ const OpenProfile = () => {
                       : "-"}
                   </li>
                 </ul>
-                <img src={user} alt="" />
+                <img
+                  src={profileData?.photo ? profileData?.photo : user}
+                  alt=""
+                />
               </div>
               <div className="allNotes">
                 <div>

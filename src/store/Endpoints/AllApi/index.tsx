@@ -8,7 +8,13 @@ export const allApi = {
       uri: "/contact/",
     },
   },
-
+  allContactOption: {
+    v1: {
+      ...defaults.methods.GET,
+      ...defaults.versions.v1,
+      uri: "/all-contacts-name/",
+    },
+  },
   allContact: {
     v1: {
       ...defaults.methods.GET,

@@ -72,7 +72,11 @@ const Directory = () => {
                         >
                           <td>
                             <div className="flex al-center">
-                              <i className="fa-regular fa-circle-user"></i>
+                              {itm?.photo ? (
+                                <img src={itm?.photo} alt="" />
+                              ) : (
+                                <i className="fa-regular fa-circle-user"></i>
+                              )}
                               <p>{itm.full_name || "-"}</p>
                             </div>
                           </td>

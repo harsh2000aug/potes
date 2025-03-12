@@ -5,12 +5,20 @@ export const createContactApi = ({ body }: any) =>
   callApi({
     uriEndPoint: allApi.createContact.v1,
     body,
+    multipart: true,
   });
+
 export const allContactApi = ({ query }: any) =>
   callApi({
     uriEndPoint: allApi.allContact.v1,
     query,
   });
+
+export const allContactOptionApi = () =>
+  callApi({
+    uriEndPoint: allApi.allContactOption.v1,
+  });
+
 export const profileContactApi = ({ query }: any) =>
   callApi({
     uriEndPoint: allApi.profileContact.v1,
