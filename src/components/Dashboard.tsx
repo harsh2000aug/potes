@@ -219,8 +219,16 @@ const Dashboard = () => {
                   <h3>This Happened an year ago</h3>
                   <ul>
                     {contactAndNotes.notes?.map((itm: any) => (
-                      <li key={itm}>
-                        <span>{itm?.contact_full_name}</span>
+                      <li key={itm} className="flex">
+                        <span
+                          style={{
+                            color: "#fff",
+                            marginRight: "10px",
+                            fontWeight: "700",
+                          }}
+                        >
+                          {itm?.contact_full_name}
+                        </span>
                         <p>{itm.note}</p>
                       </li>
                     ))}

@@ -4,6 +4,7 @@ import TopArea from "../reusable/TopArea";
 import { allContactApi, profileContactApi } from "../store/Services/AllApi";
 import { useNavigate } from "react-router-dom";
 import { Pagination } from "antd";
+import { table } from "console";
 
 const Directory = () => {
   const [allContacts, setAllContacts]: any = useState(undefined);
@@ -87,20 +88,39 @@ const Directory = () => {
                       ))}
                     </tbody>
                   </table>
+                  {totalPages > 1 && (
+                    <Pagination
+                      current={currentPage}
+                      total={totalPages * 10}
+                      onChange={onPageChange}
+                      showSizeChanger={false}
+                      align="center"
+                    />
+                  )}
                 </div>
               ) : (
-                <div>
-                  <p>No contact found!</p>
+                <div className="common-back">
+                  <table
+                    style={{
+                      width: "100%",
+                      color: "#fff",
+                      textAlign: "left",
+                    }}
+                  >
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone No.</th>
+                      <th>Birthday</th>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td>No contact found!</td>
+                      <td></td>
+                    </tr>
+                  </table>
                 </div>
-              )}
-              {totalPages > 1 && (
-                <Pagination
-                  current={currentPage}
-                  total={totalPages * 10}
-                  onChange={onPageChange}
-                  showSizeChanger={false}
-                  align="center"
-                />
               )}
             </div>
           )}

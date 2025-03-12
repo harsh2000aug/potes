@@ -4,7 +4,14 @@ import loginImg from "../images/loginmob.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import * as Yup from "yup";
+import { forgotPasswordChange } from "../store/Services/AllApi";
+import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 const Forgot = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const userDetailsEmail = location.state?.email;
+  const userDetailsOtp = location.state?.otp;
   const [showPassword, setShowPassword]: any = useState(false);
   const [showConfirmPassword, setShowConfirmPassword]: any = useState(false);
   const formik: any = useFormik({
@@ -20,7 +27,23 @@ const Forgot = () => {
         .oneOf([Yup.ref("password")], "Passwords must match")
         .required("Confirm password is required"),
     }),
-    onSubmit: (values: any) => {},
+    onSubmit: (values: any) => {
+      forgotPasswordChange({
+        body: {
+          email: userDetailsEmail,
+          otp: userDetailsOtp,
+          new_password: values.password,
+          confirm_password: values.confirmPassword,
+        },
+      })
+        .then((res: any) => {
+          toast.success(res.msg);
+          navigate("/login");
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    },
   });
   return (
     <div>

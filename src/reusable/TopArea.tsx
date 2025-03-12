@@ -53,6 +53,14 @@ const TopArea = ({ search, setSearch }: any) => {
               </div>
             </div>
           </div>
+          {window.location.pathname !== "/directory" && (
+            <div className="searchDown">
+              <ul>
+                <li>Hi my name is kumar</li>
+                <li>I am a web developer</li>
+              </ul>
+            </div>
+          )}
         </div>
         <div className="user-profile" onClick={() => navigate("/edit-profile")}>
           <i className="fa-regular fa-circle-user"></i>
