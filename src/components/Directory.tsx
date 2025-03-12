@@ -77,26 +77,38 @@ const Directory = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {allContacts.map((itm: any) => (
-                        <tr
-                          style={{ cursor: "pointer" }}
-                          key={itm.id}
-                          onClick={() => profileHandler(itm.id)}
-                        >
-                          <td>
-                            <div className="flex al-center">
-                              {itm?.photo ? (
-                                <img src={itm?.photo} alt="" />
-                              ) : (
-                                <i className="fa-regular fa-circle-user"></i>
-                              )}
-                              <p>{itm.full_name || "-"}</p>
-                            </div>
-                          </td>
-                          <td>{itm.email || "-"}</td>
-                          <td>{itm.phone || "-"}</td>
-                          <td>{itm.birthday || "-"}</td>
-                        </tr>
+                      {allContacts.map((itm: any, index: any) => (
+                        <>
+                          {itm?.full_name?.[0]?.toUpperCase() !==
+                            allContacts[
+                              index - 1
+                            ]?.full_name?.[0]?.toUpperCase() && (
+                            <p>
+                              {/[^A-Z]/.test(itm?.full_name?.[0]?.toUpperCase())
+                                ? "#"
+                                : itm?.full_name?.[0]?.toUpperCase()}
+                            </p>
+                          )}
+                          <tr
+                            style={{ cursor: "pointer" }}
+                            key={itm.id}
+                            onClick={() => profileHandler(itm.id)}
+                          >
+                            <td>
+                              <div className="flex al-center">
+                                {itm?.photo ? (
+                                  <img src={itm?.photo} alt="" />
+                                ) : (
+                                  <i className="fa-regular fa-circle-user"></i>
+                                )}
+                                <p>{itm.full_name || "-"}</p>
+                              </div>
+                            </td>
+                            <td>{itm.email || "-"}</td>
+                            <td>{itm.phone || "-"}</td>
+                            <td>{itm.birthday || "-"}</td>
+                          </tr>
+                        </>
                       ))}
                     </tbody>
                   </table>
