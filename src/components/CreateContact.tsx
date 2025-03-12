@@ -47,10 +47,10 @@ const CreateContact = () => {
     setChildren([...children, { name: "", birthday: "", details: "" }]);
   };
   const addExperience = () => {
-    setExperiences([...experiences, { employer: "", details: "" }]);
+    setExperiences([...experiences, { name: "", details: "" }]);
   };
   const addEducation = () => {
-    setEducationList([...educationList, { university: "", details: "" }]);
+    setEducationList([...educationList, { name: "", details: "" }]);
   };
   const addInterest = () => {
     setInterests([...interests, ""]);
@@ -102,7 +102,10 @@ const CreateContact = () => {
     formData.append("children", JSON.stringify(children));
     formData.append("previous_employers", JSON.stringify(experiences));
     formData.append("universities", JSON.stringify(educationList));
-
+    formData.append(
+      "interests",
+      JSON.stringify(interests.map((interest: any) => ({ name: interest })))
+    );
     if (imageFile) {
       formData.append("photo", imageFile, imageFile.name);
     }
@@ -374,11 +377,11 @@ const CreateContact = () => {
                         <label>Employer Name</label>
                         <input
                           type="text"
-                          value={exp.employer}
+                          value={exp.name}
                           onChange={(e) =>
                             handleExperienceChange(
                               index,
-                              "employer",
+                              "name",
                               e.target.value
                             )
                           }
@@ -421,13 +424,9 @@ const CreateContact = () => {
                         <label>University Name</label>
                         <input
                           type="text"
-                          value={edu.university}
+                          value={edu.name}
                           onChange={(e) =>
-                            handleEducationChange(
-                              index,
-                              "university",
-                              e.target.value
-                            )
+                            handleEducationChange(index, "name", e.target.value)
                           }
                         />
                       </div>
