@@ -150,6 +150,28 @@ const OpenProfile = () => {
                       </div>
                     )}
                   </div>
+                  {/* University Details Accordion */}
+                  <div className="accordion">
+                    <div
+                      className="accordion-header"
+                      onClick={() => toggleSection("interests")}
+                    >
+                      <h3>Interests +</h3>
+                    </div>
+                    {openSection === "interests" && (
+                      <div className="accordion-content">
+                        {profileData.interests.length > 0 ? (
+                          profileData.interests.map((itm: any) => (
+                            <ul className="employee-list">
+                              <li key={itm.id}>{itm.name}</li>
+                            </ul>
+                          ))
+                        ) : (
+                          <p>-</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="profile-pic-upload">
                   <div className="circle">
