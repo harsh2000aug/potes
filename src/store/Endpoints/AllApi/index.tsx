@@ -114,4 +114,11 @@ export const allApi = {
       uri: "/profile/",
     },
   },
+  mainSearch: {
+    v1: {
+      ...defaults.methods.GET,
+      ...defaults.versions.v1,
+      uri: "/search/",
+    },
+  },
 };
