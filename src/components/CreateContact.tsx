@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
-import TopArea from "../reusable/TopArea";
 import { createContactApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
+import user from "../images/user.png";
 
 const CreateContact = () => {
   const [children, setChildren]: any = useState([]);
@@ -16,6 +16,8 @@ const CreateContact = () => {
   const [openExp, setOpenExp]: any = useState(true);
   const [openEdu, setOpenEdu]: any = useState(true);
   const [openInterest, setOpenInterest]: any = useState(true);
+  const [contactImage, setContactImage]: any = useState("");
+
   const [personalDetail, setPersonalDetail]: any = useState({
     full_name: "",
     birthday: "",
@@ -145,6 +147,10 @@ const CreateContact = () => {
     }
   };
 
+  const changeImageHandler = () => {
+    console.log("first");
+  };
+
   return (
     <div className="directory">
       <div className="flex h-100">
@@ -155,20 +161,25 @@ const CreateContact = () => {
               <div className="top-text">
                 <h3>Create a Contact</h3>
               </div>
-              {/* <div className="profile-pic-upload">
-                <div className="circle">
-                  <img className="profile-pic" src={user} alt="" />
-                </div>
-                <div className="p-image">
-                  <i className="fa fa-camera upload-button"></i>
-                  <input className="file-upload" type="file" accept="image/*" />
-                </div>
-              </div> */}
+
               <div className="personalInfo mb-15">
                 <h4 onClick={managePersonalDetail}>
                   Personal Information <i className="fa-solid fa-plus"></i>
                 </h4>
                 <div id="personal">
+                  <div className="profile-pic-upload">
+                    <div className="circle">
+                      <img className="profile-pic" src={user} alt="" />
+                    </div>
+                    <div className="p-image" onClick={changeImageHandler}>
+                      <i className="fa fa-camera upload-button"></i>
+                      <input
+                        className="file-upload"
+                        type="file"
+                        accept="image/*"
+                      />
+                    </div>
+                  </div>
                   <div className="form-group flex space-bw">
                     <div className="col-50">
                       <label htmlFor="">Full Name</label>
