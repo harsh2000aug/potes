@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
 import TopArea from "../reusable/TopArea";
 import { changePass, editProfile } from "../store/Services/AllApi";
@@ -7,10 +7,31 @@ import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
+import user from "../images/user.png";
 
 const EditProfile = () => {
   const [editUserProfile, setEditUserProfile]: any = useState([]);
   const [changePopup, setChangePopup]: any = useState(false);
+  const [contactImage, setContactImage] = useState<string>(user);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleIconClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const changeImageHandler = (event: any) => {
+    const file: File | null = event.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setContactImage(URL.createObjectURL(file));
+    } else {
+      setContactImage("/path/to/default/user/image.png");
+      setImageFile(null);
+    }
+  };
   useEffect(() => {
     editProfile()
       .then((res: any) => setEditUserProfile(res))
@@ -64,15 +85,26 @@ const EditProfile = () => {
               <div className="top-text">
                 <h3>User Profile</h3>
               </div>
-              {/* <div className="profile-pic-upload">
-                            <div className="circle">
-                            <img className="profile-pic" src={user} />
-                            </div>
-                            <div className="p-image">
-                            <i className="fa fa-camera upload-button"></i>
-                            <input className="file-upload" type="file" accept="image/*" />
-                            </div>
-                        </div> */}
+              <div className="profile-pic-upload">
+                <div className="circle">
+                  <img
+                    className="profile-pic"
+                    src={contactImage}
+                    alt="Profile"
+                  />
+                </div>
+                <div className="p-image" onClick={handleIconClick}>
+                  <i className="fa fa-camera upload-button"></i>
+                  <input
+                    className="file-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={changeImageHandler}
+                    ref={fileInputRef}
+                    style={{ display: "none" }}
+                  />
+                </div>
+              </div>
               <div className="form-group flex space-bw">
                 <div className="col-50">
                   <label htmlFor="">First Name</label>
