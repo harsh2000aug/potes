@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
-import TopArea from "../reusable/TopArea";
-import { allContactApi, createNotesApi } from "../store/Services/AllApi";
+import { allContactOptionApi, createNotesApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
-import { useLocation } from "react-router-dom";
 
 const CreateNote = () => {
   const [text, setText] = useState("");
@@ -12,10 +10,7 @@ const CreateNote = () => {
   const [finalTranscript, setFinalTranscript] = useState("");
   const [storeRes, setStoreRes] = useState([]);
   const [selectedContact, setSelectedContact] = useState("");
-  
   const [reminder, setReminder] = useState("");
-  const location = useLocation();
-  const profileData = location.state?.profileName;
   const [interval,setInterval]=useState("")
   
 
@@ -103,9 +98,9 @@ const CreateNote = () => {
   };
 
   useEffect(()=>{
-    allContactApi()
+    allContactOptionApi()
     .then((res) => {
-      setStoreRes(res);
+      setStoreRes(res?.contacts);
     });
   },[])
 
