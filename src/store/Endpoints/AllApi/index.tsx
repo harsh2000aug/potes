@@ -148,4 +148,11 @@ export const allApi = {
       uri: "/contact/",
     },
   },
+  deleteContactApi: {
+    v1: {
+      ...defaults.methods.DELETE,
+      ...defaults.versions.v1,
+      uri: "/contact/",
+    },
+  },
 };

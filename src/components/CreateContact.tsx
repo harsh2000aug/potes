@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
 import user from "../images/user.png";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const CreateContact = () => {
   const [children, setChildren]: any = useState([]);
@@ -18,7 +20,7 @@ const CreateContact = () => {
   const [openExp, setOpenExp]: any = useState(true);
   const [openEdu, setOpenEdu]: any = useState(true);
   const [openInterest, setOpenInterest]: any = useState(true);
-
+  const [customFields, setCustomFields]: any = useState([{ value: "" }]);
   const [contactImage, setContactImage] = useState<string>(user);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -36,6 +38,7 @@ const CreateContact = () => {
   const [personalDetail, setPersonalDetail]: any = useState({
     full_name: "",
     birthday: "",
+    anniversary: "",
     email: "",
     phone_no: "",
     spouse_name: "",
@@ -81,10 +84,10 @@ const CreateContact = () => {
     updatedInterests[index] = value;
     setInterests(updatedInterests);
   };
-  const handleCustomField = (index: any, field: any, value: any) => {
-    const updatedCustomField = [...customField];
-    updatedCustomField[index][field] = value;
-    setCustomField(updatedCustomField);
+  const handleCustomField = (index: any, key: any, value: any) => {
+    const updatedFields = [...customFields];
+    updatedFields[index][key] = value;
+    setCustomFields(updatedFields);
   };
 
   const changeImageHandler = (event: any) => {
@@ -108,6 +111,7 @@ const CreateContact = () => {
     formData.append("spouse_name", personalDetail.spouse_name);
     if (personalDetail.spouse_bdy)
       formData.append("spouse_birthday", personalDetail.spouse_bdy);
+    formData.append("anniversary", personalDetail.spouse_ani);
     formData.append("spouse_details", personalDetail.spouse_details);
     formData.append("children", JSON.stringify(children));
     formData.append("previous_employers", JSON.stringify(experiences));
@@ -190,6 +194,16 @@ const CreateContact = () => {
     }
   };
 
+  const duplicateField = (index: any) => {
+    const newField = { ...customFields[index] };
+    setCustomFields([...customFields, newField]);
+  };
+
+  const removeField = (index: any) => {
+    const updatedFields = customFields.filter((_: any, i: any) => i !== index);
+    setCustomFields(updatedFields);
+  };
+
   return (
     <div className="directory">
       <div className="flex h-100">
@@ -240,7 +254,7 @@ const CreateContact = () => {
                       />
                     </div>
                     <div className="col-50">
-                      <label htmlFor="">Birthday</label>
+                      <label htmlFor="">D.O.B</label>
                       <input
                         type="date"
                         value={personalDetail.birthday}
@@ -250,6 +264,23 @@ const CreateContact = () => {
                           })
                         }
                       />
+                      {/* <DatePicker
+                        selected={
+                          personalDetail.birthday
+                            ? new Date(personalDetail.birthday)
+                            : null
+                        }
+                        onChange={(date: Date | null) =>
+                          setPersonalDetail((oldVal: any) => ({
+                            ...oldVal,
+                            birthday: date
+                              ? date.toISOString().split("T")[0]
+                              : "",
+                          }))
+                        }
+                        dateFormat="yyyy-MM-dd"
+                        className="form-control"
+                      /> */}
                     </div>
                   </div>
                   <div className="form-group flex space-bw">
@@ -270,11 +301,16 @@ const CreateContact = () => {
                       <input
                         type="text"
                         value={personalDetail.phone_no}
-                        onChange={(e: any) =>
-                          setPersonalDetail((oldVal: any) => {
-                            return { ...oldVal, phone_no: e.target.value };
-                          })
-                        }
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          let inputValue = e.target.value;
+
+                          if (/^\+?\d{0,15}$/.test(inputValue)) {
+                            setPersonalDetail((oldVal: any) => ({
+                              ...oldVal,
+                              phone_no: inputValue,
+                            }));
+                          }
+                        }}
                       />
                     </div>
                   </div>
@@ -298,17 +334,31 @@ const CreateContact = () => {
                         }
                       />
                     </div>
-                    <div className="col-50">
-                      <label>Birthday</label>
-                      <input
-                        type="date"
-                        value={personalDetail.spouse_bdy}
-                        onChange={(e: any) =>
-                          setPersonalDetail((oldVal: any) => {
-                            return { ...oldVal, spouse_bdy: e.target.value };
-                          })
-                        }
-                      />
+                    <div className="col-50 flex space-bw">
+                      <div className="col-50">
+                        <label>D.O.B</label>
+                        <input
+                          type="date"
+                          value={personalDetail.spouse_bdy}
+                          onChange={(e: any) =>
+                            setPersonalDetail((oldVal: any) => {
+                              return { ...oldVal, spouse_bdy: e.target.value };
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="col-50">
+                        <label>Anniversary</label>
+                        <input
+                          type="date"
+                          value={personalDetail.spouse_ani}
+                          onChange={(e: any) =>
+                            setPersonalDetail((oldVal: any) => {
+                              return { ...oldVal, spouse_ani: e.target.value };
+                            })
+                          }
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="form-group">
@@ -341,7 +391,7 @@ const CreateContact = () => {
                           />
                         </div>
                         <div className="col-50">
-                          <label>Birthday</label>
+                          <label>D.O.B</label>
                           <input
                             type="date"
                             value={child.birthday}
@@ -375,7 +425,7 @@ const CreateContact = () => {
               </div>
               <div className="experience">
                 <h4 onClick={manageExpDetail}>
-                  Professional Experience <i className="fa-solid fa-plus"></i>
+                  Employment <i className="fa-solid fa-plus"></i>
                 </h4>
                 {experiences.map((exp: any, index: any) => (
                   <div key={index} className="p-relate delete-class">
@@ -503,7 +553,7 @@ const CreateContact = () => {
               {showCustomField && (
                 <div className="custom-field">
                   {customField?.map((custom: any, index: any) => (
-                    <div key={index}>
+                    <div key={index} className="mb-15">
                       <div className="form-group flex space-bw">
                         <div className="col-50">
                           <label>Custom field title</label>
@@ -516,14 +566,34 @@ const CreateContact = () => {
                           />
                         </div>
                       </div>
-                      <div className="form-group">
-                        <label>Custom field value</label>
-                        <textarea
-                          value={custom.value}
-                          onChange={(e) =>
-                            handleCustomField(index, "value", e.target.value)
-                          }
-                        ></textarea>
+                      <div className="flex form-group">
+                        {customFields.map((custom: any, index: any) => (
+                          <div
+                            key={index}
+                            className="p-relate delete-class col-33"
+                          >
+                            <i
+                              className="fa-solid fa-trash"
+                              onClick={() => removeField(index)}
+                            ></i>
+                            <i
+                              className="fa-solid fa-plus"
+                              onClick={() => duplicateField(index)}
+                            ></i>
+                            <label>Custom field value</label>
+                            <input
+                              type="text"
+                              value={custom.value}
+                              onChange={(e) =>
+                                handleCustomField(
+                                  index,
+                                  "value",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                        ))}
                       </div>
                     </div>
                   ))}

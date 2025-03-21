@@ -275,7 +275,7 @@ const EditContact = () => {
                       />
                     </div>
                     <div className="col-50">
-                      <label htmlFor="">Birthday</label>
+                      <label htmlFor="">D.O.B</label>
                       <input
                         type="date"
                         value={personalDetail.birthday}
@@ -298,12 +298,26 @@ const EditContact = () => {
                     </div>
                     <div className="col-50">
                       <label htmlFor="">Phone No.</label>
-                      <input
+                      {/* <input
                         type="text"
                         value={personalDetail.phone_no}
                         onChange={(e) =>
                           handleInputChange("phone", e.target.value)
                         }
+                      /> */}
+                      <input
+                        type="text"
+                        value={personalDetail.phone_no}
+                        onChange={(e: any) => {
+                          handleInputChange("phone", e.target.value);
+                          let inputValue = e.target.value;
+                          if (/^\+?\d{0,15}$/.test(inputValue)) {
+                            setPersonalDetail((oldVal: any) => ({
+                              ...oldVal,
+                              phone_no: inputValue,
+                            }));
+                          }
+                        }}
                       />
                     </div>
                   </div>
@@ -326,7 +340,7 @@ const EditContact = () => {
                       />
                     </div>
                     <div className="col-50">
-                      <label>Birthday</label>
+                      <label>D.O.B</label>
                       <input
                         type="date"
                         value={personalDetail.spouse_bdy}
@@ -365,7 +379,7 @@ const EditContact = () => {
                           />
                         </div>
                         <div className="col-50">
-                          <label>Birthday</label>
+                          <label>D.O.B</label>
                           <input
                             type="date"
                             value={child.birthday}
@@ -399,7 +413,7 @@ const EditContact = () => {
               </div>
               <div className="experience">
                 <h4 onClick={manageExpDetail}>
-                  Professional Experience <i className="fa-solid fa-plus"></i>
+                  Employment <i className="fa-solid fa-plus"></i>
                 </h4>
                 {experiences.map((exp: any, index: number) => (
                   <div key={index} className="p-relate delete-class">

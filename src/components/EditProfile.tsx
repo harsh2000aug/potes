@@ -217,7 +217,7 @@ const EditProfile = () => {
               <div className="form-group flex">
                 <div className="col-33 btn">
                   <button type="button" onClick={handlChangeName}>
-                    Change Name
+                    Update Name
                   </button>
                 </div>
                 <div className="col-33 btn">

@@ -73,7 +73,7 @@ const Directory = () => {
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone No.</th>
-                        <th>Birthday</th>
+                        <th>D.O.B</th>
                       </tr>
                     </thead>
                     <tbody>

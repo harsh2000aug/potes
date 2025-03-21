@@ -22,7 +22,6 @@ const AllNotes = () => {
   const [interval, setInterval] = useState("");
   const [reminder, setReminder] = useState("");
 
-
   useEffect(() => {
     if (
       !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
@@ -94,26 +93,26 @@ const AllNotes = () => {
     }
   };
   const fetchNotes = () => {
-      setLoading(true);
-      getNotesApi({
-        query: {
-          id: profileIdApi,
-        },
+    setLoading(true);
+    getNotesApi({
+      query: {
+        id: profileIdApi,
+      },
+    })
+      .then((res) => {
+        if (currentNote) {
+          setAllNotes(res?.filter((item) => item?.id === currentNote?.id));
+        } else {
+          setAllNotes(res);
+        }
       })
-        .then((res) => {
-          if (currentNote) {
-            setAllNotes(res?.filter((item) => item?.id === currentNote?.id));
-          }else {
-            setAllNotes(res);
-          }
-        })
-        .catch((err) => {
-          toast.error(err.data.error);
-          console.log(err);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      .catch((err) => {
+        toast.error(err.data.error);
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   useEffect(() => {
     fetchNotes();
@@ -142,7 +141,7 @@ const AllNotes = () => {
     editNote({
       query: { id: userId },
       body: {
-        note: editText,        
+        note: editText,
         reminder_type: interval || null,
         reminder: reminder || null,
       },
@@ -221,19 +220,19 @@ const AllNotes = () => {
               </div>
               <div className="form-group">
                 <div className="mb-15">
-                <label>Intervals</label>
-                <select
-                  name="interval"
-                  id="interval"
-                  value={interval}
-                  onChange={(e) => setInterval(e.target.value)}
-                >
-                  <option value="">Select Interval</option>
-                  <option value="Monthly">Monthly</option>
-                  <option value="Quarterly">Quarterly</option>
-                  <option value="Yearly">Yearly</option>
-                  <option value="Custom">Custom</option>
-                </select>
+                  <label>Contact Reminder</label>
+                  <select
+                    name="interval"
+                    id="interval"
+                    value={interval}
+                    onChange={(e) => setInterval(e.target.value)}
+                  >
+                    <option value="">Select Interval</option>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Quarterly">Quarterly</option>
+                    <option value="Yearly">Yearly</option>
+                    <option value="Custom">Custom</option>
+                  </select>
                 </div>
                 {interval === "Custom" && (
                   <div>
@@ -246,7 +245,7 @@ const AllNotes = () => {
                   </div>
                 )}
               </div>
-              
+
               <div className="form-group flex space-bw">
                 <div className="col-50 btn">
                   <button type="button" onClick={() => setOpenEdit(false)}>

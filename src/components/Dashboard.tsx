@@ -11,6 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
   const [birthdays, setBirthdays]: any = useState([]);
+  const [anniversary, setAnniversary]: any = useState([]);
   const [reminders, setReminders]: any = useState([]);
   const [remindersTomm, setRemindersTomm]: any = useState([]);
   const [remindersUpcoming, setRemindersUpcoming]: any = useState([]);
@@ -35,6 +36,7 @@ const Dashboard = () => {
     showBirthdays()
       .then((res: any) => {
         setBirthdays(res.birthdays);
+        setAnniversary(res.anniversary);
       })
       .catch((err: any) => {
         console.log("err", err);
@@ -85,7 +87,7 @@ const Dashboard = () => {
           <div className="body-area">
             <div className="flex space-bw">
               <div className="col-50 common-back">
-                <h3>Reminders</h3>
+                <h3>Reminders(This week)</h3>
                 {/* today */}
                 <div className="today mb-15">
                   <div
@@ -260,19 +262,68 @@ const Dashboard = () => {
                   </ul>
                 </div>
                 <div className="common-back">
-                  <h3>Birthdays</h3>
-                  <ul>
-                    {birthdays?.map((itm: any) => (
-                      <li key={itm.id}>
-                        <div className="flex space-bw al-center">
-                          <div className="flex al-center">
-                            <i className="fa-regular fa-circle-user"></i>
-                            <p>{itm.full_name}</p>
+                  <h3>Events</h3>
+                  <h5
+                    style={{
+                      color: "#fff",
+                      fontSize: "18px",
+                      marginBottom: "10px",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Birthdays
+                  </h5>
+                  <ul style={{ marginBottom: "20px" }}>
+                    {birthdays && birthdays.length > 0 ? (
+                      birthdays.map((itm: any) => (
+                        <li key={itm.id}>
+                          <div className="flex space-bw al-center">
+                            <div className="flex al-center">
+                              {itm?.photo ? (
+                                <img src={itm?.photo} alt="" />
+                              ) : (
+                                <i className="fa-regular fa-circle-user"></i>
+                              )}
+                              <p>{itm.full_name}</p>
+                            </div>
+                            <p>{itm.birthday}</p>
                           </div>
-                          <p>{itm.birthday}</p>
-                        </div>
-                      </li>
-                    ))}
+                        </li>
+                      ))
+                    ) : (
+                      <p>No birthdays found</p>
+                    )}
+                  </ul>
+                  <h5
+                    style={{
+                      color: "#fff",
+                      fontSize: "18px",
+                      marginBottom: "10px",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Anniversary
+                  </h5>
+                  <ul>
+                    {anniversary && anniversary.length > 0 ? (
+                      anniversary.map((itm: any) => (
+                        <li key={itm.id}>
+                          <div className="flex space-bw al-center">
+                            <div className="flex al-center">
+                              {itm?.photo ? (
+                                <img src={itm?.photo} alt="" />
+                              ) : (
+                                <i className="fa-regular fa-circle-user"></i>
+                              )}
+                              <p>{itm.full_name}</p>
+                            </div>
+                            <p>{itm.birthday}</p>
+                          </div>
+                        </li>
+                      ))
+                    ) : (
+                      <p>No anniversaries found</p>
+                    )}
                   </ul>
                 </div>
               </div>

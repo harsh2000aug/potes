@@ -8,12 +8,16 @@ import { registerApi } from "../store/Services/Auth";
 import toast from "react-hot-toast";
 import FullScreenLoader from "../components/FullScreenLoader/FullScreenLoader";
 import OtpScreen from "../reusable/otp-screen/OtpScreen";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Register = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [sendOtp, setSendOTP] = useState(false);
   const [formData, setFormData]: any = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const apiCallHandler = (values: any) => {
     setLoading(true);
@@ -56,7 +60,7 @@ const Register = () => {
       lastName: Yup.string()
         .min(2, "Too short!")
         .max(50, "Too long!")
-        .required("Last name is required"),
+        .nullable(), // Makes it optional
       username: Yup.string()
         .min(4, "Username must be at least 4 characters")
         .max(20, "Username too long")
@@ -164,33 +168,57 @@ const Register = () => {
                   )}
                 </div>
               </div>
-              <div className="form-control">
+              <div className="form-control p-relate">
                 <div className="coolinput">
                   <label className="text">Password:</label>
-                  <input
-                    type="password"
-                    name="password"
-                    className="input"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.password}
-                  />
+                  <div className="password-wrapper-register">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      className="input"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.password}
+                    />
+                    <button
+                      type="button"
+                      className="toggle-password"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      <FontAwesomeIcon
+                        icon={showPassword ? faEyeSlash : faEye}
+                      />
+                    </button>
+                  </div>
                   {formik.touched.password && formik.errors.password && (
                     <p className="error">{formik.errors.password}</p>
                   )}
                 </div>
               </div>
-              <div className="form-control">
+              <div className="form-control p-relate">
                 <div className="coolinput">
                   <label className="text">Confirm Password:</label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    className="input"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.confirmPassword}
-                  />
+                  <div className="password-wrapper-register">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      className="input"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.confirmPassword}
+                    />
+                    <button
+                      type="button"
+                      className="toggle-password"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                    >
+                      <FontAwesomeIcon
+                        icon={showConfirmPassword ? faEyeSlash : faEye}
+                      />
+                    </button>
+                  </div>
                   {formik.touched.confirmPassword &&
                     formik.errors.confirmPassword && (
                       <p className="error">{formik.errors.confirmPassword}</p>

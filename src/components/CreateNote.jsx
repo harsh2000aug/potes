@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
 import { allContactApi, createNotesApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
 
 const CreateNote = () => {
@@ -18,6 +18,7 @@ const CreateNote = () => {
   const [loading, setLoading] = useState(false);
   const profileData = location.state?.profileName;
   const profileIdUser = location.state?.profileId;
+  const navigate = useNavigate();
   useEffect(() => {
     if (
       !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
@@ -99,6 +100,7 @@ const CreateNote = () => {
         setText("");
         setFinalTranscript("");
         setInterval("");
+        navigate("/");
       })
       .catch((err) => {
         toast.error(err.data.error);
@@ -140,7 +142,7 @@ const CreateNote = () => {
               </div>
               <div className="form-group flex space-bw">
                 <div className="col-50">
-                  <label>Intervals</label>
+                  <label>Contact Reminder</label>
                   <select
                     name="interval"
                     id="interval"
@@ -154,7 +156,7 @@ const CreateNote = () => {
                     <option value="Custom">Custom</option>
                   </select>
                 </div>
-                {interval === "custom" && (
+                {interval === "Custom" && (
                   <div className="col-50">
                     <label>Set a Reminder</label>
                     <input
@@ -164,7 +166,6 @@ const CreateNote = () => {
                     />
                   </div>
                 )}
-                
               </div>
               <div className="form-group">
                 <div class="col-33 btn">

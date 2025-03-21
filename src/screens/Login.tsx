@@ -8,6 +8,8 @@ import loginImg from "../images/loginmob.png";
 import { loginApiCall } from "../store/Services/Auth";
 import toast from "react-hot-toast";
 import FullScreenLoader from "../components/FullScreenLoader/FullScreenLoader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import {
   forgotPasswordEmail,
   forgotPasswordOtpEmail,
@@ -19,6 +21,7 @@ const Login = () => {
   const [forgotPass, setForgotPass]: any = useState(false);
   const [otpPopup, setOtpPopup]: any = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleforgot = () => {
     setForgotPass(!forgotPass);
@@ -148,14 +151,21 @@ const Login = () => {
             <div className="form-control">
               <div className="coolinput">
                 <label className="text">Password:</label>
-                <input
-                  type="password"
-                  name="password"
-                  className="input"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
+                <div className="password-wrapper">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    className="input"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  <FontAwesomeIcon
+                    icon={showPassword ? faEyeSlash : faEye}
+                    className="eye-icon"
+                    onClick={() => setShowPassword(!showPassword)}
+                  />
+                </div>
                 {formik.touched.password && formik.errors.password ? (
                   <div className="error">{formik.errors.password}</div>
                 ) : null}
@@ -278,7 +288,7 @@ const Login = () => {
 
               <div className="resend-text">
                 Didn't receive the code?
-                <span className="resend-link"> Resend Code</span>
+                <span className="resend-link">Resend Code</span>
               </div>
             </div>
           </div>

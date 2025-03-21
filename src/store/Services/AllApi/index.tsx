@@ -111,3 +111,8 @@ export const editContactApi = ({ query, body }: any) =>
     body,
     multipart: true,
   });
+export const deleteContactApi = ({ query }: any) =>
+  callApi({
+    uriEndPoint: allApi.deleteContactApi.v1,
+    query,
+  });

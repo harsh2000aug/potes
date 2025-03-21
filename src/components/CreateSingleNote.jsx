@@ -3,6 +3,7 @@ import Sidebar from "../reusable/Sidebar";
 import { allContactOptionApi, createNotesApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
+import { useNavigate } from "react-router-dom";
 
 const CreateNote = () => {
   const [text, setText] = useState("");
@@ -14,6 +15,7 @@ const CreateNote = () => {
   const [reminder, setReminder] = useState("");
   const [interval, setInterval] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (
@@ -97,6 +99,7 @@ const CreateNote = () => {
         setInterval("");
         setText("");
         setFinalTranscript("");
+        navigate("/");
       })
       .catch((err) => console.log("err", err))
       .finally(() => {
@@ -154,7 +157,7 @@ const CreateNote = () => {
               </div>
               <div className="form-group flex space-bw">
                 <div className="col-50">
-                  <label>Intervals</label>
+                  <label>Contact Reminder</label>
                   <select
                     name="interval"
                     id="interval"

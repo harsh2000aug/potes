@@ -5,10 +5,12 @@ import * as Yup from "yup";
 import { contactUsApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
+import { useNavigate } from "react-router-dom";
 
 const ContactUs = () => {
   const [contactUs, setContactUs]: any = useState();
   const [loading, setLoading]: any = useState(false);
+  const navigate = useNavigate();
   const initialValues = {
     fullName: "",
     email: "",
@@ -40,6 +42,7 @@ const ContactUs = () => {
       .then((res: any) => {
         toast.success(res.msg);
         resetForm();
+        navigate("/");
       })
       .catch((err: any) => console.log("err", err))
       .finally(() => {
