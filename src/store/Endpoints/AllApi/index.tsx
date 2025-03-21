@@ -141,4 +141,11 @@ export const allApi = {
       uri: "/topics/",
     },
   },
+  editContactApi: {
+    v1: {
+      ...defaults.methods.PUT,
+      ...defaults.versions.v1,
+      uri: "/contact/",
+    },
+  },
 };

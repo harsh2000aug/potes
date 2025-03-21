@@ -887,3 +887,13 @@ li {
 .employee-list li {
   list-style: square;
 }
+.btn-common {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.btn-common i {
+  font-size: 14px;
+}

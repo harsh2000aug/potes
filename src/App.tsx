@@ -21,6 +21,7 @@ import EditProfile from "./components/EditProfile";
 import UserProfile from "./components/UserProfile";
 import CreateSingleNote from "./components/CreateSingleNote";
 import Forgot from "./screens/Forgot";
+import EditContact from "./components/EditContact";
 
 function App() {
   const isLoggedIn = !!localStorage.getItem("accessToken");
@@ -56,6 +57,7 @@ function App() {
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/user-profile" element={<UserProfile />} />
           <Route path="/create-a-note" element={<CreateSingleNote />} />
+          <Route path="/edit-contact" element={<EditContact />} />
         </Route>
 
         <Route element={<AuthLayout />}>

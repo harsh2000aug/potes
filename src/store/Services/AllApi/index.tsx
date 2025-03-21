@@ -104,3 +104,10 @@ export const staticDataApi = ({ query }: any) =>
     uriEndPoint: allApi.staticData.v1,
     query,
   });
+export const editContactApi = ({ query, body }: any) =>
+  callApi({
+    uriEndPoint: allApi.editContactApi.v1,
+    query,
+    body,
+    multipart: true,
+  });

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Sidebar from "../reusable/Sidebar";
-import TopArea from "../reusable/TopArea";
 import user from "../images/user.png";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -33,7 +32,17 @@ const OpenProfile = () => {
               <div className="name flex space-bw al-center">
                 <h4>{profileData.full_name}</h4>
                 <div className="btn">
-                  <button type="button" className="mr">
+                  <button
+                    type="button"
+                    className="mr"
+                    onClick={() =>
+                      navigate("/edit-contact", {
+                        state: {
+                          editUser: profileData,
+                        },
+                      })
+                    }
+                  >
                     Edit Contact
                   </button>
                   <button
@@ -150,7 +159,8 @@ const OpenProfile = () => {
                       </div>
                     )}
                   </div>
-                  {/* University Details Accordion */}
+
+                  {/* Interests Details Accordion */}
                   <div className="accordion">
                     <div
                       className="accordion-header"
@@ -179,15 +189,6 @@ const OpenProfile = () => {
                       className="profile-pic"
                       src={profileData?.photo ? profileData?.photo : user}
                       alt="Profile"
-                    />
-                  </div>
-                  <div className="p-image">
-                    <i className="fa fa-camera upload-button"></i>
-                    <input
-                      className="file-upload"
-                      type="file"
-                      accept="image/*"
-                      style={{ display: "none" }}
                     />
                   </div>
                 </div>

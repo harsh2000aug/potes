@@ -1,23 +1,29 @@
 import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
-import { createContactApi } from "../store/Services/AllApi";
+import {
+  createContactApi,
+  editContactApi,
+  profileContactApi,
+} from "../store/Services/AllApi";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import $ from "jquery";
 import user from "../images/user.png";
 
-const CreateContact = () => {
+const EditContact = () => {
+  const location = useLocation();
+
   const [children, setChildren]: any = useState([]);
   const [experiences, setExperiences]: any = useState([]);
   const [educationList, setEducationList]: any = useState([]);
   const [interests, setInterests]: any = useState([]);
-  const [customField, setCustomField]: any = useState([]);
-  const [showCustomField, setShowCustomField]: any = useState(false);
   const [openDetails, setOpenDetails]: any = useState(true);
   const [openFamily, setOpenFamily]: any = useState(true);
   const [openExp, setOpenExp]: any = useState(true);
   const [openEdu, setOpenEdu]: any = useState(true);
   const [openInterest, setOpenInterest]: any = useState(true);
+  const [customField, setCustomField]: any = useState([]);
+  const [showCustomField, setShowCustomField]: any = useState(false);
 
   const [contactImage, setContactImage] = useState<string>(user);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -28,10 +34,6 @@ const CreateContact = () => {
       fileInputRef.current.click();
     }
   };
-
-  useEffect(() => {
-    console.log("contactImage", contactImage);
-  }, [contactImage]);
 
   const [personalDetail, setPersonalDetail]: any = useState({
     full_name: "",
@@ -86,7 +88,6 @@ const CreateContact = () => {
     updatedCustomField[index][field] = value;
     setCustomField(updatedCustomField);
   };
-
   const changeImageHandler = (event: any) => {
     const file: File | null = event.target.files[0];
     if (file) {
@@ -98,7 +99,17 @@ const CreateContact = () => {
     }
   };
 
-  const createContactApiHandler = async () => {
+  const profileHandler = (userId: any) => {
+    profileContactApi({
+      query: {
+        id: userId,
+      },
+    }).then((res: any) => {
+      navigate("/profile", { state: { profileData: res } });
+    });
+  };
+
+  const editContactApiHandler = async () => {
     const formData = new FormData();
     formData.append("full_name", personalDetail.full_name);
     formData.append("phone", personalDetail.phone_no);
@@ -122,16 +133,21 @@ const CreateContact = () => {
     }
 
     try {
-      const response: any = await createContactApi({
+      const response: any = await editContactApi({
         body: formData,
+        query: {
+          id: location.state.editUser?.id,
+        },
       });
       toast.success(response.msg);
-      navigate("/directory");
+      profileHandler(location.state.editUser?.id);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
-
+  const handleInputChange = (field: string, value: string) => {
+    setPersonalDetail((prev: any) => ({ ...prev, [field]: value }));
+  };
   const removeChild = (index: number) => {
     setChildren(children.filter((_: any, i: any) => i !== index));
   };
@@ -190,6 +206,27 @@ const CreateContact = () => {
     }
   };
 
+  const editUserFinal = location.state.editUser;
+  useEffect(() => {
+    if (editUserFinal) {
+      setPersonalDetail({
+        full_name: editUserFinal?.full_name || "",
+        birthday: editUserFinal?.birthday || "",
+        email: editUserFinal?.email || "",
+        phone_no: editUserFinal?.phone || "",
+        spouse_name: editUserFinal?.spouse_name || "",
+        spouse_bdy: editUserFinal?.spouse_bdy || "",
+        spouse_details: editUserFinal?.spouse_details || "",
+      });
+      setChildren(editUserFinal?.children || []);
+      setExperiences(editUserFinal?.previous_employers || []);
+      setEducationList(editUserFinal?.universities || []);
+      setInterests(editUserFinal?.interests?.map((int: any) => int.name) || []);
+      setContactImage(editUserFinal?.photo || user);
+      setCustomField(editUserFinal?.custom_fields || []);
+    }
+  }, [editUserFinal]);
+
   return (
     <div className="directory">
       <div className="flex h-100">
@@ -198,7 +235,7 @@ const CreateContact = () => {
           <div className="body-area">
             <div className="common-back createContact">
               <div className="top-text">
-                <h3>Create a Contact</h3>
+                <h3>Edit Contact</h3>
               </div>
 
               <div className="personalInfo mb-15">
@@ -232,10 +269,8 @@ const CreateContact = () => {
                       <input
                         type="text"
                         value={personalDetail.full_name}
-                        onChange={(e: any) =>
-                          setPersonalDetail((oldVal: any) => {
-                            return { ...oldVal, full_name: e.target.value };
-                          })
+                        onChange={(e) =>
+                          handleInputChange("full_name", e.target.value)
                         }
                       />
                     </div>
@@ -244,10 +279,8 @@ const CreateContact = () => {
                       <input
                         type="date"
                         value={personalDetail.birthday}
-                        onChange={(e: any) =>
-                          setPersonalDetail((oldVal: any) => {
-                            return { ...oldVal, birthday: e.target.value };
-                          })
+                        onChange={(e) =>
+                          handleInputChange("birthday", e.target.value)
                         }
                       />
                     </div>
@@ -258,10 +291,8 @@ const CreateContact = () => {
                       <input
                         type="text"
                         value={personalDetail.email}
-                        onChange={(e: any) =>
-                          setPersonalDetail((oldVal: any) => {
-                            return { ...oldVal, email: e.target.value };
-                          })
+                        onChange={(e) =>
+                          handleInputChange("email", e.target.value)
                         }
                       />
                     </div>
@@ -270,10 +301,8 @@ const CreateContact = () => {
                       <input
                         type="text"
                         value={personalDetail.phone_no}
-                        onChange={(e: any) =>
-                          setPersonalDetail((oldVal: any) => {
-                            return { ...oldVal, phone_no: e.target.value };
-                          })
+                        onChange={(e) =>
+                          handleInputChange("phone", e.target.value)
                         }
                       />
                     </div>
@@ -291,10 +320,8 @@ const CreateContact = () => {
                       <input
                         type="text"
                         value={personalDetail.spouse_name}
-                        onChange={(e: any) =>
-                          setPersonalDetail((oldVal: any) => {
-                            return { ...oldVal, spouse_name: e.target.value };
-                          })
+                        onChange={(e) =>
+                          handleInputChange("spouse_name", e.target.value)
                         }
                       />
                     </div>
@@ -303,10 +330,8 @@ const CreateContact = () => {
                       <input
                         type="date"
                         value={personalDetail.spouse_bdy}
-                        onChange={(e: any) =>
-                          setPersonalDetail((oldVal: any) => {
-                            return { ...oldVal, spouse_bdy: e.target.value };
-                          })
+                        onChange={(e) =>
+                          handleInputChange("spouse_bdy", e.target.value)
                         }
                       />
                     </div>
@@ -315,13 +340,12 @@ const CreateContact = () => {
                     <label>Spouse Details</label>
                     <textarea
                       value={personalDetail.spouse_details}
-                      onChange={(e: any) =>
-                        setPersonalDetail((oldVal: any) => {
-                          return { ...oldVal, spouse_details: e.target.value };
-                        })
+                      onChange={(e) =>
+                        handleInputChange("spouse_details", e.target.value)
                       }
                     />
                   </div>
+
                   {/* Children Section */}
                   {children.map((child: any, index: any) => (
                     <div key={index} className="p-relate delete-class">
@@ -377,7 +401,7 @@ const CreateContact = () => {
                 <h4 onClick={manageExpDetail}>
                   Professional Experience <i className="fa-solid fa-plus"></i>
                 </h4>
-                {experiences.map((exp: any, index: any) => (
+                {experiences.map((exp: any, index: number) => (
                   <div key={index} className="p-relate delete-class">
                     <i
                       className="fa-solid fa-trash"
@@ -414,17 +438,15 @@ const CreateContact = () => {
                     </div>
                   </div>
                 ))}
-                <div className="profile-p" id="exp">
-                  <p onClick={addExperience} style={{ cursor: "pointer" }}>
-                    Employment <i className="fa-solid fa-plus"></i>
-                  </p>
-                </div>
+                <button onClick={addExperience} className="btn-common" id="exp">
+                  Add Experience <i className="fa-solid fa-plus"></i>
+                </button>
               </div>
               <div className="education">
                 <h4 onClick={manageEduDetail}>
                   Education <i className="fa-solid fa-plus"></i>
                 </h4>
-                {educationList.map((edu: any, index: any) => (
+                {educationList.map((edu: any, index: number) => (
                   <div key={index} className="p-relate delete-class">
                     <i
                       className="fa-solid fa-trash"
@@ -458,18 +480,16 @@ const CreateContact = () => {
                   </div>
                 ))}
 
-                <div className="profile-p" id="edu">
-                  <p onClick={addEducation} style={{ cursor: "pointer" }}>
-                    Education <i className="fa-solid fa-plus"></i>
-                  </p>
-                </div>
+                <button onClick={addEducation} className="btn-common" id="edu">
+                  Add University <i className="fa-solid fa-plus"></i>
+                </button>
               </div>
               <div className="interest">
                 <h4 onClick={manageInterest}>
                   Interest <i className="fa-solid fa-plus"></i>
                 </h4>
                 <div className="flex">
-                  {interests.map((interest: any, index: any) => (
+                  {interests.map((interest: any, index: number) => (
                     <div
                       key={index}
                       className="p-relate delete-class col-33 mb-15"
@@ -479,11 +499,11 @@ const CreateContact = () => {
                         onClick={() => removeInterest(index)}
                       ></i>
                       <div className="form-group">
-                        <div className="">
+                        <div>
                           <label>Interest</label>
                           <input
                             type="text"
-                            value={interest.university}
+                            value={interest}
                             onChange={(e) =>
                               handleInterestChange(index, e.target.value)
                             }
@@ -493,40 +513,50 @@ const CreateContact = () => {
                     </div>
                   ))}
                 </div>
-                <div className="profile-p" id="interest">
-                  <p onClick={addInterest} style={{ cursor: "pointer" }}>
-                    Interest <i className="fa-solid fa-plus"></i>
-                  </p>
-                </div>
+                <button
+                  onClick={addInterest}
+                  className="btn-common"
+                  id="interest"
+                >
+                  Add Interest <i className="fa-solid fa-plus"></i>
+                </button>
               </div>
-
+              <h4 onClick={() => setShowCustomField(!showCustomField)}>
+                Custom Field <i className="fa-solid fa-plus"></i>
+              </h4>
               {showCustomField && (
                 <div className="custom-field">
-                  {customField?.map((custom: any, index: any) => (
-                    <div key={index}>
-                      <div className="form-group flex space-bw">
-                        <div className="col-50">
-                          <label>Custom field title</label>
-                          <input
-                            type="text"
-                            value={custom.title}
-                            onChange={(e: any) =>
-                              handleCustomField(index, "title", e.target.value)
+                  {customField &&
+                    customField?.length > 0 &&
+                    customField?.map((custom: any, index: any) => (
+                      <div key={index}>
+                        <div className="form-group flex space-bw">
+                          <div className="col-50">
+                            <label>Custom field title</label>
+                            <input
+                              type="text"
+                              value={custom.title}
+                              onChange={(e: any) =>
+                                handleCustomField(
+                                  index,
+                                  "title",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="form-group">
+                          <label>Custom filed value</label>
+                          <textarea
+                            value={custom.value}
+                            onChange={(e) =>
+                              handleCustomField(index, "value", e.target.value)
                             }
-                          />
+                          ></textarea>
                         </div>
                       </div>
-                      <div className="form-group">
-                        <label>Custom field value</label>
-                        <textarea
-                          value={custom.value}
-                          onChange={(e) =>
-                            handleCustomField(index, "value", e.target.value)
-                          }
-                        ></textarea>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                   <div className="profile-p" id="custom">
                     <p onClick={addCustomeField} style={{ cursor: "pointer" }}>
                       More fields <i className="fa-solid fa-plus"></i>
@@ -536,19 +566,8 @@ const CreateContact = () => {
               )}
               <div className="form-group flex">
                 <div className="col-33 btn">
-                  <button type="button" onClick={createContactApiHandler}>
-                    Submit
-                  </button>
-                </div>
-                <div className="col-33 btn">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowCustomField(!showCustomField);
-                      setCustomField([]);
-                    }}
-                  >
-                    {showCustomField ? "Remove" : "Add"} Custom Field
+                  <button type="button" onClick={editContactApiHandler}>
+                    Update
                   </button>
                 </div>
               </div>
@@ -560,4 +579,4 @@ const CreateContact = () => {
   );
 };
 
-export default CreateContact;
+export default EditContact;
