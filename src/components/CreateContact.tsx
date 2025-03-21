@@ -20,7 +20,7 @@ const CreateContact = () => {
   const [openExp, setOpenExp]: any = useState(true);
   const [openEdu, setOpenEdu]: any = useState(true);
   const [openInterest, setOpenInterest]: any = useState(true);
-  const [customFields, setCustomFields]: any = useState([{ value: "" }]);
+
   const [contactImage, setContactImage] = useState<string>(user);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -61,7 +61,7 @@ const CreateContact = () => {
     setInterests([...interests, ""]);
   };
   const addCustomeField = () => {
-    setCustomField([...customField, { title: "", value: "" }]);
+    setCustomField([...customField, { title: "", values: [""] }]);
   };
 
   const handleChildChange = (index: any, field: any, value: any) => {
@@ -84,10 +84,34 @@ const CreateContact = () => {
     updatedInterests[index] = value;
     setInterests(updatedInterests);
   };
-  const handleCustomField = (index: any, key: any, value: any) => {
-    const updatedFields = [...customFields];
-    updatedFields[index][key] = value;
-    setCustomFields(updatedFields);
+  const handleCustomField = (
+    index: number,
+    field: "title" | "values",
+    value: any,
+    valueIndex?: number
+  ) => {
+    const updatedCustomField = [...customField];
+
+    if (field === "title") {
+      updatedCustomField[index].title = value;
+    } else if (field === "values" && valueIndex !== undefined) {
+      updatedCustomField[index].values[valueIndex] = value;
+    }
+
+    setCustomField(updatedCustomField);
+  };
+
+  const addValueField = (index: number) => {
+    const updatedCustomField = [...customField];
+    updatedCustomField[index].values.push(""); // Add an empty value field
+    setCustomField(updatedCustomField);
+  };
+
+  // Function to remove a specific value input field inside a custom field
+  const removeValueField = (index: number, valueIndex: number) => {
+    const updatedCustomField = [...customField];
+    updatedCustomField[index].values.splice(valueIndex, 1); // Remove the specific value field
+    setCustomField(updatedCustomField);
   };
 
   const changeImageHandler = (event: any) => {
@@ -111,7 +135,10 @@ const CreateContact = () => {
     formData.append("spouse_name", personalDetail.spouse_name);
     if (personalDetail.spouse_bdy)
       formData.append("spouse_birthday", personalDetail.spouse_bdy);
-    formData.append("anniversary", personalDetail.spouse_ani);
+    if (personalDetail.spouse_ani) {
+      formData.append("anniversary", personalDetail.spouse_ani);
+    }
+
     formData.append("spouse_details", personalDetail.spouse_details);
     formData.append("children", JSON.stringify(children));
     formData.append("previous_employers", JSON.stringify(experiences));
@@ -151,6 +178,8 @@ const CreateContact = () => {
   const removeInterest = (index: number) => {
     setInterests(interests.filter((_: any, i: any) => i !== index));
   };
+
+  // value add for custom
 
   const managePersonalDetail = () => {
     setOpenDetails(!openDetails);
@@ -192,16 +221,6 @@ const CreateContact = () => {
     } else {
       $("#interest").css("display", "none");
     }
-  };
-
-  const duplicateField = (index: any) => {
-    const newField = { ...customFields[index] };
-    setCustomFields([...customFields, newField]);
-  };
-
-  const removeField = (index: any) => {
-    const updatedFields = customFields.filter((_: any, i: any) => i !== index);
-    setCustomFields(updatedFields);
   };
 
   return (
@@ -560,43 +579,49 @@ const CreateContact = () => {
                           <input
                             type="text"
                             value={custom.title}
-                            onChange={(e: any) =>
+                            onChange={(e) =>
                               handleCustomField(index, "title", e.target.value)
                             }
                           />
                         </div>
                       </div>
-                      <div className="flex form-group">
-                        {customFields.map((custom: any, index: any) => (
+                      <div className="flex">
+                        {custom.values.map((value: any, valueIndex: any) => (
                           <div
-                            key={index}
-                            className="p-relate delete-class col-33"
+                            key={valueIndex}
+                            className="form-group col-33 p-relate delete-class"
                           >
-                            <i
-                              className="fa-solid fa-trash"
-                              onClick={() => removeField(index)}
-                            ></i>
-                            <i
-                              className="fa-solid fa-plus"
-                              onClick={() => duplicateField(index)}
-                            ></i>
                             <label>Custom field value</label>
                             <input
                               type="text"
-                              value={custom.value}
+                              value={value}
                               onChange={(e) =>
                                 handleCustomField(
                                   index,
-                                  "value",
-                                  e.target.value
+                                  "values",
+                                  e.target.value,
+                                  valueIndex
                                 )
                               }
                             />
+                            <i
+                              className="fa-solid fa-plus"
+                              onClick={() => addValueField(index)}
+                              style={{ cursor: "pointer" }}
+                            ></i>
+                            <i
+                              className="fa-solid fa-trash"
+                              onClick={() =>
+                                removeValueField(index, valueIndex)
+                              }
+                              style={{ cursor: "pointer" }}
+                            ></i>
                           </div>
                         ))}
                       </div>
                     </div>
                   ))}
+
                   <div className="profile-p" id="custom">
                     <p onClick={addCustomeField} style={{ cursor: "pointer" }}>
                       More fields <i className="fa-solid fa-plus"></i>
