@@ -552,7 +552,7 @@ const CreateContact = () => {
 
               {showCustomField && (
                 <div className="custom-field">
-                  {customField?.map((custom: any, index: any) => (
+                  {customFields?.map((custom: any, index: any) => (
                     <div key={index} className="mb-15">
                       <div className="form-group flex space-bw">
                         <div className="col-50">
