@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { useFormik } from "formik";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -22,6 +22,7 @@ const Login = () => {
   const [otpPopup, setOtpPopup]: any = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [storedEmail, setStoredEmail]: any = useState("");
 
   const handleforgot = () => {
     setForgotPass(!forgotPass);
@@ -103,8 +104,8 @@ const Login = () => {
   const goToRegister = () => {
     navigate("/register");
   };
+
   const handleSubmit1 = (values: any) => {
-    console.log("Form Data:", values);
     forgotPasswordEmail({
       body: {
         email: values.email,
@@ -112,9 +113,24 @@ const Login = () => {
     })
       .then((res: any) => {
         toast.success(res.msg);
+        setStoredEmail(values.email);
         setForgotPass(false);
         setOtpPopup(true);
         setUserEmail(values.email);
+      })
+      .catch((error) => {
+        toast.error(error.data.error);
+      });
+  };
+
+  const handleResend = () => {
+    forgotPasswordEmail({
+      body: {
+        email: storedEmail,
+      },
+    })
+      .then((res: any) => {
+        toast.success(res.msg);
       })
       .catch((error) => {
         toast.error(error.data.error);
@@ -288,7 +304,9 @@ const Login = () => {
 
               <div className="resend-text">
                 Didn't receive the code?
-                <span className="resend-link">Resend Code</span>
+                <span className="resend-link" onClick={handleResend}>
+                  Resend Code
+                </span>
               </div>
             </div>
           </div>

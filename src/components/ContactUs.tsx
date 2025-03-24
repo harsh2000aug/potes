@@ -68,7 +68,11 @@ const ContactUs = () => {
                     <div className="form-group flex space-bw">
                       <div className="col-50">
                         <label htmlFor="fullName">Full Name</label>
-                        <Field type="text" name="fullName" />
+                        <Field
+                          type="text"
+                          name="fullName"
+                          placeholder="Enter your full name"
+                        />
                         <ErrorMessage
                           name="fullName"
                           component="div"
@@ -77,7 +81,11 @@ const ContactUs = () => {
                       </div>
                       <div className="col-50">
                         <label htmlFor="email">Email</label>
-                        <Field type="text" name="email" />
+                        <Field
+                          type="text"
+                          name="email"
+                          placeholder="Enter your email"
+                        />
                         <ErrorMessage
                           name="email"
                           component="div"
@@ -87,7 +95,11 @@ const ContactUs = () => {
                     </div>
                     <div className="form-group">
                       <label htmlFor="message">Message</label>
-                      <Field as="textarea" name="message" />
+                      <Field
+                        as="textarea"
+                        name="message"
+                        placeholder="Enter your message"
+                      />
                       <ErrorMessage
                         name="message"
                         component="div"

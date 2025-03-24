@@ -64,6 +64,10 @@ const Register = () => {
       username: Yup.string()
         .min(4, "Username must be at least 4 characters")
         .max(20, "Username too long")
+        .matches(
+          /^[a-zA-Z0-9]+$/,
+          "Username can only contain letters and numbers space not allowed"
+        )
         .required("Username is required"),
       email: Yup.string()
         .email("Invalid email format")

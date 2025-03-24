@@ -127,6 +127,7 @@ const CreateNote = () => {
               <div className="form-group mic-btn">
                 <label>Enter the Note</label>
                 <textarea
+                  placeholder="Enter your note"
                   value={text}
                   onChange={(e) => {
                     setText(e.target.value);

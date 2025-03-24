@@ -101,7 +101,7 @@ const CreateNote = () => {
         setFinalTranscript("");
         navigate("/");
       })
-      .catch((err) => console.log("err", err))
+      .catch((err) => toast.error("Please Select Contact"))
       .finally(() => {
         setLoading(false);
       });
@@ -142,6 +142,7 @@ const CreateNote = () => {
               <div className="form-group mic-btn">
                 <label>Enter the Note</label>
                 <textarea
+                placeholder="Enter your note"
                   value={text}
                   onChange={(e) => {
                     setText(e.target.value);

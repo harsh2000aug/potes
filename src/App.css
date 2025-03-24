@@ -383,7 +383,7 @@ li {
   top: 7px;
   right: 15px;
 }
-.user-profile{
+.user-profile {
   cursor: pointer;
 }
 .user-profile i {
@@ -467,7 +467,7 @@ li {
   font-size: 14px;
   padding: 10px;
 }
-.form-group select{
+.form-group select {
   cursor: pointer;
 }
 .form-group .btn button {
@@ -493,7 +493,7 @@ li {
   color: #44dbd6;
   cursor: pointer;
 }
-.delete-class i.fa-plus{
+.delete-class i.fa-plus {
   right: 30px;
   cursor: pointer;
 }
@@ -687,10 +687,12 @@ li {
   transform: translate(-50%, -50%);
   z-index: 9;
   background: #fff;
+  padding: 15px;
+  border-radius: 15px;
 }
-.modal-confirm {
+/* .modal-confirm {
   width: 50%;
-}
+} */
 .modal-confirm .modal-content {
   padding: 20px;
   border-radius: 5px;
@@ -932,6 +934,6 @@ li {
   top: 32px;
   cursor: pointer;
 }
-.react-datepicker-wrapper{
+.react-datepicker-wrapper {
   width: 100%;
 }

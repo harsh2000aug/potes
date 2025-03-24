@@ -8,18 +8,18 @@ import toast from "react-hot-toast";
 const OpenProfile = () => {
   const location = useLocation();
   const [openSection, setOpenSection] = useState<string | null>(null);
+  const [openDeletePop, setOpenDeletePop] = useState(false);
 
   const toggleSection = (section: string) => {
     setOpenSection(openSection === section ? null : section);
   };
   const profileData = location.state?.profileData;
-  console.log("first", profileData);
   const navigate = useNavigate();
   function formatDate(timestamp: any) {
     const date = new Date(timestamp);
-    const yy = String(date.getFullYear()); // Extract last two digits of the year
-    const mm = String(date.getMonth() + 1).padStart(2, "0"); // Month (zero-based index)
-    const dd = String(date.getDate()).padStart(2, "0"); // Day
+    const yy = String(date.getFullYear());
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
 
     return `${yy}-${mm}-${dd}`;
   }
@@ -27,7 +27,7 @@ const OpenProfile = () => {
   const deleteContactHandler = () => {
     deleteContactApi({
       query: {
-        id: "60",
+        id: profileData.id,
       },
     })
       .then((res: any) => {
@@ -39,11 +39,37 @@ const OpenProfile = () => {
       });
   };
 
+  const handleDeletePart = () => {
+    setOpenDeletePop(!openDeletePop);
+  };
+
   return (
     <>
-      {/* <div id="myModal" className="modal">
-        <div className="modal-dialog modal-confirm"></div>
-      </div> */}
+      {openDeletePop && (
+        <div id="myModal" className="modal">
+          <div className="modal-dialog modal-confirm">
+            <h4 className="modal-title">
+              Are you sure you want to delete the contact?
+            </h4>
+            <div className="modal-footer justify-content-center">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={deleteContactHandler}
+              >
+                Yes
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={handleDeletePart}
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="openProfile">
         <div className="flex h-100">
           <Sidebar />
@@ -62,7 +88,7 @@ const OpenProfile = () => {
                     <button
                       type="button"
                       className="mr"
-                      onClick={deleteContactHandler}
+                      onClick={handleDeletePart}
                     >
                       <i className="fa-solid fa-trash"></i>
                       Delete Contact
@@ -212,6 +238,40 @@ const OpenProfile = () => {
                               <ul className="employee-list">
                                 <li key={itm.id}>{itm.name}</li>
                               </ul>
+                            ))
+                          ) : (
+                            <p>-</p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Custom Details Accordion */}
+                    <div className="accordion">
+                      <div
+                        className="accordion-header"
+                        onClick={() => toggleSection("custom")}
+                      >
+                        <h3>Custom Field +</h3>
+                      </div>
+                      {openSection === "custom" && (
+                        <div className="accordion-content">
+                          {profileData.custom_fields.length > 0 ? (
+                            profileData.custom_fields.map((itm: any) => (
+                              <>
+                                <ul className="employee-list">
+                                  <li key={itm.id}>{itm.title}</li>
+                                </ul>
+                                <ul
+                                  style={{
+                                    paddingLeft: "10px",
+                                  }}
+                                >
+                                  {itm.values.map((subitm: any) => (
+                                    <li>{subitm}</li>
+                                  ))}
+                                </ul>
+                              </>
                             ))
                           ) : (
                             <p>-</p>

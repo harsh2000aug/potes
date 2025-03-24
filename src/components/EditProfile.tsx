@@ -45,15 +45,23 @@ const EditProfile = () => {
     }
   };
 
+  // const changeImageHandler = (event: any) => {
+  //   const file: File | null = event.target.files[0];
+  //   if (file) {
+  //     setImageFile(file);
+  //     setContactImage(URL.createObjectURL(file));
+  //   } else {
+  //     setContactImage("/path/to/default/user/image.png");
+  //     setImageFile(null);
+  //   }
+  // };
   const changeImageHandler = (event: any) => {
     const file: File | null = event.target.files[0];
     if (file) {
       setImageFile(file);
       setContactImage(URL.createObjectURL(file));
-    } else {
-      setContactImage("/path/to/default/user/image.png");
-      setImageFile(null);
     }
+    // If no file is selected, do nothing to retain the previous image
   };
 
   useEffect(() => {
@@ -162,7 +170,7 @@ const EditProfile = () => {
                 <div className="circle">
                   <img
                     className="profile-pic"
-                    src={contactImage}
+                    src={contactImage ? contactImage : user}
                     alt="Profile"
                   />
                 </div>

@@ -252,9 +252,11 @@ const Dashboard = () => {
                           {itm?.contact_full_name} :
                         </span>
                         <p>
-                          {" "}
                           {itm.note.length > 60
-                            ? `${itm.note.slice(0, 60)}...`
+                            ? `${itm.note.slice(
+                                0,
+                                30
+                              )} ....... ${itm.note.slice(-10)}`
                             : itm.note}
                         </p>
                       </li>

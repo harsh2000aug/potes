@@ -44,6 +44,7 @@ const EditContact = () => {
     spouse_bdy: "",
     spouse_details: "",
     interests: "",
+    anniversary: "",
   });
   const navigate = useNavigate();
 
@@ -60,7 +61,7 @@ const EditContact = () => {
     setInterests([...interests, ""]);
   };
   const addCustomeField = () => {
-    setCustomField([...customField, { title: "", value: "" }]);
+    setCustomField([...customField, { title: "", values: [""] }]);
   };
 
   const handleChildChange = (index: any, field: any, value: any) => {
@@ -83,9 +84,37 @@ const EditContact = () => {
     updatedInterests[index] = value;
     setInterests(updatedInterests);
   };
-  const handleCustomField = (index: any, field: any, value: any) => {
+  const handleCustomField = (
+    index: number,
+    field: "title" | "values",
+    value: any,
+    valueIndex?: number
+  ) => {
     const updatedCustomField = [...customField];
-    updatedCustomField[index][field] = value;
+
+    if (field === "title") {
+      updatedCustomField[index].title = value;
+    } else if (field === "values" && valueIndex !== undefined) {
+      if (!updatedCustomField[index].values) {
+        updatedCustomField[index].values = [];
+      }
+      updatedCustomField[index].values[valueIndex] = value;
+    }
+
+    setCustomField(updatedCustomField);
+  };
+  const addValueField = (index: number) => {
+    const updatedCustomField = [...customField];
+    if (!updatedCustomField[index].values) {
+      updatedCustomField[index].values = [];
+    }
+    updatedCustomField[index].values.push("");
+    setCustomField(updatedCustomField);
+  };
+
+  const removeValueField = (index: number, valueIndex: number) => {
+    const updatedCustomField = [...customField];
+    updatedCustomField[index].values.splice(valueIndex, 1);
     setCustomField(updatedCustomField);
   };
   const changeImageHandler = (event: any) => {
@@ -119,6 +148,10 @@ const EditContact = () => {
     formData.append("spouse_name", personalDetail.spouse_name);
     if (personalDetail.spouse_bdy)
       formData.append("spouse_birthday", personalDetail.spouse_bdy);
+
+    if (personalDetail.spouse_ani) {
+      formData.append("anniversary", personalDetail.spouse_ani);
+    }
     formData.append("spouse_details", personalDetail.spouse_details);
     formData.append("children", JSON.stringify(children));
     formData.append("previous_employers", JSON.stringify(experiences));
@@ -207,6 +240,7 @@ const EditContact = () => {
   };
 
   const editUserFinal = location.state.editUser;
+
   useEffect(() => {
     if (editUserFinal) {
       setPersonalDetail({
@@ -217,6 +251,7 @@ const EditContact = () => {
         spouse_name: editUserFinal?.spouse_name || "",
         spouse_bdy: editUserFinal?.spouse_bdy || "",
         spouse_details: editUserFinal?.spouse_details || "",
+        spouse_ani: editUserFinal?.anniversary || "",
       });
       setChildren(editUserFinal?.children || []);
       setExperiences(editUserFinal?.previous_employers || []);
@@ -347,6 +382,16 @@ const EditContact = () => {
                         onChange={(e) =>
                           handleInputChange("spouse_bdy", e.target.value)
                         }
+                      />
+                    </div>
+                    <div className="col-50">
+                      <label>Anniversary</label>
+                      <input
+                        type="date"
+                        value={personalDetail.spouse_ani}
+                        onChange={(e) => {
+                          handleInputChange("spouse_ani", e.target.value);
+                        }}
                       />
                     </div>
                   </div>
@@ -540,37 +585,59 @@ const EditContact = () => {
               </h4>
               {showCustomField && (
                 <div className="custom-field">
-                  {customField &&
-                    customField?.length > 0 &&
-                    customField?.map((custom: any, index: any) => (
-                      <div key={index}>
-                        <div className="form-group flex space-bw">
-                          <div className="col-50">
-                            <label>Custom field title</label>
-                            <input
-                              type="text"
-                              value={custom.title}
-                              onChange={(e: any) =>
-                                handleCustomField(
-                                  index,
-                                  "title",
-                                  e.target.value
-                                )
-                              }
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group">
-                          <label>Custom filed value</label>
-                          <textarea
-                            value={custom.value}
+                  {customField?.map((custom: any, index: any) => (
+                    <div key={index} className="mb-15">
+                      <div className="form-group flex space-bw">
+                        <div className="col-50">
+                          <label>Custom field title</label>
+                          <input
+                            type="text"
+                            value={custom.title || ""}
                             onChange={(e) =>
-                              handleCustomField(index, "value", e.target.value)
+                              handleCustomField(index, "title", e.target.value)
                             }
-                          ></textarea>
+                          />
                         </div>
                       </div>
-                    ))}
+                      <div className="flex">
+                        {(custom.values || []).map(
+                          (value: any, valueIndex: any) => (
+                            <div
+                              key={valueIndex}
+                              className="form-group col-33 p-relate delete-class"
+                            >
+                              <label>Custom field value</label>
+                              <input
+                                type="text"
+                                value={value || ""}
+                                onChange={(e) =>
+                                  handleCustomField(
+                                    index,
+                                    "values",
+                                    e.target.value,
+                                    valueIndex
+                                  )
+                                }
+                              />
+                              <i
+                                className="fa-solid fa-plus"
+                                onClick={() => addValueField(index)}
+                                style={{ cursor: "pointer" }}
+                              ></i>
+                              <i
+                                className="fa-solid fa-trash"
+                                onClick={() =>
+                                  removeValueField(index, valueIndex)
+                                }
+                                style={{ cursor: "pointer" }}
+                              ></i>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  ))}
+
                   <div className="profile-p" id="custom">
                     <p onClick={addCustomeField} style={{ cursor: "pointer" }}>
                       More fields <i className="fa-solid fa-plus"></i>
