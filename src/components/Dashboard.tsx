@@ -127,7 +127,14 @@ const Dashboard = () => {
                           <div className="openNoti">
                             <div className="notifications-pannel flex space-bw al-center">
                               <i className="fa-regular fa-circle-user"></i>
-                              <p>{itm.note}</p>
+                              <p>
+                                {itm.note.length > 20
+                                  ? `${itm.note.slice(
+                                      0,
+                                      50
+                                    )} ... ${itm.note.slice(-10)}`
+                                  : itm.note}
+                              </p>
                             </div>
                           </div>
                         </li>
@@ -175,7 +182,14 @@ const Dashboard = () => {
                           <div className="openNoti">
                             <div className="notifications-pannel flex space-bw al-center">
                               <i className="fa-regular fa-circle-user"></i>
-                              <p>{itm.note}</p>
+                              <p>
+                                {itm.note.length > 20
+                                  ? `${itm.note.slice(
+                                      0,
+                                      50
+                                    )} ... ${itm.note.slice(-10)}`
+                                  : itm.note}
+                              </p>
                             </div>
                           </div>
                         </li>
@@ -223,7 +237,14 @@ const Dashboard = () => {
                           <div className="openNoti">
                             <div className="notifications-pannel flex space-bw al-center">
                               <i className="fa-regular fa-circle-user"></i>
-                              <p>{itm.note}</p>
+                              <p>
+                                {itm.note.length > 20
+                                  ? `${itm.note.slice(
+                                      0,
+                                      50
+                                    )} ... ${itm.note.slice(-10)}`
+                                  : itm.note}
+                              </p>
                             </div>
                           </div>
                         </li>
@@ -238,6 +259,9 @@ const Dashboard = () => {
                   <ul>
                     {contactAndNotes.notes?.map((itm: any) => (
                       <li
+                        style={{
+                          cursor: "pointer",
+                        }}
                         key={itm}
                         className="flex"
                         onClick={() => profileHandler(itm?.contact)}
@@ -319,7 +343,7 @@ const Dashboard = () => {
                               )}
                               <p>{itm.full_name}</p>
                             </div>
-                            <p>{itm.birthday}</p>
+                            <p>{itm.anniversary}</p>
                           </div>
                         </li>
                       ))

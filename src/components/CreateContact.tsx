@@ -28,7 +28,9 @@ const CreateContact = () => {
 
   const handleEmailChange = (e: any) => {
     const email = e.target.value;
-    setPersonalEmail((oldVal: any) => ({ ...oldVal, email }));
+    setPersonalDetail((oldVal: any) => {
+      return { ...oldVal, email: e.target.value };
+    });
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -38,6 +40,7 @@ const CreateContact = () => {
       setError("");
     }
   };
+
   const handleIconClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -132,9 +135,6 @@ const CreateContact = () => {
     if (file) {
       setImageFile(file);
       setContactImage(URL.createObjectURL(file));
-    } else {
-      setContactImage(user);
-      setImageFile(null);
     }
   };
 
@@ -144,7 +144,7 @@ const CreateContact = () => {
     formData.append("phone", personalDetail.phone_no);
     if (personalDetail.birthday)
       formData.append("birthday", personalDetail.birthday);
-    formData.append("email", personalDetail.email);
+    if (error.length === 0) formData.append("email", personalDetail.email);
     formData.append("spouse_name", personalDetail.spouse_name);
     if (personalDetail.spouse_bdy)
       formData.append("spouse_birthday", personalDetail.spouse_bdy);
@@ -166,11 +166,15 @@ const CreateContact = () => {
     }
 
     try {
-      const response: any = await createContactApi({
-        body: formData,
-      });
-      toast.success(response.msg);
-      navigate("/directory");
+      if (error.length === 0) {
+        const response: any = await createContactApi({
+          body: formData,
+        });
+        toast.success(response.msg);
+        navigate("/directory");
+      } else {
+        toast.error("Invalid Email Format");
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -299,23 +303,6 @@ const CreateContact = () => {
                           }))
                         }
                       />
-                      {/* <DatePicker
-                        selected={
-                          personalDetail.birthday
-                            ? new Date(personalDetail.birthday)
-                            : null
-                        }
-                        onChange={(date: Date | null) =>
-                          setPersonalDetail((oldVal: any) => ({
-                            ...oldVal,
-                            birthday: date
-                              ? date.toISOString().split("T")[0]
-                              : "",
-                          }))
-                        }
-                        dateFormat="yyyy-MM-dd"
-                        className="form-control"
-                      /> */}
                     </div>
                   </div>
                   <div className="form-group flex space-bw">
@@ -334,7 +321,7 @@ const CreateContact = () => {
                       <input
                         type="email"
                         placeholder="Enter your email"
-                        value={personalEmail.email}
+                        value={personalDetail.email}
                         onChange={handleEmailChange}
                       />
                       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -664,6 +651,7 @@ const CreateContact = () => {
                   </div>
                 </div>
               )}
+
               <div className="form-group flex">
                 <div className="col-33 btn">
                   <button type="button" onClick={createContactApiHandler}>
@@ -674,8 +662,11 @@ const CreateContact = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      setShowCustomField(!showCustomField);
-                      setCustomField([]);
+                      if (showCustomField && customField.length > 0) {
+                        setCustomField((prev: any) => prev.slice(1));
+                      } else {
+                        setShowCustomField(!showCustomField);
+                      }
                     }}
                   >
                     {showCustomField ? "Remove" : "Add"} Custom Field

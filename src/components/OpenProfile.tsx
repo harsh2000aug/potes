@@ -172,6 +172,10 @@ const OpenProfile = () => {
                               <b>Spouse Birthday:</b>{" "}
                               {profileData.spouse_birthday || "-"}
                             </li>
+                            <li>
+                              <b>Anniversary:</b>{" "}
+                              {profileData.anniversary || "-"}
+                            </li>
                           </ul>
                         </div>
                       )}
@@ -252,7 +256,7 @@ const OpenProfile = () => {
                         className="accordion-header"
                         onClick={() => toggleSection("custom")}
                       >
-                        <h3>Custom Field +</h3>
+                        <h3>Others +</h3>
                       </div>
                       {openSection === "custom" && (
                         <div className="accordion-content">
