@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { deleteNotes, editNote, getNotesApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
@@ -21,6 +21,8 @@ const AllNotes = () => {
   const [loading, setLoading] = useState(false);
   const [interval, setInterval] = useState("");
   const [reminder, setReminder] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (
@@ -58,13 +60,11 @@ const AllNotes = () => {
         }
       }
 
-      // ✅ Only update `editText` when final result is available
       if (finalText) {
         setEditText((prevText) => prevText + finalText);
-        setFinalTranscript(""); // ✅ Clear to avoid re-adding
+        setFinalTranscript("");
       }
 
-      // ✅ Update interim transcript in real-time without saving it
       if (interimTranscript) {
         setText(finalText + interimTranscript);
       }
@@ -160,6 +160,15 @@ const AllNotes = () => {
       });
   };
 
+  function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    const yy = String(date.getFullYear());
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+
+    return `${yy}-${mm}-${dd}`;
+  }
+
   return (
     <>
       {popupOpen && (
@@ -172,17 +181,17 @@ const AllNotes = () => {
                 </div>
                 <h4 className="modal-title">Are you sure?</h4>
               </div>
-              <div className="modal-footer justify-content-center">
+              <div className="modal-footer justify-content-center btn">
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className="btn-secondary"
                   onClick={() => setPopupOpen(false)}
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  className="btn btn-danger"
+                  className="btn-danger"
                   onClick={() => handleDelete(userId)}
                 >
                   Delete
@@ -267,6 +276,11 @@ const AllNotes = () => {
         <div className="flex h-100">
           <Sidebar />
           <div className="main-area">
+          <div className="back-btn">
+            <button type="button" onClick={() => navigate(-1)}>
+              <i className="fa-solid fa-chevron-left"></i>
+            </button>
+          </div>
             <div className="body-area">
               <div className="common-back">
                 <div className="allNotes">
@@ -304,6 +318,10 @@ const AllNotes = () => {
                               className="fa-solid fa-pencil"
                             ></i>
                           </div>
+                          <span>
+                              (<i className="fa-solid fa-keyboard"></i>
+                              {formatDate(itm.updated_at)})
+                            </span>
                         </div>
                       </div>
                     ))}

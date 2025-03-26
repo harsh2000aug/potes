@@ -119,6 +119,11 @@ const CreateNote = () => {
       <div className="flex h-100">
         <Sidebar current="Create Note" />
         <div className="main-area">
+          <div className="back-btn">
+            <button type="button" onClick={() => navigate(-1)}>
+              <i className="fa-solid fa-chevron-left"></i>
+            </button>
+          </div>
           <div className="body-area">
             <div className="common-back">
               <h3>Create a Note</h3>

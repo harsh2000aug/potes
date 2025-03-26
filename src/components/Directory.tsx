@@ -61,57 +61,54 @@ const Directory = () => {
             <div className="body-area">
               {allContacts?.length > 0 ? (
                 <div className="common-back">
-                  <table
-                    style={{
-                      width: "100%",
-                      color: "#fff",
-                      textAlign: "left",
-                    }}
-                  >
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone No.</th>
-                        <th>D.O.B</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {allContacts.map((itm: any, index: any) => (
-                        <>
-                          {itm?.full_name?.[0]?.toUpperCase() !==
-                            allContacts[
-                              index - 1
-                            ]?.full_name?.[0]?.toUpperCase() && (
-                            <p>
-                              {/[^A-Z]/.test(itm?.full_name?.[0]?.toUpperCase())
-                                ? "#"
-                                : itm?.full_name?.[0]?.toUpperCase()}
-                            </p>
-                          )}
-                          <tr
-                            style={{ cursor: "pointer" }}
-                            key={itm.id}
-                            onClick={() => profileHandler(itm.id)}
-                          >
-                            <td>
-                              <div className="flex al-center">
-                                {itm?.photo ? (
-                                  <img src={itm?.photo} alt="" />
-                                ) : (
-                                  <i className="fa-regular fa-circle-user"></i>
-                                )}
-                                <p>{itm.full_name || "-"}</p>
-                              </div>
-                            </td>
-                            <td>{itm.email || "-"}</td>
-                            <td>{itm.phone || "-"}</td>
-                            <td>{itm.birthday || "-"}</td>
-                          </tr>
-                        </>
-                      ))}
-                    </tbody>
-                  </table>
+                  <div className="table-container">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Phone No.</th>
+                          <th>D.O.B</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {allContacts.map((itm: any, index: any) => (
+                          <React.Fragment key={itm.id}>
+                            {itm?.full_name?.[0]?.toUpperCase() !==
+                              allContacts[
+                                index - 1
+                              ]?.full_name?.[0]?.toUpperCase() && (
+                              <p className="table-header">
+                                {/[^A-Z]/.test(
+                                  itm?.full_name?.[0]?.toUpperCase()
+                                )
+                                  ? "#"
+                                  : itm?.full_name?.[0]?.toUpperCase()}
+                              </p>
+                            )}
+                            <tr
+                              style={{ cursor: "pointer" }}
+                              onClick={() => profileHandler(itm.id)}
+                            >
+                              <td>
+                                <div className="flex al-center">
+                                  {itm?.photo ? (
+                                    <img src={itm?.photo} alt="" />
+                                  ) : (
+                                    <i className="fa-regular fa-circle-user"></i>
+                                  )}
+                                  <p>{itm.full_name || "-"}</p>
+                                </div>
+                              </td>
+                              <td>{itm.email || "-"}</td>
+                              <td>{itm.phone || "-"}</td>
+                              <td>{itm.birthday || "-"}</td>
+                            </tr>
+                          </React.Fragment>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                   {totalPages > 1 && (
                     <Pagination
                       current={currentPage}
@@ -124,26 +121,26 @@ const Directory = () => {
                 </div>
               ) : (
                 <div className="common-back">
-                  <table
-                    style={{
-                      width: "100%",
-                      color: "#fff",
-                      textAlign: "left",
-                    }}
-                  >
-                    <tr>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Phone No.</th>
-                      <th>Birthday</th>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>No contact found!</td>
-                      <td></td>
-                    </tr>
-                  </table>
+                  <div className="table-container">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Phone No.</th>
+                          <th>D.O.B</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td>No contact found!</td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
             </div>

@@ -123,10 +123,9 @@ const CreateContact = () => {
     setCustomField(updatedCustomField);
   };
 
-  // Function to remove a specific value input field inside a custom field
   const removeValueField = (index: number, valueIndex: number) => {
     const updatedCustomField = [...customField];
-    updatedCustomField[index].values.splice(valueIndex, 1); // Remove the specific value field
+    updatedCustomField[index].values.splice(valueIndex, 1);
     setCustomField(updatedCustomField);
   };
 
@@ -245,12 +244,16 @@ const CreateContact = () => {
       <div className="flex h-100">
         <Sidebar current={"Create Contact"} />
         <div className="main-area">
+          <div className="back-btn">
+            <button type="button" onClick={() => navigate(-1)}>
+              <i className="fa-solid fa-chevron-left"></i>
+            </button>
+          </div>
           <div className="body-area">
             <div className="common-back createContact">
               <div className="top-text">
                 <h3>Create a Contact</h3>
               </div>
-
               <div className="personalInfo mb-15">
                 <h4 onClick={managePersonalDetail}>
                   Personal Information <i className="fa-solid fa-plus"></i>
@@ -290,34 +293,39 @@ const CreateContact = () => {
                         }
                       />
                     </div>
-                    <div className="col-50">
-                      <label htmlFor="">D.O.B</label>
-                      <input
-                        type="date"
-                        value={personalDetail.birthday}
-                        max={new Date().toISOString().split("T")[0]}
-                        onChange={(e: any) =>
-                          setPersonalDetail((oldVal: any) => ({
-                            ...oldVal,
-                            birthday: e.target.value,
-                          }))
-                        }
-                      />
+                    <div className="col-50 flex space-bw">
+                      <div className="col-50">
+                        <label htmlFor="">D.O.B</label>
+                        <input
+                          type="date"
+                          value={personalDetail.birthday}
+                          max={new Date().toISOString().split("T")[0]}
+                          onChange={(e: any) =>
+                            setPersonalDetail((oldVal: any) => ({
+                              ...oldVal,
+                              birthday: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                      <div className="col-50">
+                        <label>Anniversary</label>
+                        <input
+                          type="date"
+                          max={new Date().toISOString().split("T")[0]}
+                          value={personalDetail.spouse_ani}
+                          onChange={(e: any) =>
+                            setPersonalDetail((oldVal: any) => {
+                              return { ...oldVal, spouse_ani: e.target.value };
+                            })
+                          }
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="form-group flex space-bw">
                     <div className="col-50">
                       <label htmlFor="">Email</label>
-                      {/* <input
-                        type="email"
-                        placeholder="Enter your email"
-                        value={personalDetail.email}
-                        onChange={(e: any) =>
-                          setPersonalDetail((oldVal: any) => {
-                            return { ...oldVal, email: e.target.value };
-                          })
-                        }
-                      /> */}
                       <input
                         type="email"
                         placeholder="Enter your email"
@@ -332,7 +340,7 @@ const CreateContact = () => {
                         type="text"
                         placeholder="Enter your phone no."
                         value={personalDetail.phone_no}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        onChange={(e: any) => {
                           let inputValue = e.target.value;
 
                           if (/^\+?\d{0,15}$/.test(inputValue)) {
@@ -367,20 +375,18 @@ const CreateContact = () => {
                       />
                     </div>
                     <div className="col-50 flex space-bw">
-                      <div className="col-50">
-                        <label>D.O.B</label>
-                        <input
-                          type="date"
-                          max={new Date().toISOString().split("T")[0]}
-                          value={personalDetail.spouse_bdy}
-                          onChange={(e: any) =>
-                            setPersonalDetail((oldVal: any) => {
-                              return { ...oldVal, spouse_bdy: e.target.value };
-                            })
-                          }
-                        />
-                      </div>
-                      <div className="col-50">
+                      <label>D.O.B</label>
+                      <input
+                        type="date"
+                        max={new Date().toISOString().split("T")[0]}
+                        value={personalDetail.spouse_bdy}
+                        onChange={(e: any) =>
+                          setPersonalDetail((oldVal: any) => {
+                            return { ...oldVal, spouse_bdy: e.target.value };
+                          })
+                        }
+                      />
+                      {/* <div className="col-50">
                         <label>Anniversary</label>
                         <input
                           type="date"
@@ -392,7 +398,7 @@ const CreateContact = () => {
                             })
                           }
                         />
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <div className="form-group">
@@ -663,7 +669,7 @@ const CreateContact = () => {
                     type="button"
                     onClick={() => {
                       if (showCustomField && customField.length > 0) {
-                        setCustomField((prev: any) => prev.slice(1));
+                        setCustomField((prev: any) => prev.slice(0, -1));
                       } else {
                         setShowCustomField(!showCustomField);
                       }

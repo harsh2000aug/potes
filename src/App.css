@@ -396,6 +396,7 @@ li {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  display: block;
 }
 .body-area ul li {
   margin-bottom: 15px;
@@ -759,10 +760,9 @@ li {
   display: inline-block;
   margin-top: 13px;
 }
-.modal-confirm .btn {
+/* .modal-confirm .btn {
   color: #fff;
   border-radius: 4px;
-  background: #60c7c1;
   text-decoration: none;
   transition: all 0.4s;
   line-height: normal;
@@ -771,10 +771,16 @@ li {
   min-height: 40px;
   border-radius: 3px;
   cursor: pointer;
+} */
+.modal-confirm .btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .modal-confirm .btn-secondary {
   background: #c1c1c1;
-  margin-right: 20px;
+  width: 49%;
+  /* margin-right: 20px; */
 }
 .modal-confirm .btn-secondary:hover,
 .modal-confirm .btn-secondary:focus {
@@ -782,6 +788,7 @@ li {
 }
 .modal-confirm .btn-danger {
   background: #f15e5e;
+  width: 49%;
 }
 .modal-confirm .btn-danger:hover,
 .modal-confirm .btn-danger:focus {
@@ -920,6 +927,7 @@ li {
   outline: none;
   color: #fff;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 .btn-common i {
   font-size: 14px;
@@ -936,4 +944,297 @@ li {
 }
 .react-datepicker-wrapper {
   width: 100%;
+}
+.toggle {
+  cursor: pointer;
+  display: none;
+}
+.toggle i {
+  color: #000;
+  font-size: 16px;
+}
+.mobileSidebar {
+  display: none;
+}
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+  text-align: left;
+}
+
+th {
+  padding: 10px;
+  text-align: left;
+}
+
+td {
+  padding: 10px;
+}
+.back-btn {
+  display: none;
+}
+@media (max-width: 480px) {
+  .toggle {
+    display: block;
+  }
+  .sidebar {
+    display: none;
+  }
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9;
+  }
+  .mobileSidebar {
+    width: 250px;
+    background: #727272;
+    height: 100vh;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    transition: left 0.3s ease-in-out;
+    z-index: 99;
+    display: block;
+  }
+  .mobileSidebar.open {
+    left: 0;
+  }
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #fff;
+  }
+  .mobileSidebar .logo {
+    margin-bottom: 20px;
+  }
+  .mobileSidebar .logo img {
+    width: 120px;
+  }
+  .mobileSidebar .menu ul li {
+    cursor: pointer;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 14px;
+  }
+  .mobileSidebar .menu ul li.btn-type {
+    background: #44dbd6;
+    padding: 15px;
+    color: #000;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .mobileSidebar .menu ul li i,
+  .mobileSidebar .menu ul li button i {
+    margin-right: 10px;
+  }
+  .top-area {
+    margin-bottom: 15px;
+  }
+  .main-area {
+    width: 100%;
+    padding: 15px;
+  }
+  .search {
+    width: 240px;
+  }
+  .search-box-icon i {
+    font-size: 14px;
+  }
+  .user-profile img {
+    width: 30px;
+    height: 30px;
+  }
+  .col-50 {
+    width: 100%;
+  }
+  .common-back {
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  .common-back:last-child {
+    margin-bottom: 0;
+  }
+  .common-back h3 {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+  .common-back p {
+    font-size: 12px;
+  }
+  .common-back i {
+    font-size: 12px !important;
+  }
+  .common-back h5 {
+    font-size: 14px !important;
+  }
+  .common-back ul {
+    margin-bottom: 15px !important;
+  }
+  .col-33 {
+    width: 100%;
+    margin-right: 0px;
+  }
+  .col-33.btn {
+    margin-top: 10px;
+  }
+  /* .col-33.btn:last-of-type {
+    margin-bottom: 0;
+  } */
+  .form-group .btn button {
+    font-size: 14px;
+  }
+  .common-back.createContact h4 {
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+  .form-group {
+    margin-bottom: 0px;
+  }
+  .form-group .col-50 {
+    margin-bottom: 10px;
+  }
+  .circle {
+    width: 80px;
+    height: 80px;
+  }
+  .profile-pic-upload {
+    width: 80px;
+    height: 80px;
+  }
+  .p-image {
+    width: 20px;
+    height: 20px;
+    right: 0px;
+  }
+  .form-group label {
+    font-size: 12px;
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 7px;
+  }
+  .form-group.col-33.p-relate.delete-class {
+    margin-bottom: 10px;
+  }
+  .form-group.col-33.p-relate.delete-class:last-of-type {
+    margin-bottom: 0;
+  }
+  .modal-dialog {
+    width: 100%;
+  }
+  .maintop {
+    margin-bottom: 10px;
+  }
+  .btn button {
+    padding: 8px 5px;
+    font-size: 12px;
+  }
+  .mr {
+    margin-right: 5px;
+  }
+  .profile-information {
+    width: 100%;
+  }
+  .contactUs .common-back .form-group {
+    margin-bottom: 10px;
+  }
+  .table-container {
+    overflow-x: auto;
+    display: block;
+  }
+  .modal-confirm h4 {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+  .mic-btn button {
+    right: 8px;
+  }
+  .popup {
+    width: 90%;
+    padding: 15px;
+  }
+  .popup h2 {
+    font-size: 18px;
+  }
+  .login-left {
+    display: none;
+  }
+  .col-60 {
+    width: 100%;
+  }
+  .login-text {
+    padding: 20px;
+  }
+  .login-text h4 {
+    margin-bottom: 10px !important;
+    font-size: 12px !important;
+  }
+  .login .modal-confirm {
+    width: 90%;
+  }
+  .login-mobile {
+    width: 100%;
+    height: 100vh;
+    background: url(images/log_back_mob.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .login-text h5 {
+    color: #000;
+  }
+  .modal-dialog {
+    width: 90%;
+  }
+  .modal-confirm .modal-content {
+    padding: 0px;
+  }
+  .back-btn {
+    display: block;
+  }
+  .back-btn button {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    margin-bottom: 15px;
+    background: #727272;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+  .name .btn {
+    margin-top: 10px;
+  }
+  .note .editDelete {
+    top: -22px;
+  }
 }

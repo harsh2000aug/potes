@@ -138,12 +138,12 @@ const Login = () => {
   };
 
   return (
-    <div className="login">
+    <div className={window.innerWidth < 480 ? "login-mobile" : "login"}>
       {loading && <FullScreenLoader />}
       <div className="flex h-100">
         <div className="col-40 login-left">
           <h1>Organize, Connect, and Stay in Touch Effortlessly!</h1>
-          <img src={loginImg} alt="Login Illustration" />
+          {/* <img src={loginImg} alt="Login Illustration" /> */}
         </div>
         <div className="col-60 login-text">
           <h3>Log In</h3>
@@ -231,10 +231,18 @@ const Login = () => {
                       </div>
                     </div>
                     <div className="btn">
-                      <button type="button" onClick={handleforgot}>
+                      <button
+                        type="button"
+                        className="btn-danger"
+                        onClick={handleforgot}
+                      >
                         Cancel
                       </button>
-                      <button type="submit" disabled={isSubmitting}>
+                      <button
+                        type="submit"
+                        className="btn-secondary"
+                        disabled={isSubmitting}
+                      >
                         {isSubmitting ? "Submitting..." : "Submit"}
                       </button>
                     </div>

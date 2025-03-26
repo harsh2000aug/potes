@@ -14,6 +14,7 @@ const OpenProfile = () => {
     setOpenSection(openSection === section ? null : section);
   };
   const profileData = location.state?.profileData;
+  console.log("profileData", profileData);
   const navigate = useNavigate();
   function formatDate(timestamp: any) {
     const date = new Date(timestamp);
@@ -43,6 +44,8 @@ const OpenProfile = () => {
     setOpenDeletePop(!openDeletePop);
   };
 
+  const photo = profileData.photo;
+
   return (
     <>
       {openDeletePop && (
@@ -51,17 +54,17 @@ const OpenProfile = () => {
             <h4 className="modal-title">
               Are you sure you want to delete the contact?
             </h4>
-            <div className="modal-footer justify-content-center">
+            <div className="modal-footer justify-content-center btn">
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn-secondary"
                 onClick={deleteContactHandler}
               >
                 Yes
               </button>
               <button
                 type="button"
-                className="btn btn-danger"
+                className="btn-danger"
                 onClick={handleDeletePart}
               >
                 No
@@ -74,6 +77,11 @@ const OpenProfile = () => {
         <div className="flex h-100">
           <Sidebar />
           <div className="main-area">
+            <div className="back-btn">
+              <button type="button" onClick={() => navigate(-1)}>
+                <i className="fa-solid fa-chevron-left"></i>
+              </button>
+            </div>
             <div className="body-area">
               <div className="common-back">
                 <div className="name flex space-bw al-center">
@@ -148,6 +156,10 @@ const OpenProfile = () => {
                             <li>
                               <b>Phone:</b> {profileData.phone}
                             </li>
+                            <li>
+                              <b>Anniversary:</b>{" "}
+                              {profileData.anniversary || "-"}
+                            </li>
                           </ul>
                         </div>
                       )}
@@ -172,11 +184,31 @@ const OpenProfile = () => {
                               <b>Spouse Birthday:</b>{" "}
                               {profileData.spouse_birthday || "-"}
                             </li>
-                            <li>
-                              <b>Anniversary:</b>{" "}
-                              {profileData.anniversary || "-"}
-                            </li>
                           </ul>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* children Details Accordion */}
+                    <div className="accordion">
+                      <div
+                        className="accordion-header"
+                        onClick={() => toggleSection("children")}
+                      >
+                        <h3>Children Details +</h3>
+                      </div>
+                      {openSection === "children" && (
+                        <div className="accordion-content">
+                          {profileData.children.map((itm: any) => (
+                            <ul key={itm.id}>
+                              <li>
+                                <b>Child Name:</b> {itm.name || "-"}
+                              </li>
+                              <li>
+                                <b>Child Birthday:</b> {itm.birthday || "-"}
+                              </li>
+                            </ul>
+                          ))}
                         </div>
                       )}
                     </div>

@@ -12,7 +12,7 @@ import user from "../images/user.png";
 
 const EditContact = () => {
   const location = useLocation();
-
+  const [emailError, setEmailError] = useState("");
   const [children, setChildren]: any = useState([]);
   const [experiences, setExperiences]: any = useState([]);
   const [educationList, setEducationList]: any = useState([]);
@@ -142,16 +142,23 @@ const EditContact = () => {
     const formData = new FormData();
     formData.append("full_name", personalDetail.full_name);
     formData.append("phone", personalDetail.phone_no);
-    if (personalDetail.birthday)
-      formData.append("birthday", personalDetail.birthday);
-    formData.append("email", personalDetail.email);
+    formData.append(
+      "birthday",
+      personalDetail.birthday ? personalDetail.birthday : "kkk"
+    );
+    if (emailError.length === 0) formData.append("email", personalDetail.email);
     formData.append("spouse_name", personalDetail.spouse_name);
-    if (personalDetail.spouse_bdy)
-      formData.append("spouse_birthday", personalDetail.spouse_bdy);
 
-    if (personalDetail.spouse_ani) {
-      formData.append("anniversary", personalDetail.spouse_ani);
-    }
+    formData.append(
+      "spouse_birthday",
+      personalDetail.spouse_bdy ? personalDetail.spouse_bdy : "kkk"
+    );
+
+    formData.append(
+      "anniversary",
+      personalDetail.spouse_ani ? personalDetail.spouse_ani : "kkk"
+    );
+
     formData.append("spouse_details", personalDetail.spouse_details);
     formData.append("children", JSON.stringify(children));
     formData.append("previous_employers", JSON.stringify(experiences));
@@ -166,21 +173,38 @@ const EditContact = () => {
     }
 
     try {
-      const response: any = await editContactApi({
-        body: formData,
-        query: {
-          id: location.state.editUser?.id,
-        },
-      });
-      toast.success(response.msg);
-      profileHandler(location.state.editUser?.id);
+      if (emailError.length === 0) {
+        const response: any = await editContactApi({
+          body: formData,
+          query: {
+            id: location.state.editUser?.id,
+          },
+        });
+        toast.success(response.msg);
+        profileHandler(location.state.editUser?.id);
+      } else {
+        toast.error("Invalid Email Format");
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
   const handleInputChange = (field: string, value: string) => {
+    if (field === "email") {
+      validateEmail(value);
+    }
     setPersonalDetail((prev: any) => ({ ...prev, [field]: value }));
   };
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError("Invalid email format");
+    } else {
+      setEmailError("");
+    }
+  };
+
   const removeChild = (index: number) => {
     setChildren(children.filter((_: any, i: any) => i !== index));
   };
@@ -249,7 +273,7 @@ const EditContact = () => {
         email: editUserFinal?.email || "",
         phone_no: editUserFinal?.phone || "",
         spouse_name: editUserFinal?.spouse_name || "",
-        spouse_bdy: editUserFinal?.spouse_bdy || "",
+        spouse_bdy: editUserFinal?.spouse_birthday || "",
         spouse_details: editUserFinal?.spouse_details || "",
         spouse_ani: editUserFinal?.anniversary || "",
       });
@@ -267,12 +291,16 @@ const EditContact = () => {
       <div className="flex h-100">
         <Sidebar current={"Create Contact"} />
         <div className="main-area">
+          <div className="back-btn">
+            <button type="button" onClick={() => navigate(-1)}>
+              <i className="fa-solid fa-chevron-left"></i>
+            </button>
+          </div>
           <div className="body-area">
             <div className="common-back createContact">
               <div className="top-text">
                 <h3>Edit Contact</h3>
               </div>
-
               <div className="personalInfo mb-15">
                 <h4 onClick={managePersonalDetail}>
                   Personal Information <i className="fa-solid fa-plus"></i>
@@ -309,37 +337,45 @@ const EditContact = () => {
                         }
                       />
                     </div>
-                    <div className="col-50">
-                      <label htmlFor="">D.O.B</label>
-                      <input
-                        type="date"
-                        value={personalDetail.birthday}
-                        onChange={(e) =>
-                          handleInputChange("birthday", e.target.value)
-                        }
-                      />
+                    <div className="col-50 flex space-bw">
+                      <div className="col-50">
+                        <label htmlFor="">D.O.B</label>
+                        <input
+                          type="date"
+                          value={personalDetail.birthday}
+                          onChange={(e) =>
+                            handleInputChange("birthday", e.target.value)
+                          }
+                        />
+                      </div>
+                      <div className="col-50">
+                        <label>Anniversary</label>
+                        <input
+                          type="date"
+                          value={personalDetail.spouse_ani}
+                          onChange={(e) => {
+                            handleInputChange("spouse_ani", e.target.value);
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="form-group flex space-bw">
                     <div className="col-50">
                       <label htmlFor="">Email</label>
                       <input
-                        type="text"
+                        type="email"
                         value={personalDetail.email}
                         onChange={(e) =>
                           handleInputChange("email", e.target.value)
                         }
                       />
+                      {emailError && (
+                        <p style={{ color: "red" }}>{emailError}</p>
+                      )}
                     </div>
                     <div className="col-50">
                       <label htmlFor="">Phone No.</label>
-                      {/* <input
-                        type="text"
-                        value={personalDetail.phone_no}
-                        onChange={(e) =>
-                          handleInputChange("phone", e.target.value)
-                        }
-                      /> */}
                       <input
                         type="text"
                         value={personalDetail.phone_no}
@@ -382,16 +418,6 @@ const EditContact = () => {
                         onChange={(e) =>
                           handleInputChange("spouse_bdy", e.target.value)
                         }
-                      />
-                    </div>
-                    <div className="col-50">
-                      <label>Anniversary</label>
-                      <input
-                        type="date"
-                        value={personalDetail.spouse_ani}
-                        onChange={(e) => {
-                          handleInputChange("spouse_ani", e.target.value);
-                        }}
                       />
                     </div>
                   </div>
@@ -460,195 +486,223 @@ const EditContact = () => {
                 <h4 onClick={manageExpDetail}>
                   Employment <i className="fa-solid fa-plus"></i>
                 </h4>
-                {experiences.map((exp: any, index: number) => (
-                  <div key={index} className="p-relate delete-class">
-                    <i
-                      className="fa-solid fa-trash"
-                      onClick={() => removeExperience(index)}
-                    ></i>
-                    <div className="form-group flex space-bw">
-                      <div className="col-50">
-                        <label>Employer Name</label>
-                        <input
-                          type="text"
-                          value={exp.name}
+                <div id="exp">
+                  {experiences.map((exp: any, index: number) => (
+                    <div key={index} className="p-relate delete-class">
+                      <i
+                        className="fa-solid fa-trash"
+                        onClick={() => removeExperience(index)}
+                      ></i>
+                      <div className="form-group flex space-bw">
+                        <div className="col-50">
+                          <label>Employer Name</label>
+                          <input
+                            type="text"
+                            value={exp.name}
+                            onChange={(e) =>
+                              handleExperienceChange(
+                                index,
+                                "name",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <label>Employer Details</label>
+                        <textarea
+                          value={exp.details}
                           onChange={(e) =>
                             handleExperienceChange(
                               index,
-                              "name",
+                              "details",
                               e.target.value
                             )
                           }
-                        />
+                        ></textarea>
                       </div>
                     </div>
-                    <div className="form-group">
-                      <label>Employer Details</label>
-                      <textarea
-                        value={exp.details}
-                        onChange={(e) =>
-                          handleExperienceChange(
-                            index,
-                            "details",
-                            e.target.value
-                          )
-                        }
-                      ></textarea>
-                    </div>
-                  </div>
-                ))}
-                <button onClick={addExperience} className="btn-common" id="exp">
-                  Add Experience <i className="fa-solid fa-plus"></i>
-                </button>
+                  ))}
+                  <button onClick={addExperience} className="btn-common">
+                    Add Experience <i className="fa-solid fa-plus"></i>
+                  </button>
+                </div>
               </div>
               <div className="education">
                 <h4 onClick={manageEduDetail}>
                   Education <i className="fa-solid fa-plus"></i>
                 </h4>
-                {educationList.map((edu: any, index: number) => (
-                  <div key={index} className="p-relate delete-class">
-                    <i
-                      className="fa-solid fa-trash"
-                      onClick={() => removeEducation(index)}
-                    ></i>
-                    <div className="form-group flex space-bw">
-                      <div className="col-50">
-                        <label>University Name</label>
-                        <input
-                          type="text"
-                          value={edu.name}
+                <div id="edu">
+                  {educationList.map((edu: any, index: number) => (
+                    <div key={index} className="p-relate delete-class">
+                      <i
+                        className="fa-solid fa-trash"
+                        onClick={() => removeEducation(index)}
+                      ></i>
+                      <div className="form-group flex space-bw">
+                        <div className="col-50">
+                          <label>University Name</label>
+                          <input
+                            type="text"
+                            value={edu.name}
+                            onChange={(e) =>
+                              handleEducationChange(
+                                index,
+                                "name",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <label>University Details</label>
+                        <textarea
+                          value={edu.details}
                           onChange={(e) =>
-                            handleEducationChange(index, "name", e.target.value)
+                            handleEducationChange(
+                              index,
+                              "details",
+                              e.target.value
+                            )
                           }
-                        />
+                        ></textarea>
                       </div>
                     </div>
-                    <div className="form-group">
-                      <label>University Details</label>
-                      <textarea
-                        value={edu.details}
-                        onChange={(e) =>
-                          handleEducationChange(
-                            index,
-                            "details",
-                            e.target.value
-                          )
-                        }
-                      ></textarea>
-                    </div>
-                  </div>
-                ))}
-
-                <button onClick={addEducation} className="btn-common" id="edu">
-                  Add University <i className="fa-solid fa-plus"></i>
-                </button>
+                  ))}
+                  <button onClick={addEducation} className="btn-common">
+                    Add University <i className="fa-solid fa-plus"></i>
+                  </button>
+                </div>
               </div>
               <div className="interest">
                 <h4 onClick={manageInterest}>
                   Interest <i className="fa-solid fa-plus"></i>
                 </h4>
-                <div className="flex">
-                  {interests.map((interest: any, index: number) => (
-                    <div
-                      key={index}
-                      className="p-relate delete-class col-33 mb-15"
-                    >
-                      <i
-                        className="fa-solid fa-trash"
-                        onClick={() => removeInterest(index)}
-                      ></i>
-                      <div className="form-group">
-                        <div>
-                          <label>Interest</label>
-                          <input
-                            type="text"
-                            value={interest}
-                            onChange={(e) =>
-                              handleInterestChange(index, e.target.value)
-                            }
-                          />
+                <div id="interest">
+                  <div className="flex">
+                    {interests.map((interest: any, index: number) => (
+                      <div
+                        key={index}
+                        className="p-relate delete-class col-33 mb-15"
+                      >
+                        <i
+                          className="fa-solid fa-trash"
+                          onClick={() => removeInterest(index)}
+                        ></i>
+                        <div className="form-group">
+                          <div>
+                            <label>Interest</label>
+                            <input
+                              type="text"
+                              value={interest}
+                              onChange={(e) =>
+                                handleInterestChange(index, e.target.value)
+                              }
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-                <button
-                  onClick={addInterest}
-                  className="btn-common"
-                  id="interest"
-                >
-                  Add Interest <i className="fa-solid fa-plus"></i>
-                </button>
-              </div>
-              <h4 onClick={() => setShowCustomField(!showCustomField)}>
-                Custom Field <i className="fa-solid fa-plus"></i>
-              </h4>
-              {showCustomField && (
-                <div className="custom-field">
-                  {customField?.map((custom: any, index: any) => (
-                    <div key={index} className="mb-15">
-                      <div className="form-group flex space-bw">
-                        <div className="col-50">
-                          <label>Custom field title</label>
-                          <input
-                            type="text"
-                            value={custom.title || ""}
-                            onChange={(e) =>
-                              handleCustomField(index, "title", e.target.value)
-                            }
-                          />
-                        </div>
-                      </div>
-                      <div className="flex">
-                        {(custom.values || []).map(
-                          (value: any, valueIndex: any) => (
-                            <div
-                              key={valueIndex}
-                              className="form-group col-33 p-relate delete-class"
-                            >
-                              <label>Custom field value</label>
-                              <input
-                                type="text"
-                                value={value || ""}
-                                onChange={(e) =>
-                                  handleCustomField(
-                                    index,
-                                    "values",
-                                    e.target.value,
-                                    valueIndex
-                                  )
-                                }
-                              />
-                              <i
-                                className="fa-solid fa-plus"
-                                onClick={() => addValueField(index)}
-                                style={{ cursor: "pointer" }}
-                              ></i>
-                              <i
-                                className="fa-solid fa-trash"
-                                onClick={() =>
-                                  removeValueField(index, valueIndex)
-                                }
-                                style={{ cursor: "pointer" }}
-                              ></i>
-                            </div>
-                          )
-                        )}
-                      </div>
-                    </div>
-                  ))}
-
-                  <div className="profile-p" id="custom">
-                    <p onClick={addCustomeField} style={{ cursor: "pointer" }}>
-                      More fields <i className="fa-solid fa-plus"></i>
-                    </p>
+                    ))}
                   </div>
+                  <button onClick={addInterest} className="btn-common">
+                    Add Interest <i className="fa-solid fa-plus"></i>
+                  </button>
                 </div>
-              )}
+              </div>
+              <div className="custom-field">
+                <h4 onClick={() => setShowCustomField(!showCustomField)}>
+                  Custom Field <i className="fa-solid fa-plus"></i>
+                </h4>
+                {showCustomField && (
+                  <div className="custom-field">
+                    {customField?.map((custom: any, index: any) => (
+                      <div key={index} className="mb-15">
+                        <div className="form-group flex space-bw">
+                          <div className="col-50">
+                            <label>Custom field title</label>
+                            <input
+                              type="text"
+                              value={custom.title || ""}
+                              onChange={(e) =>
+                                handleCustomField(
+                                  index,
+                                  "title",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="flex">
+                          {(custom.values || []).map(
+                            (value: any, valueIndex: any) => (
+                              <div
+                                key={valueIndex}
+                                className="form-group col-33 p-relate delete-class"
+                              >
+                                <label>Custom field value</label>
+                                <input
+                                  type="text"
+                                  value={value || ""}
+                                  onChange={(e) =>
+                                    handleCustomField(
+                                      index,
+                                      "values",
+                                      e.target.value,
+                                      valueIndex
+                                    )
+                                  }
+                                />
+                                <i
+                                  className="fa-solid fa-plus"
+                                  onClick={() => addValueField(index)}
+                                  style={{ cursor: "pointer" }}
+                                ></i>
+                                <i
+                                  className="fa-solid fa-trash"
+                                  onClick={() =>
+                                    removeValueField(index, valueIndex)
+                                  }
+                                  style={{ cursor: "pointer" }}
+                                ></i>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    ))}
+
+                    <div className="profile-p" id="custom">
+                      <p
+                        onClick={addCustomeField}
+                        style={{ cursor: "pointer" }}
+                      >
+                        More fields <i className="fa-solid fa-plus"></i>
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
               <div className="form-group flex">
                 <div className="col-33 btn">
                   <button type="button" onClick={editContactApiHandler}>
                     Update
+                  </button>
+                </div>
+                <div className="col-33 btn">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (showCustomField && customField.length > 0) {
+                        setCustomField((prev: any) => prev.slice(0, -1));
+                      } else {
+                        setShowCustomField(!showCustomField);
+                      }
+                    }}
+                  >
+                    {showCustomField ? "Remove" : "Add"} Custom Field
                   </button>
                 </div>
               </div>

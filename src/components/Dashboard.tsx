@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import user from "../images/user.png";
 import Sidebar from "../reusable/Sidebar";
 import TopArea from "../reusable/TopArea";
 import {
@@ -78,6 +78,8 @@ const Dashboard = () => {
     setUpcoming(!upcoming);
   };
 
+  const handleNotePage = () => {};
+
   return (
     <div className="dashboard">
       <div className="flex h-100">
@@ -123,11 +125,24 @@ const Dashboard = () => {
                           key={itm.id}
                           className="p-relate"
                           style={{ cursor: "pointer" }}
+                          onClick={handleNotePage}
                         >
                           <div className="openNoti">
                             <div className="notifications-pannel flex space-bw al-center">
-                              <i className="fa-regular fa-circle-user"></i>
-                              <p>
+                              <img
+                                src={
+                                  itm.contact_photo ? itm.contact_photo : user
+                                }
+                                alt=""
+                              />
+                              <p onClick={() => profileHandler(itm?.contact)}>
+                                <b
+                                  style={{
+                                    marginRight: "5px",
+                                  }}
+                                >
+                                  {itm.contact_full_name}:
+                                </b>
                                 {itm.note.length > 20
                                   ? `${itm.note.slice(
                                       0,
@@ -181,8 +196,20 @@ const Dashboard = () => {
                         >
                           <div className="openNoti">
                             <div className="notifications-pannel flex space-bw al-center">
-                              <i className="fa-regular fa-circle-user"></i>
-                              <p>
+                              <img
+                                src={
+                                  itm.contact_photo ? itm.contact_photo : user
+                                }
+                                alt=""
+                              />
+                              <p onClick={() => profileHandler(itm?.contact)}>
+                                <b
+                                  style={{
+                                    marginRight: "5px",
+                                  }}
+                                >
+                                  {itm.contact_full_name}:
+                                </b>
                                 {itm.note.length > 20
                                   ? `${itm.note.slice(
                                       0,
@@ -236,8 +263,20 @@ const Dashboard = () => {
                         >
                           <div className="openNoti">
                             <div className="notifications-pannel flex space-bw al-center">
-                              <i className="fa-regular fa-circle-user"></i>
-                              <p>
+                              <img
+                                src={
+                                  itm.contact_photo ? itm.contact_photo : user
+                                }
+                                alt=""
+                              />
+                              <p onClick={() => profileHandler(itm?.contact)}>
+                                <b
+                                  style={{
+                                    marginRight: "5px",
+                                  }}
+                                >
+                                  {itm.contact_full_name}:
+                                </b>
                                 {itm.note.length > 20
                                   ? `${itm.note.slice(
                                       0,

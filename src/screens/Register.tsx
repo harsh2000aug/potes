@@ -95,11 +95,11 @@ const Register = () => {
           setLoading={setLoading}
         />
       )}
-      <div className="login">
+      <div className={window.innerWidth < 480 ? "login-mobile" : "login"}>
         <div className="flex h-100">
           <div className="col-40 login-left">
             <h1>Organize, Connect, and Stay in Touch Effortlessly!</h1>
-            <img src={loginImg} alt="Login" />
+            {/* <img src={loginImg} alt="Login" /> */}
           </div>
           <div className="col-60 login-text">
             <h3>Create Account</h3>

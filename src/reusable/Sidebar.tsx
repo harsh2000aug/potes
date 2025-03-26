@@ -35,6 +35,7 @@ const menuTab: any = [
 ];
 const Sidebar = ({ current }: any) => {
   const [logoutPopup, setLogoutPopup]: any = useState(false);
+
   const PopupHandler = () => {
     setLogoutPopup(!logoutPopup);
   };
@@ -43,6 +44,7 @@ const Sidebar = ({ current }: any) => {
     window.location.reload();
   };
   const navigate = useNavigate();
+
   const tabChangeHandler = (val: any) => {
     if (val === "Home") {
       navigate("/");
@@ -61,6 +63,7 @@ const Sidebar = ({ current }: any) => {
       setLogoutPopup(true);
     }
   };
+
   return (
     <>
       <div className="sidebar">

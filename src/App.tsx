@@ -22,6 +22,9 @@ import UserProfile from "./components/UserProfile";
 import CreateSingleNote from "./components/CreateSingleNote";
 import Forgot from "./screens/Forgot";
 import EditContact from "./components/EditContact";
+import { useState } from "react";
+import TopArea from "./reusable/TopArea";
+import Sidebar from "./reusable/Sidebar";
 
 function App() {
   const isLoggedIn = !!localStorage.getItem("accessToken");
