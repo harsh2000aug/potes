@@ -17,55 +17,113 @@ const CreateNote = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   if (
+  //     !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
+  //   ) {
+  //     alert("Your browser does not support Speech Recognition.");
+  //     return;
+  //   }
+
+  //   const SpeechRecognition =
+  //     window.SpeechRecognition || window.webkitSpeechRecognition;
+  //   recognitionRef.current = new SpeechRecognition();
+  //   recognitionRef.current.continuous = false;
+  //   recognitionRef.current.interimResults = true;
+  //   recognitionRef.current.lang = "en-US";
+
+  //   recognitionRef.current.onstart = () => {
+  //     setIsListening(true);
+  //   };
+
+  //   recognitionRef.current.onend = () => {
+  //     setIsListening(false);
+  //   };
+
+  //   recognitionRef.current.onresult = (event) => {
+  //     let interimTranscript = "";
+  //     for (let i = event.resultIndex; i < event.results.length; i++) {
+  //       let result = event.results[i];
+  //       interimTranscript += result[0].transcript;
+
+  //       if (result.isFinal) {
+  //         setFinalTranscript(
+  //           (prevFinalTranscript) =>
+  //             prevFinalTranscript + result[0].transcript + " "
+  //         ); //append final result with a space.
+  //       }
+  //     }
+  //     setText(finalTranscript + interimTranscript);
+  //   };
+
+  //   recognitionRef.current.onerror = (event) => {
+  //     console.error("Speech Recognition Error:", event.error);
+  //   };
+
+  //   return () => {
+  //     if (recognitionRef.current) {
+  //       recognitionRef.current.stop();
+  //     }
+  //   };
+  // }, [finalTranscript]);
   useEffect(() => {
-    if (
-      !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
-    ) {
-      alert("Your browser does not support Speech Recognition.");
-      return;
-    }
-
-    const SpeechRecognition =
+      if (
+        !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
+      ) {
+        alert("Your browser does not support Speech Recognition.");
+        return;
+      }
+  
+      const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognitionRef.current = new SpeechRecognition();
-    recognitionRef.current.continuous = false;
-    recognitionRef.current.interimResults = true;
-    recognitionRef.current.lang = "en-US";
-
-    recognitionRef.current.onstart = () => {
-      setIsListening(true);
-    };
-
-    recognitionRef.current.onend = () => {
-      setIsListening(false);
-    };
-
-    recognitionRef.current.onresult = (event) => {
-      let interimTranscript = "";
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        let result = event.results[i];
-        interimTranscript += result[0].transcript;
-
-        if (result.isFinal) {
-          setFinalTranscript(
-            (prevFinalTranscript) =>
-              prevFinalTranscript + result[0].transcript + " "
-          ); //append final result with a space.
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = true;
+      recognitionRef.current.interimResults = true;
+      recognitionRef.current.lang = "en-US";
+  
+      let silenceTimeout; 
+  
+      recognitionRef.current.onstart = () => {
+        setIsListening(true);
+      };
+  
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+  
+      recognitionRef.current.onresult = (event) => {
+        clearTimeout(silenceTimeout);
+  
+        let interimTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          let result = event.results[i];
+          interimTranscript += result[0].transcript;
+  
+          if (result.isFinal) {
+            setFinalTranscript(
+              (prevFinalTranscript) =>
+                prevFinalTranscript + result[0].transcript + " "
+            ); 
+          }
         }
-      }
-      setText(finalTranscript + interimTranscript);
-    };
-
-    recognitionRef.current.onerror = (event) => {
-      console.error("Speech Recognition Error:", event.error);
-    };
-
-    return () => {
-      if (recognitionRef.current) {
-        recognitionRef.current.stop();
-      }
-    };
-  }, [finalTranscript]);
+        setText(finalTranscript + interimTranscript);
+  
+        silenceTimeout = setTimeout(() => {
+          recognitionRef.current.stop();
+        }, 3000);
+      };
+  
+      recognitionRef.current.onerror = (event) => {
+        console.error("Speech Recognition Error:", event.error);
+      };
+  
+      return () => {
+        if (recognitionRef.current) {
+          recognitionRef.current.stop();
+        }
+        clearTimeout(silenceTimeout);
+      };
+    }, [finalTranscript]);
 
   const startListening = () => {
     if (recognitionRef.current && !isListening) {

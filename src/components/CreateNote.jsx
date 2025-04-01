@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
-import { allContactApi, createNotesApi } from "../store/Services/AllApi";
+import { allContactApi, createNotesApi, profileContactApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
@@ -16,9 +16,11 @@ const CreateNote = () => {
   const location = useLocation();
   const [interval, setInterval] = useState("");
   const [loading, setLoading] = useState(false);
+  
   const profileData = location.state?.profileName;
   const profileIdUser = location.state?.profileId;
   const navigate = useNavigate();
+  
   useEffect(() => {
     if (
       !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
@@ -28,11 +30,13 @@ const CreateNote = () => {
     }
 
     const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
+    window.SpeechRecognition || window.webkitSpeechRecognition;
     recognitionRef.current = new SpeechRecognition();
-    recognitionRef.current.continuous = false;
+    recognitionRef.current.continuous = true;
     recognitionRef.current.interimResults = true;
     recognitionRef.current.lang = "en-US";
+
+    let silenceTimeout; 
 
     recognitionRef.current.onstart = () => {
       setIsListening(true);
@@ -43,6 +47,8 @@ const CreateNote = () => {
     };
 
     recognitionRef.current.onresult = (event) => {
+      clearTimeout(silenceTimeout);
+
       let interimTranscript = "";
       for (let i = event.resultIndex; i < event.results.length; i++) {
         let result = event.results[i];
@@ -52,10 +58,14 @@ const CreateNote = () => {
           setFinalTranscript(
             (prevFinalTranscript) =>
               prevFinalTranscript + result[0].transcript + " "
-          ); //append final result with a space.
+          ); 
         }
       }
       setText(finalTranscript + interimTranscript);
+
+      silenceTimeout = setTimeout(() => {
+        recognitionRef.current.stop();
+      }, 3000);
     };
 
     recognitionRef.current.onerror = (event) => {
@@ -66,6 +76,7 @@ const CreateNote = () => {
       if (recognitionRef.current) {
         recognitionRef.current.stop();
       }
+      clearTimeout(silenceTimeout);
     };
   }, [finalTranscript]);
 
@@ -81,6 +92,15 @@ const CreateNote = () => {
     }
   };
 
+const profileHandler = (addId) => {
+    profileContactApi({
+      query: {
+        id: addId,
+      },
+    }).then((res) => {
+      navigate("/profile", { state: { profileData: res } });
+    });
+  };
   const createNoteHandler = () => {
     if (!text) {
       toast.error("Please fill Notes before submitting.");
@@ -100,7 +120,9 @@ const CreateNote = () => {
         setText("");
         setFinalTranscript("");
         setInterval("");
-        navigate("/");
+       
+        profileHandler(res.data.contact)
+      
       })
       .catch((err) => {
         toast.error(err.data.error);

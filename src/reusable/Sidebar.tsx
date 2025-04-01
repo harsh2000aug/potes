@@ -67,7 +67,7 @@ const Sidebar = ({ current }: any) => {
   return (
     <>
       <div className="sidebar">
-        <div className="logo">
+        <div className="logo" onClick={() => navigate("/")}>
           <img src={logo} alt="Logo" />
         </div>
         <div className="menu">

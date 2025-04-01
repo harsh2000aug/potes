@@ -45,6 +45,7 @@ const EditContact = () => {
     spouse_details: "",
     interests: "",
     anniversary: "",
+    description: "",
   });
   const navigate = useNavigate();
 
@@ -159,6 +160,7 @@ const EditContact = () => {
       personalDetail.spouse_ani ? personalDetail.spouse_ani : "kkk"
     );
 
+    formData.append("description", personalDetail.description);
     formData.append("spouse_details", personalDetail.spouse_details);
     formData.append("children", JSON.stringify(children));
     formData.append("previous_employers", JSON.stringify(experiences));
@@ -276,6 +278,7 @@ const EditContact = () => {
         spouse_bdy: editUserFinal?.spouse_birthday || "",
         spouse_details: editUserFinal?.spouse_details || "",
         spouse_ani: editUserFinal?.anniversary || "",
+        description: editUserFinal?.description || "",
       });
       setChildren(editUserFinal?.children || []);
       setExperiences(editUserFinal?.previous_employers || []);
@@ -339,9 +342,10 @@ const EditContact = () => {
                     </div>
                     <div className="col-50 flex space-bw">
                       <div className="col-50">
-                        <label htmlFor="">D.O.B</label>
+                        <label htmlFor="">Birthday</label>
                         <input
                           type="date"
+                          max={new Date().toISOString().split("T")[0]}
                           value={personalDetail.birthday}
                           onChange={(e) =>
                             handleInputChange("birthday", e.target.value)
@@ -352,6 +356,7 @@ const EditContact = () => {
                         <label>Anniversary</label>
                         <input
                           type="date"
+                          max={new Date().toISOString().split("T")[0]}
                           value={personalDetail.spouse_ani}
                           onChange={(e) => {
                             handleInputChange("spouse_ani", e.target.value);
@@ -361,7 +366,17 @@ const EditContact = () => {
                     </div>
                   </div>
                   <div className="form-group flex space-bw">
-                    <div className="col-50">
+                    <div className="col-33">
+                      <label htmlFor="">Description</label>
+                      <input
+                        type="text"
+                        value={personalDetail.description}
+                        onChange={(e) => {
+                          handleInputChange("description", e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="col-33">
                       <label htmlFor="">Email</label>
                       <input
                         type="email"
@@ -374,20 +389,32 @@ const EditContact = () => {
                         <p style={{ color: "red" }}>{emailError}</p>
                       )}
                     </div>
-                    <div className="col-50">
-                      <label htmlFor="">Phone No.</label>
+                    <div className="col-33">
+                      <label htmlFor="">Number</label>
                       <input
                         type="text"
                         value={personalDetail.phone_no}
                         onChange={(e: any) => {
                           handleInputChange("phone", e.target.value);
-                          let inputValue = e.target.value;
-                          if (/^\+?\d{0,15}$/.test(inputValue)) {
-                            setPersonalDetail((oldVal: any) => ({
-                              ...oldVal,
-                              phone_no: inputValue,
-                            }));
+                          let inputValue = e.target.value.replace(/\D/g, "");
+                          if (inputValue.length > 10) {
+                            inputValue = inputValue.slice(0, 10);
                           }
+                          if (inputValue.length > 3 && inputValue.length <= 6) {
+                            inputValue = inputValue.replace(
+                              /(\d{3})(\d+)/,
+                              "$1.$2"
+                            );
+                          } else if (inputValue.length > 6) {
+                            inputValue = inputValue.replace(
+                              /(\d{3})(\d{3})(\d+)/,
+                              "$1.$2.$3"
+                            );
+                          }
+                          setPersonalDetail((oldVal: any) => ({
+                            ...oldVal,
+                            phone_no: inputValue,
+                          }));
                         }}
                       />
                     </div>
@@ -411,9 +438,10 @@ const EditContact = () => {
                       />
                     </div>
                     <div className="col-50">
-                      <label>D.O.B</label>
+                      <label>Birthday</label>
                       <input
                         type="date"
+                        max={new Date().toISOString().split("T")[0]}
                         value={personalDetail.spouse_bdy}
                         onChange={(e) =>
                           handleInputChange("spouse_bdy", e.target.value)
@@ -430,7 +458,6 @@ const EditContact = () => {
                       }
                     />
                   </div>
-
                   {/* Children Section */}
                   {children.map((child: any, index: any) => (
                     <div key={index} className="p-relate delete-class">
@@ -450,9 +477,10 @@ const EditContact = () => {
                           />
                         </div>
                         <div className="col-50">
-                          <label>D.O.B</label>
+                          <label>Birthday</label>
                           <input
                             type="date"
+                            max={new Date().toISOString().split("T")[0]}
                             value={child.birthday}
                             onChange={(e) =>
                               handleChildChange(
@@ -687,11 +715,6 @@ const EditContact = () => {
               </div>
               <div className="form-group flex">
                 <div className="col-33 btn">
-                  <button type="button" onClick={editContactApiHandler}>
-                    Update
-                  </button>
-                </div>
-                <div className="col-33 btn">
                   <button
                     type="button"
                     onClick={() => {
@@ -703,6 +726,11 @@ const EditContact = () => {
                     }}
                   >
                     {showCustomField ? "Remove" : "Add"} Custom Field
+                  </button>
+                </div>
+                <div className="col-33 btn">
+                  <button type="button" onClick={editContactApiHandler}>
+                    Update
                   </button>
                 </div>
               </div>

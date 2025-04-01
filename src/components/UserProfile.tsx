@@ -39,7 +39,7 @@ const UserProfile = () => {
                   <input type="text" />
                 </div>
                 <div className="col-50">
-                  <label htmlFor="">D.O.B</label>
+                  <label htmlFor="">Birthday</label>
                   <input type="date" />
                 </div>
               </div>

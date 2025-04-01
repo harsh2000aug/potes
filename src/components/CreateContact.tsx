@@ -61,6 +61,7 @@ const CreateContact = () => {
     spouse_bdy: "",
     spouse_details: "",
     interests: "",
+    description: "",
   });
   const navigate = useNavigate();
 
@@ -152,6 +153,7 @@ const CreateContact = () => {
     }
 
     formData.append("spouse_details", personalDetail.spouse_details);
+    formData.append("description", personalDetail.description);
     formData.append("children", JSON.stringify(children));
     formData.append("previous_employers", JSON.stringify(experiences));
     formData.append("universities", JSON.stringify(educationList));
@@ -284,7 +286,7 @@ const CreateContact = () => {
                       <label htmlFor="">Full Name</label>
                       <input
                         type="text"
-                        placeholder="Enter your full name"
+                        placeholder="Enter full name"
                         value={personalDetail.full_name}
                         onChange={(e: any) =>
                           setPersonalDetail((oldVal: any) => {
@@ -295,7 +297,7 @@ const CreateContact = () => {
                     </div>
                     <div className="col-50 flex space-bw">
                       <div className="col-50">
-                        <label htmlFor="">D.O.B</label>
+                        <label htmlFor="">Birthday</label>
                         <input
                           type="date"
                           value={personalDetail.birthday}
@@ -324,26 +326,51 @@ const CreateContact = () => {
                     </div>
                   </div>
                   <div className="form-group flex space-bw">
-                    <div className="col-50">
+                    <div className="col-33">
+                      <label htmlFor="">Description</label>
+                      <input
+                        type="text"
+                        placeholder="Enter description"
+                        value={personalDetail.description}
+                        onChange={(e: any) =>
+                          setPersonalDetail((oldVal: any) => {
+                            return { ...oldVal, description: e.target.value };
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="col-33">
                       <label htmlFor="">Email</label>
                       <input
                         type="email"
-                        placeholder="Enter your email"
+                        placeholder="Enter email"
                         value={personalDetail.email}
                         onChange={handleEmailChange}
                       />
                       {error && <p style={{ color: "red" }}>{error}</p>}
                     </div>
-                    <div className="col-50">
-                      <label htmlFor="">Phone No.</label>
+                    <div className="col-33">
+                      <label htmlFor="">Number</label>
                       <input
                         type="text"
-                        placeholder="Enter your phone no."
+                        placeholder="Enter Number"
                         value={personalDetail.phone_no}
                         onChange={(e: any) => {
-                          let inputValue = e.target.value;
+                          let inputValue = e.target.value.replace(/\D/g, "");
 
-                          if (/^\+?\d{0,15}$/.test(inputValue)) {
+                          if (inputValue.length > 3 && inputValue.length <= 6) {
+                            inputValue = inputValue.replace(
+                              /(\d{3})(\d+)/,
+                              "$1.$2"
+                            );
+                          } else if (inputValue.length > 6) {
+                            inputValue = inputValue.replace(
+                              /(\d{3})(\d{3})(\d+)/,
+                              "$1.$2.$3"
+                            );
+                          }
+
+                          if (inputValue.length <= 12) {
                             setPersonalDetail((oldVal: any) => ({
                               ...oldVal,
                               phone_no: inputValue,
@@ -364,7 +391,7 @@ const CreateContact = () => {
                     <div className="col-50">
                       <label>Spouse Name</label>
                       <input
-                        placeholder="Enter your spouse name"
+                        placeholder="Enter spouse name"
                         type="text"
                         value={personalDetail.spouse_name}
                         onChange={(e: any) =>
@@ -375,7 +402,7 @@ const CreateContact = () => {
                       />
                     </div>
                     <div className="col-50 flex space-bw">
-                      <label>D.O.B</label>
+                      <label>Birthday</label>
                       <input
                         type="date"
                         max={new Date().toISOString().split("T")[0]}
@@ -404,7 +431,7 @@ const CreateContact = () => {
                   <div className="form-group">
                     <label>Spouse Details</label>
                     <textarea
-                      placeholder="Enter your spouse detail"
+                      placeholder="Enter spouse details"
                       value={personalDetail.spouse_details}
                       onChange={(e: any) =>
                         setPersonalDetail((oldVal: any) => {
@@ -424,7 +451,7 @@ const CreateContact = () => {
                         <div className="col-50">
                           <label>Child Name</label>
                           <input
-                            placeholder="Enter your child name"
+                            placeholder="Enter child name"
                             type="text"
                             value={child.name}
                             onChange={(e) =>
@@ -433,7 +460,7 @@ const CreateContact = () => {
                           />
                         </div>
                         <div className="col-50">
-                          <label>D.O.B</label>
+                          <label>Birthday</label>
                           <input
                             type="date"
                             value={child.birthday}
@@ -450,7 +477,7 @@ const CreateContact = () => {
                       <div className="form-group">
                         <label>Child Details</label>
                         <textarea
-                          placeholder="Enter your spouse detail"
+                          placeholder="Enter child details"
                           value={child.details}
                           onChange={(e) =>
                             handleChildChange(index, "details", e.target.value)
@@ -480,7 +507,7 @@ const CreateContact = () => {
                       <div className="col-50">
                         <label>Employer Name</label>
                         <input
-                          placeholder="Enter your employer name"
+                          placeholder="Enter employer name"
                           type="text"
                           value={exp.name}
                           onChange={(e) =>
@@ -496,7 +523,7 @@ const CreateContact = () => {
                     <div className="form-group">
                       <label>Employer Details</label>
                       <textarea
-                        placeholder="Enter your employer detail"
+                        placeholder="Enter employer detail"
                         value={exp.details}
                         onChange={(e) =>
                           handleExperienceChange(
@@ -529,7 +556,7 @@ const CreateContact = () => {
                       <div className="col-50">
                         <label>University Name</label>
                         <input
-                          placeholder="Enter your university name"
+                          placeholder="Enter university name"
                           type="text"
                           value={edu.name}
                           onChange={(e) =>
@@ -541,7 +568,7 @@ const CreateContact = () => {
                     <div className="form-group">
                       <label>University Details</label>
                       <textarea
-                        placeholder="Enter your university detail"
+                        placeholder="Enter university detail"
                         value={edu.details}
                         onChange={(e) =>
                           handleEducationChange(
@@ -596,7 +623,6 @@ const CreateContact = () => {
                   </p>
                 </div>
               </div>
-
               {showCustomField && (
                 <div className="custom-field">
                   {customField?.map((custom: any, index: any) => (
@@ -657,13 +683,7 @@ const CreateContact = () => {
                   </div>
                 </div>
               )}
-
               <div className="form-group flex">
-                <div className="col-33 btn">
-                  <button type="button" onClick={createContactApiHandler}>
-                    Submit
-                  </button>
-                </div>
                 <div className="col-33 btn">
                   <button
                     type="button"
@@ -676,6 +696,11 @@ const CreateContact = () => {
                     }}
                   >
                     {showCustomField ? "Remove" : "Add"} Custom Field
+                  </button>
+                </div>
+                <div className="col-33 btn">
+                  <button type="button" onClick={createContactApiHandler}>
+                    Submit
                   </button>
                 </div>
               </div>

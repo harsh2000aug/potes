@@ -7,6 +7,7 @@ import {
 } from "../store/Services/AllApi";
 import $ from "jquery";
 import logo from "../images/logo.png";
+import toast from "react-hot-toast";
 
 const TopArea = ({ search, setSearch, imageFile }: any) => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
   const [getImage, setGetImage]: any = useState("");
   const [isOpen, setIsOpen]: any = useState(false);
   const [logoutPopup, setLogoutPopup]: any = useState(false);
+  const [searcheditem, setSearchedItem]: any = useState("");
 
   const profileHandler = (userId: any) => {
     profileContactApi({
@@ -25,7 +27,6 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
       navigate("/profile", { state: { profileData: res } });
     });
   };
-
   const searchContentApiHandler = async () => {
     if (everySearch !== "") {
       try {
@@ -33,9 +34,12 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
           query: {
             q: everySearch,
           },
+        }).then((res: any) => {
+          setApiResponse(res);
+          setSearchedItem(everySearch);
+          // $(".searchDown").css("display", "block");
+          // navigate("/search-result", { state: { searchAnswer: res } });
         });
-        setApiResponse(res);
-        $(".searchDown").css("display", "block");
       } catch (err) {
         console.log("err", err);
       }
@@ -73,6 +77,18 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
   const handleOpenSidebar = () => setIsOpen(true);
   const handleCloseSidebar = () => setIsOpen(false);
 
+  const handleNewSearch = () => {
+    if (window.location.pathname !== "/directory") {
+      if (everySearch !== "") {
+        navigate("/search-result", {
+          state: { searchAnswer: apiResponse, word: searcheditem },
+        });
+      } else {
+        toast.error("Please write something to search");
+      }
+    }
+  };
+
   return (
     <div className="top-area">
       <div className="flex space-bw al-center">
@@ -85,12 +101,12 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
             <button className="close-btn" onClick={handleCloseSidebar}>
               &times;
             </button>
-            <div className="logo">
+            <div className="logo" onClick={() => navigate("/")}>
               <img src={logo} alt="Logo" />
             </div>
             <div className="menu">
               <ul>
-                <li
+                {/* <li
                   className="btn-type"
                   onClick={() => navigate("/create-contact")}
                 >
@@ -103,7 +119,7 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
                 >
                   <i className="fa-solid fa-plus"></i>
                   Create Note
-                </li>
+                </li> */}
                 <li onClick={() => navigate("/")}>
                   <i className="fa-solid fa-house"></i>
                   Home
@@ -152,7 +168,7 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
                 }
               />
               <div className="search-box-icon">
-                <button className="btn-icon-content">
+                <button className="btn-icon-content" onClick={handleNewSearch}>
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </div>
@@ -203,6 +219,16 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
             <i className="fa-regular fa-circle-user"></i>
           )}
         </div>
+      </div>
+      <div className="note-contact">
+        <button type="button" onClick={() => navigate("/create-contact")}>
+          <i className="fa-solid fa-plus"></i>
+          Create contact
+        </button>
+        <button type="button" onClick={() => navigate("/create-a-note")}>
+          <i className="fa-solid fa-plus"></i>
+          Create note
+        </button>
       </div>
       {logoutPopup && (
         <div id="logoutPopup" className="overlay">

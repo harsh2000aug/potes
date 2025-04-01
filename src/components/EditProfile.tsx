@@ -30,18 +30,39 @@ const EditProfile = () => {
       fileInputRef.current.click();
     }
   };
+  // const handleOpenPopup = () => {
+  //   setChangeName(true);
+  // };
+
+  // const handleProfileUpdate = async () => {
+  //   const formData = new FormData();
+  //   if (imageFile) {
+  //     formData.append("profile_pic", imageFile, imageFile.name);
+  //   }
+  //   try {
+  //     await changeProfileName({
+  //       body: formData,
+  //     });
+  //   } catch (error) {
+  //     console.error("Error submitting form:", error);
+  //   }
+  // };
 
   const handleProfileUpdate = async () => {
     const formData = new FormData();
+    formData.append("first_name", changeFirstName);
+    formData.append("last_name", changeLastName);
+
     if (imageFile) {
       formData.append("profile_pic", imageFile, imageFile.name);
     }
+
     try {
-      await changeProfileName({
-        body: formData,
-      });
+      await changeProfileName({ body: formData });
+      toast.success("Profile updated successfully");
     } catch (error) {
       console.error("Error submitting form:", error);
+      toast.error("Failed to update profile");
     }
   };
 
@@ -55,6 +76,7 @@ const EditProfile = () => {
   //     setImageFile(null);
   //   }
   // };
+
   const changeImageHandler = (event: any) => {
     const file: File | null = event.target.files[0];
     if (file) {
@@ -65,8 +87,8 @@ const EditProfile = () => {
   };
 
   useEffect(() => {
-    handleProfileUpdate();
-  }, [imageFile]);
+    profileViewHandler();
+  }, []);
 
   const profileViewHandler = () => {
     setLoading(true);
@@ -151,6 +173,9 @@ const EditProfile = () => {
       })
       .finally(() => {
         setLoading(false);
+      })
+      .catch((err: any) => {
+        toast.error("Old password doesn't match");
       });
   };
 
@@ -191,16 +216,16 @@ const EditProfile = () => {
                   <label htmlFor="">First Name</label>
                   <input
                     type="text"
-                    disabled={true}
-                    value={editUserProfile.first_name}
+                    value={changeFirstName}
+                    onChange={(e) => setChangeFirstName(e.target.value)}
                   />
                 </div>
                 <div className="col-50">
                   <label htmlFor="">Last Name</label>
                   <input
                     type="text"
-                    disabled={true}
-                    value={editUserProfile.last_name}
+                    value={changeLastName}
+                    onChange={(e) => setChangeLastName(e.target.value)}
                   />
                 </div>
               </div>
@@ -224,7 +249,7 @@ const EditProfile = () => {
               </div>
               <div className="form-group flex">
                 <div className="col-33 btn">
-                  <button type="button" onClick={handlChangeName}>
+                  <button type="button" onClick={handleProfileUpdate}>
                     Update Name
                   </button>
                 </div>
@@ -340,9 +365,7 @@ const EditProfile = () => {
                         </button>
                       </div>
                       <div className="col-50 btn">
-                        <button type="submit" disabled={isSubmitting}>
-                          {isSubmitting ? "Updating..." : "Update Changes"}
-                        </button>
+                        <button type="submit">Update Changes</button>
                       </div>
                     </div>
                   </Form>
@@ -352,7 +375,7 @@ const EditProfile = () => {
           </div>
         </div>
       )}
-      {changeName && (
+      {/* {changeName && (
         <div id="myModal" className="modal">
           <div
             className="modal-dialog modal-confirm"
@@ -367,7 +390,7 @@ const EditProfile = () => {
                 <input
                   type="text"
                   value={changeFirstName}
-                  onChange={(e: any) => setChangeFirstName(e.target.value)}
+                  onChange={(e) => setChangeFirstName(e.target.value)}
                 />
               </div>
               <div className="form-group">
@@ -375,7 +398,7 @@ const EditProfile = () => {
                 <input
                   type="text"
                   value={changeLastName}
-                  onChange={(e: any) => setChangeLastName(e.target.value)}
+                  onChange={(e) => setChangeLastName(e.target.value)}
                 />
               </div>
               <div className="form-group flex">
@@ -393,7 +416,7 @@ const EditProfile = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

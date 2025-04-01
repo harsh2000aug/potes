@@ -1,29 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
 import user from "../images/user.png";
 import { useLocation, useNavigate } from "react-router-dom";
-import { deleteContactApi } from "../store/Services/AllApi";
+import { deleteContactApi, profileContactApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
 
 const OpenProfile = () => {
   const location = useLocation();
-  const [openSection, setOpenSection] = useState<string | null>(null);
+  const [openSection, setOpenSection]: any = useState("personal");
   const [openDeletePop, setOpenDeletePop] = useState(false);
+  const [notes, setNotes]: any = useState([]);
 
   const toggleSection = (section: string) => {
     setOpenSection(openSection === section ? null : section);
   };
-  const profileData = location.state?.profileData;
-  console.log("profileData", profileData);
-  const navigate = useNavigate();
-  function formatDate(timestamp: any) {
-    const date = new Date(timestamp);
-    const yy = String(date.getFullYear());
-    const mm = String(date.getMonth() + 1).padStart(2, "0");
-    const dd = String(date.getDate()).padStart(2, "0");
 
-    return `${yy}-${mm}-${dd}`;
-  }
+  const profileData = location.state?.profileData;
+  const navigate = useNavigate();
 
   const deleteContactHandler = () => {
     deleteContactApi({
@@ -44,7 +37,39 @@ const OpenProfile = () => {
     setOpenDeletePop(!openDeletePop);
   };
 
-  const photo = profileData.photo;
+  // const photo = profileData.photo;
+
+  // useEffect(() => {
+  //   profileContactApi({
+  //     query: {
+  //       id: profileData.id,
+  //     },
+  //   })
+  //     .then((res: any) => {
+  //       console.log("res", res);
+  //     })
+  //     .catch((err: any) => {
+  //       console.log("err", err);
+  //     });
+  // }, []);
+
+  useEffect(() => {
+    profileContactApi({
+      query: {
+        id: profileData.id,
+      },
+    }).then((res: any) => {
+      setNotes(res.contact_notes);
+    });
+  }, []);
+
+  function formatDate(date: any) {
+    const d = new Date(date);
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${month}-${day}-${year}`;
+  }
 
   return (
     <>
@@ -78,7 +103,7 @@ const OpenProfile = () => {
           <Sidebar />
           <div className="main-area">
             <div className="back-btn">
-              <button type="button" onClick={() => navigate(-1)}>
+              <button type="button" onClick={() => navigate("/directory")}>
                 <i className="fa-solid fa-chevron-left"></i>
               </button>
             </div>
@@ -90,7 +115,7 @@ const OpenProfile = () => {
                       fontWeight: 800,
                     }}
                   >
-                    {profileData.full_name}
+                    {profileData?.full_name}
                   </h4>
                   <div className="btn">
                     <button
@@ -99,7 +124,6 @@ const OpenProfile = () => {
                       onClick={handleDeletePart}
                     >
                       <i className="fa-solid fa-trash"></i>
-                      Delete Contact
                     </button>
                     <button
                       type="button"
@@ -113,7 +137,6 @@ const OpenProfile = () => {
                       }
                     >
                       <i className="fa-solid fa-pencil"></i>
-                      Edit Contact
                     </button>
                     <button
                       type="button"
@@ -127,11 +150,19 @@ const OpenProfile = () => {
                       }
                     >
                       <i className="fa-solid fa-plus"></i>
-                      Add a note
                     </button>
                   </div>
                 </div>
                 <div className="flex space-bw">
+                  <div className="profile-pic-upload">
+                    <div className="circle">
+                      <img
+                        className="profile-pic"
+                        src={profileData?.photo ? profileData?.photo : user}
+                        alt="Profile"
+                      />
+                    </div>
+                  </div>
                   <div className="userDetail profile-information">
                     {/* Personal Information Accordion */}
                     <div className="accordion">
@@ -145,20 +176,25 @@ const OpenProfile = () => {
                         <div className="accordion-content">
                           <ul>
                             <li>
-                              <b>Name:</b> {profileData.full_name}
+                              <b>Name:</b> {profileData?.full_name}
+                            </li>
+
+                            <li>
+                              <b>Birthday:</b> {profileData?.birthday}
                             </li>
                             <li>
-                              <b>Birthday:</b> {profileData.birthday}
+                              <b>Email:</b> {profileData?.email}
                             </li>
                             <li>
-                              <b>Email:</b> {profileData.email}
-                            </li>
-                            <li>
-                              <b>Phone:</b> {profileData.phone}
+                              <b>Number:</b> {profileData?.phone}
                             </li>
                             <li>
                               <b>Anniversary:</b>{" "}
-                              {profileData.anniversary || "-"}
+                              {profileData?.anniversary || "-"}
+                            </li>
+                            <li>
+                              <b>Description:</b>{" "}
+                              {profileData?.description || "-"}
                             </li>
                           </ul>
                         </div>
@@ -199,16 +235,21 @@ const OpenProfile = () => {
                       </div>
                       {openSection === "children" && (
                         <div className="accordion-content">
-                          {profileData.children.map((itm: any) => (
-                            <ul key={itm.id}>
-                              <li>
-                                <b>Child Name:</b> {itm.name || "-"}
-                              </li>
-                              <li>
-                                <b>Child Birthday:</b> {itm.birthday || "-"}
-                              </li>
-                            </ul>
-                          ))}
+                          {Array.isArray(profileData.children) &&
+                          profileData.children.length > 0 ? (
+                            profileData.children.map((itm: any) => (
+                              <ul key={itm.id}>
+                                <li>
+                                  <b>Child Name:</b> {itm.name || "-"}
+                                </li>
+                                <li>
+                                  <b>Child Birthday:</b> {itm.birthday || "-"}
+                                </li>
+                              </ul>
+                            ))
+                          ) : (
+                            <p>-</p>
+                          )}
                         </div>
                       )}
                     </div>
@@ -316,15 +357,6 @@ const OpenProfile = () => {
                       )}
                     </div>
                   </div>
-                  <div className="profile-pic-upload">
-                    <div className="circle">
-                      <img
-                        className="profile-pic"
-                        src={profileData?.photo ? profileData?.photo : user}
-                        alt="Profile"
-                      />
-                    </div>
-                  </div>
                 </div>
                 <div className="allNotes">
                   <div>
@@ -343,10 +375,7 @@ const OpenProfile = () => {
                             fontSize: "14px",
                             marginRight: "5px",
                             cursor: "pointer",
-                            display:
-                              profileData?.contact_notes.length > 0
-                                ? "block"
-                                : "none",
+                            display: notes?.length > 0 ? "block" : "none",
                           }}
                         >
                           All notes
@@ -354,10 +383,7 @@ const OpenProfile = () => {
                         <i
                           className="fa-solid fa-keyboard"
                           style={{
-                            display:
-                              profileData?.contact_notes.length > 0
-                                ? "block"
-                                : "none",
+                            display: notes?.length > 0 ? "block" : "none",
                             cursor: "pointer",
                           }}
                         ></i>
@@ -365,24 +391,29 @@ const OpenProfile = () => {
                     </div>
                   </div>
                   <div>
-                    {profileData?.contact_notes.length > 0 ? (
-                      profileData?.contact_notes?.map((itm: any) => (
+                    {notes?.length > 0 ? (
+                      notes?.map((itm: any) => (
                         <div
                           key={itm.id}
                           className="flex al-center mb-15 border"
                         >
                           <div className="date">
-                            <span></span>
-                            <p>
-                              <i className="fa-solid fa-bell fa-shake"></i>
-                              {itm.reminder}
+                            {/* <span></span> */}
+                            <p className="flex al-center">
+                              <i
+                                className="fa-solid fa-bell fa-shake"
+                                style={{
+                                  display: itm.reminder ? "block" : "none",
+                                }}
+                              ></i>
+                              {formatDate(itm.reminder)}
                             </p>
                           </div>
                           <div className="note">
                             <p>{itm.note}</p>
                             <span>
                               (<i className="fa-solid fa-keyboard"></i>
-                              {formatDate(itm.updated_at)})
+                              {formatDate(itm.created_at)})
                             </span>
                           </div>
                         </div>

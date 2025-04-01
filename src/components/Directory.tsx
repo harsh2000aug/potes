@@ -46,9 +46,17 @@ const Directory = () => {
         id: userId,
       },
     }).then((res: any) => {
-      navigate("/profile", { state: { profileData: res } });
+      navigate(`/profile`, { state: { profileData: res } });
     });
   };
+
+  function formatDate(date: any) {
+    const d = new Date(date);
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${month}-${day}-${year}`;
+  }
 
   return (
     <div className="directory">
@@ -67,8 +75,8 @@ const Directory = () => {
                         <tr>
                           <th>Name</th>
                           <th>Email</th>
-                          <th>Phone No.</th>
-                          <th>D.O.B</th>
+                          <th>Number</th>
+                          <th>Birthday</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -102,7 +110,7 @@ const Directory = () => {
                               </td>
                               <td>{itm.email || "-"}</td>
                               <td>{itm.phone || "-"}</td>
-                              <td>{itm.birthday || "-"}</td>
+                              <td>{formatDate(itm.birthday) || "-"}</td>
                             </tr>
                           </React.Fragment>
                         ))}
@@ -127,8 +135,8 @@ const Directory = () => {
                         <tr>
                           <th>Name</th>
                           <th>Email</th>
-                          <th>Phone No.</th>
-                          <th>D.O.B</th>
+                          <th>Number</th>
+                          <th>Birthday</th>
                         </tr>
                       </thead>
                       <tbody>

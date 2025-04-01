@@ -11,11 +11,13 @@ import {
 import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
   const [birthdays, setBirthdays]: any = useState([]);
+  const [spousebirthdays, setSpouseBirthdays]: any = useState([]);
+  const [childBirthdays, setChildBirthdays]: any = useState([]);
   const [anniversary, setAnniversary]: any = useState([]);
   const [reminders, setReminders]: any = useState([]);
   const [remindersTomm, setRemindersTomm]: any = useState([]);
   const [remindersUpcoming, setRemindersUpcoming]: any = useState([]);
-  const [today, setToday]: any = useState(false);
+  const [today, setToday]: any = useState(true);
   const [tommorow, setTommorow]: any = useState(false);
   const [upcoming, setUpcoming]: any = useState(false);
   const [contactAndNotes, setContactAndNotes]: any = useState({});
@@ -31,12 +33,22 @@ const Dashboard = () => {
     });
   };
 
+  function formatDate(date: any) {
+    const d = new Date(date);
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${month}-${day}-${year}`;
+  }
+
   useEffect(() => {
     setLoading(true);
     showBirthdays()
       .then((res: any) => {
         setBirthdays(res.birthdays);
         setAnniversary(res.anniversary);
+        setSpouseBirthdays(res.spouse_birthday);
+        setChildBirthdays(res.child_birthday);
       })
       .catch((err: any) => {
         console.log("err", err);
@@ -280,8 +292,8 @@ const Dashboard = () => {
                                 {itm.note.length > 20
                                   ? `${itm.note.slice(
                                       0,
-                                      50
-                                    )} ... ${itm.note.slice(-10)}`
+                                      20
+                                    )} ... ${itm.note.slice(-20)}`
                                   : itm.note}
                               </p>
                             </div>
@@ -295,101 +307,195 @@ const Dashboard = () => {
               <div className="col-50">
                 <div className="common-back mb-15">
                   <h3>This Happened an year ago</h3>
-                  <ul>
-                    {contactAndNotes.notes?.map((itm: any) => (
-                      <li
-                        style={{
-                          cursor: "pointer",
-                        }}
-                        key={itm}
-                        className="flex"
-                        onClick={() => profileHandler(itm?.contact)}
-                      >
-                        <span
+                  <div className="scroll">
+                    <ul>
+                      {contactAndNotes.notes?.map((itm: any) => (
+                        <li
                           style={{
-                            color: "#fff",
-                            marginRight: "10px",
-                            fontWeight: "700",
+                            cursor: "pointer",
                           }}
+                          key={itm}
+                          className="flex"
+                          onClick={() => profileHandler(itm?.contact)}
                         >
-                          {itm?.contact_full_name} :
-                        </span>
-                        <p>
-                          {itm.note.length > 60
-                            ? `${itm.note.slice(
-                                0,
-                                30
-                              )} ....... ${itm.note.slice(-10)}`
-                            : itm.note}
-                        </p>
-                      </li>
-                    ))}
-                  </ul>
+                          <span
+                            style={{
+                              color: "#fff",
+                              marginRight: "10px",
+                              fontWeight: "700",
+                            }}
+                          >
+                            {itm?.contact_full_name} :
+                          </span>
+                          <p>
+                            {itm.note.length > 60
+                              ? `${itm.note.slice(
+                                  0,
+                                  30
+                                )} ....... ${itm.note.slice(-10)}`
+                              : itm.note}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
                 <div className="common-back">
                   <h3>Events</h3>
-                  <h5
-                    style={{
-                      color: "#fff",
-                      fontSize: "18px",
-                      marginBottom: "10px",
-                      fontWeight: 700,
-                    }}
-                  >
-                    Birthdays
-                  </h5>
-                  <ul style={{ marginBottom: "20px" }}>
-                    {birthdays && birthdays.length > 0 ? (
-                      birthdays.map((itm: any) => (
-                        <li key={itm.id}>
-                          <div className="flex space-bw al-center">
-                            <div className="flex al-center">
-                              {itm?.photo ? (
-                                <img src={itm?.photo} alt="" />
-                              ) : (
-                                <i className="fa-regular fa-circle-user"></i>
-                              )}
-                              <p>{itm.full_name}</p>
+                  <div className="scroll">
+                    <h5
+                      style={{
+                        color: "#fff",
+                        fontSize: "18px",
+                        marginBottom: "10px",
+                        fontWeight: 700,
+                      }}
+                    >
+                      Birthdays
+                    </h5>
+                    <ul style={{ marginBottom: "20px" }}>
+                      {birthdays && birthdays.length > 0 ? (
+                        birthdays.map((itm: any) => (
+                          <li
+                            key={itm.id}
+                            style={{
+                              cursor: "pointer",
+                            }}
+                            onClick={() => profileHandler(itm?.id)}
+                          >
+                            <div className="flex space-bw al-center">
+                              <div className="flex al-center">
+                                {itm?.photo ? (
+                                  <img src={itm?.photo} alt="" />
+                                ) : (
+                                  <i className="fa-regular fa-circle-user"></i>
+                                )}
+                                <p>{itm.full_name}</p>
+                              </div>
+                              <p>{formatDate(itm.birthday)}</p>
                             </div>
-                            <p>{itm.birthday}</p>
-                          </div>
-                        </li>
-                      ))
-                    ) : (
-                      <p>No birthdays found</p>
-                    )}
-                  </ul>
-                  <h5
-                    style={{
-                      color: "#fff",
-                      fontSize: "18px",
-                      marginBottom: "10px",
-                      fontWeight: 700,
-                    }}
-                  >
-                    Anniversary
-                  </h5>
-                  <ul>
-                    {anniversary && anniversary.length > 0 ? (
-                      anniversary.map((itm: any) => (
-                        <li key={itm.id}>
-                          <div className="flex space-bw al-center">
-                            <div className="flex al-center">
-                              {itm?.photo ? (
-                                <img src={itm?.photo} alt="" />
-                              ) : (
-                                <i className="fa-regular fa-circle-user"></i>
-                              )}
-                              <p>{itm.full_name}</p>
+                          </li>
+                        ))
+                      ) : (
+                        <p>No birthdays found</p>
+                      )}
+                    </ul>
+                    <h5
+                      style={{
+                        color: "#fff",
+                        fontSize: "18px",
+                        marginBottom: "10px",
+                        fontWeight: 700,
+                      }}
+                    >
+                      Anniversary
+                    </h5>
+                    <ul style={{ marginBottom: "20px" }}>
+                      {anniversary && anniversary.length > 0 ? (
+                        anniversary.map((itm: any) => (
+                          <li
+                            key={itm.id}
+                            style={{
+                              cursor: "pointer",
+                            }}
+                            onClick={() => profileHandler(itm?.id)}
+                          >
+                            <div className="flex space-bw al-center">
+                              <div className="flex al-center">
+                                {itm?.photo ? (
+                                  <img src={itm?.photo} alt="" />
+                                ) : (
+                                  <i className="fa-regular fa-circle-user"></i>
+                                )}
+                                <p>{itm.full_name}</p>
+                              </div>
+                              <p>{formatDate(itm.anniversary)}</p>
                             </div>
-                            <p>{itm.anniversary}</p>
-                          </div>
-                        </li>
-                      ))
-                    ) : (
-                      <p>No anniversaries found</p>
-                    )}
-                  </ul>
+                          </li>
+                        ))
+                      ) : (
+                        <p>No anniversaries found</p>
+                      )}
+                    </ul>
+                    <h5
+                      style={{
+                        color: "#fff",
+                        fontSize: "18px",
+                        marginBottom: "10px",
+                        fontWeight: 700,
+                      }}
+                    >
+                      Spouse's Birthdays
+                    </h5>
+                    <ul style={{ marginBottom: "20px" }}>
+                      {spousebirthdays && spousebirthdays.length > 0 ? (
+                        spousebirthdays.map((itm: any) => (
+                          <li
+                            key={itm.id}
+                            style={{
+                              cursor: "pointer",
+                            }}
+                            onClick={() => profileHandler(itm?.id)}
+                          >
+                            <div className="flex space-bw al-center">
+                              <div className="flex al-center">
+                                {itm?.photo ? (
+                                  <img src={itm?.photo} alt="" />
+                                ) : (
+                                  <i className="fa-regular fa-circle-user"></i>
+                                )}
+                                <p>
+                                  {itm.spouse_name} ({itm.full_name}'s Spouse)
+                                </p>
+                              </div>
+                              <p>{formatDate(itm.spouse_birthday)}</p>
+                            </div>
+                          </li>
+                        ))
+                      ) : (
+                        <p>No spouse's birthdays found</p>
+                      )}
+                    </ul>
+                    <h5
+                      style={{
+                        color: "#fff",
+                        fontSize: "18px",
+                        marginBottom: "10px",
+                        fontWeight: 700,
+                      }}
+                    >
+                      Child's Birthdays
+                    </h5>
+                    <ul>
+                      {childBirthdays && childBirthdays.length > 0 ? (
+                        childBirthdays.map((itm: any) => (
+                          <li
+                            key={itm.id}
+                            style={{
+                              cursor: "pointer",
+                            }}
+                            onClick={() => profileHandler(itm?.contact)}
+                          >
+                            <div className="flex space-bw al-center">
+                              <div className="flex al-center">
+                                {itm?.contact__photo ? (
+                                  <img src={itm?.contact__photo} alt="" />
+                                ) : (
+                                  <i className="fa-regular fa-circle-user"></i>
+                                )}
+                                <p>
+                                  {itm.name} ({itm.contact__full_name}'s Child)
+                                </p>
+                              </div>
+                              <p>{formatDate(itm.birthday)}</p>
+                            </div>
+                          </li>
+                        ))
+                      ) : (
+                        <p>No child's birthdays found</p>
+                      )}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>

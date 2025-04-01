@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
 import { useLocation, useNavigate } from "react-router-dom";
-import { deleteNotes, editNote, getNotesApi } from "../store/Services/AllApi";
+import { deleteNotes, editNote, getNotesApi, profileContactApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
 
@@ -21,6 +21,7 @@ const AllNotes = () => {
   const [loading, setLoading] = useState(false);
   const [interval, setInterval] = useState("");
   const [reminder, setReminder] = useState("");
+  const [saveId,setSaveId]= useState("");
 
   const navigate = useNavigate();
 
@@ -100,23 +101,36 @@ const AllNotes = () => {
       },
     })
       .then((res) => {
+        setSaveId(res[0].contact)
         if (currentNote) {
           setAllNotes(res?.filter((item) => item?.id === currentNote?.id));
+         
         } else {
           setAllNotes(res);
         }
       })
       .catch((err) => {
-        toast.error(err.data.error);
+        toast.error(err?.data?.error.length> 0 ? err?.data?.error : "No note found");
         console.log(err);
       })
       .finally(() => {
         setLoading(false);
       });
   };
+ 
   useEffect(() => {
     fetchNotes();
   }, []);
+  
+  const profileHandler = () => {
+    profileContactApi({
+      query: {
+        id: saveId,
+      },
+    }).then((res) => {
+      navigate("/profile", { state: { profileData: res } });
+    });
+  };
 
   const handleDelete = (id) => {
     setLoading(true);
@@ -124,9 +138,11 @@ const AllNotes = () => {
       query: { id },
     })
       .then((res) => {
-        console.log(res);
+        toast.success("Note Deleted Successfully");
         setPopupOpen(false);
-        fetchNotes();
+        profileHandler()
+        // fetchNotes();
+        // navigate("/directory");
       })
       .catch((err) => {
         toast.error(err.data.error);
@@ -149,10 +165,12 @@ const AllNotes = () => {
       .then((res) => {
         toast.success("Noted Edited successfully");
         setOpenEdit(false);
-        fetchNotes();
+        profileHandler()
+        // fetchNotes();
+       
       })
       .catch((err) => {
-        toast.error(err.data.error);
+        toast.error("Please enter all details");
         console.log(err);
       })
       .finally(() => {
@@ -168,6 +186,8 @@ const AllNotes = () => {
 
     return `${yy}-${mm}-${dd}`;
   }
+
+
 
   return (
     <>
@@ -284,16 +304,20 @@ const AllNotes = () => {
             <div className="body-area">
               <div className="common-back">
                 <div className="allNotes">
-                  <h4
-                    style={{
-                      marginBottom: "15px",
-                    }}
-                  >
-                    Notes
-                  </h4>
+                  <div className="flex space-bw al-center"
+                      style={{
+                        marginBottom: "15px",
+                      }}>
+                    <h4>
+                    Notes for {allNotes?.[0]?.contact_full_name}
+                    </h4>
+                    <div className="btn">
+                      <button onClick={profileHandler}>Visit profile</button>
+                    </div>
+                  </div>
                   <div>
-                    {allNotes.map((itm, index) => (
-                      <div className="mb-15 p-relate border" key={index}>
+                    {allNotes.length>0?allNotes.map((itm) => (
+                      <div className="mb-15 p-relate border" key={itm.id}>
                         <div className="date">
                           <p>{itm.reminder}</p>
                         </div>
@@ -320,11 +344,11 @@ const AllNotes = () => {
                           </div>
                           <span>
                               (<i className="fa-solid fa-keyboard"></i>
-                              {formatDate(itm.updated_at)})
+                              {formatDate(itm.created_at)})
                             </span>
                         </div>
                       </div>
-                    ))}
+                    )):<p>No Note found</p>}
                   </div>
                 </div>
               </div>
