@@ -176,11 +176,15 @@ const OpenProfile = () => {
                         <div className="accordion-content">
                           <ul>
                             <li>
-                              <b>Name:</b> {profileData?.full_name}
+                              <b>Name or Description:</b>{" "}
+                              {profileData?.full_name}
                             </li>
 
                             <li>
-                              <b>Birthday:</b> {profileData?.birthday}
+                              <b>Birthday:</b>{" "}
+                              {profileData?.birthday
+                                ? formatDate(profileData?.birthday)
+                                : "-"}
                             </li>
                             <li>
                               <b>Email:</b> {profileData?.email}
@@ -190,11 +194,9 @@ const OpenProfile = () => {
                             </li>
                             <li>
                               <b>Anniversary:</b>{" "}
-                              {profileData?.anniversary || "-"}
-                            </li>
-                            <li>
-                              <b>Description:</b>{" "}
-                              {profileData?.description || "-"}
+                              {profileData?.anniversary
+                                ? formatDate(profileData?.anniversary)
+                                : "-"}
                             </li>
                           </ul>
                         </div>
@@ -218,7 +220,7 @@ const OpenProfile = () => {
                             </li>
                             <li>
                               <b>Spouse Birthday:</b>{" "}
-                              {profileData.spouse_birthday || "-"}
+                              {formatDate(profileData.spouse_birthday) || "-"}
                             </li>
                           </ul>
                         </div>
@@ -243,7 +245,8 @@ const OpenProfile = () => {
                                   <b>Child Name:</b> {itm.name || "-"}
                                 </li>
                                 <li>
-                                  <b>Child Birthday:</b> {itm.birthday || "-"}
+                                  <b>Child Birthday:</b>{" "}
+                                  {formatDate(itm.birthday) || "-"}
                                 </li>
                               </ul>
                             ))

@@ -61,7 +61,6 @@ const CreateContact = () => {
     spouse_bdy: "",
     spouse_details: "",
     interests: "",
-    description: "",
   });
   const navigate = useNavigate();
 
@@ -153,7 +152,6 @@ const CreateContact = () => {
     }
 
     formData.append("spouse_details", personalDetail.spouse_details);
-    formData.append("description", personalDetail.description);
     formData.append("children", JSON.stringify(children));
     formData.append("previous_employers", JSON.stringify(experiences));
     formData.append("universities", JSON.stringify(educationList));
@@ -197,11 +195,9 @@ const CreateContact = () => {
     setInterests(interests.filter((_: any, i: any) => i !== index));
   };
 
-  // value add for custom
-
   const managePersonalDetail = () => {
     setOpenDetails(!openDetails);
-    if (openDetails) {
+    if (!openDetails) {
       $("#personal").css("display", "block");
     } else {
       $("#personal").css("display", "none");
@@ -240,6 +236,10 @@ const CreateContact = () => {
       $("#interest").css("display", "none");
     }
   };
+
+  useEffect(() => {
+    $("#personal").css("display", "block");
+  }, []);
 
   return (
     <div className="directory">
@@ -283,10 +283,10 @@ const CreateContact = () => {
                   </div>
                   <div className="form-group flex space-bw">
                     <div className="col-50">
-                      <label htmlFor="">Full Name</label>
+                      <label htmlFor="">Name or Description</label>
                       <input
                         type="text"
-                        placeholder="Enter full name"
+                        placeholder="Enter name or description"
                         value={personalDetail.full_name}
                         onChange={(e: any) =>
                           setPersonalDetail((oldVal: any) => {
@@ -326,20 +326,7 @@ const CreateContact = () => {
                     </div>
                   </div>
                   <div className="form-group flex space-bw">
-                    <div className="col-33">
-                      <label htmlFor="">Description</label>
-                      <input
-                        type="text"
-                        placeholder="Enter description"
-                        value={personalDetail.description}
-                        onChange={(e: any) =>
-                          setPersonalDetail((oldVal: any) => {
-                            return { ...oldVal, description: e.target.value };
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="col-33">
+                    <div className="col-50">
                       <label htmlFor="">Email</label>
                       <input
                         type="email"
@@ -349,7 +336,7 @@ const CreateContact = () => {
                       />
                       {error && <p style={{ color: "red" }}>{error}</p>}
                     </div>
-                    <div className="col-33">
+                    <div className="col-50">
                       <label htmlFor="">Number</label>
                       <input
                         type="text"

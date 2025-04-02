@@ -33,12 +33,13 @@ const Dashboard = () => {
     });
   };
 
-  function formatDate(date: any) {
-    const d = new Date(date);
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    const year = d.getFullYear();
-    return `${month}-${day}-${year}`;
+  function formatDate(timestamp: any) {
+    const date = new Date(timestamp);
+    const yy = String(date.getFullYear());
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+
+    return `${mm}-${dd}-${yy}`;
   }
 
   useEffect(() => {
@@ -155,11 +156,11 @@ const Dashboard = () => {
                                 >
                                   {itm.contact_full_name}:
                                 </b>
-                                {itm.note.length > 20
+                                {itm.note.length > 50
                                   ? `${itm.note.slice(
                                       0,
-                                      50
-                                    )} ... ${itm.note.slice(-10)}`
+                                      25
+                                    )} ... ${itm.note.slice(-25)}`
                                   : itm.note}
                               </p>
                             </div>
@@ -222,11 +223,11 @@ const Dashboard = () => {
                                 >
                                   {itm.contact_full_name}:
                                 </b>
-                                {itm.note.length > 20
+                                {itm.note.length > 50
                                   ? `${itm.note.slice(
                                       0,
-                                      50
-                                    )} ... ${itm.note.slice(-10)}`
+                                      25
+                                    )} ... ${itm.note.slice(-25)}`
                                   : itm.note}
                               </p>
                             </div>
@@ -289,11 +290,11 @@ const Dashboard = () => {
                                 >
                                   {itm.contact_full_name}:
                                 </b>
-                                {itm.note.length > 20
+                                {itm.note.length > 50
                                   ? `${itm.note.slice(
                                       0,
-                                      20
-                                    )} ... ${itm.note.slice(-20)}`
+                                      25
+                                    )} ... ${itm.note.slice(-25)}`
                                   : itm.note}
                               </p>
                             </div>

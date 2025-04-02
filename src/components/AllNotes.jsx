@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { deleteNotes, editNote, getNotesApi, profileContactApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
+import user from "../images/user.png";
 
 const AllNotes = () => {
   const location = useLocation();
@@ -184,7 +185,7 @@ const AllNotes = () => {
     const mm = String(date.getMonth() + 1).padStart(2, "0");
     const dd = String(date.getDate()).padStart(2, "0");
 
-    return `${yy}-${mm}-${dd}`;
+    return `${mm}-${dd}-${yy}`;
   }
 
 
@@ -269,6 +270,7 @@ const AllNotes = () => {
                     <input
                       type="date"
                       value={reminder}
+                      style={{cursor:"pointer"}}
                       onChange={(e) => setReminder(e.target.value)}
                     />
                   </div>
@@ -309,12 +311,15 @@ const AllNotes = () => {
                         marginBottom: "15px",
                       }}>
                     <h4>
-                    Notes for {allNotes?.[0]?.contact_full_name}
+                    Notes
                     </h4>
-                    <div className="btn">
-                      <button onClick={profileHandler}>Visit profile</button>
-                    </div>
                   </div>
+                    <div className="flex" onClick={profileHandler} style={{marginBottom:"10px",cursor:"pointer"}}>
+                      <img src={allNotes[0]?.contact_photo ?allNotes[0]?.contact_photo:user } alt="" />
+                      <h4 style={{fontSize:"15px"}}>
+                        {allNotes?.[0]?.contact_full_name}
+                      </h4>
+                    </div>
                   <div>
                     {allNotes.length>0?allNotes.map((itm) => (
                       <div className="mb-15 p-relate border" key={itm.id}>

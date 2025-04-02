@@ -50,12 +50,13 @@ const Directory = () => {
     });
   };
 
-  function formatDate(date: any) {
-    const d = new Date(date);
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    const year = d.getFullYear();
-    return `${month}-${day}-${year}`;
+  function formatDate(timestamp: any) {
+    const date = new Date(timestamp);
+    const yy = String(date.getFullYear());
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+
+    return `${mm}-${dd}-${yy}`;
   }
 
   return (
@@ -110,7 +111,9 @@ const Directory = () => {
                               </td>
                               <td>{itm.email || "-"}</td>
                               <td>{itm.phone || "-"}</td>
-                              <td>{formatDate(itm.birthday) || "-"}</td>
+                              <td>
+                                {itm.birthday ? formatDate(itm.birthday) : "-"}
+                              </td>
                             </tr>
                           </React.Fragment>
                         ))}

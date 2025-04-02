@@ -22,7 +22,7 @@ const EditNote = () => {
               </div>
               <div className="form-group">
                 <label htmlFor="">Set a Reminder</label>
-                <input type="date" />
+                <input type="date" style={{ cursor: "pointer" }} />
               </div>
               <div className="form-group">
                 <div className="col-33">

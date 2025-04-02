@@ -30,26 +30,30 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
   const searchContentApiHandler = async () => {
     if (everySearch !== "") {
       try {
-        const res: any = await mainSearchApi({
+        const res = await mainSearchApi({
           query: {
             q: everySearch,
           },
-        }).then((res: any) => {
-          setApiResponse(res);
-          setSearchedItem(everySearch);
-          // $(".searchDown").css("display", "block");
-          // navigate("/search-result", { state: { searchAnswer: res } });
+        });
+
+        setApiResponse(res);
+        setSearchedItem(everySearch);
+
+        // Pass res and everySearch directly
+        navigate("/search-result", {
+          state: { searchAnswer: res, word: everySearch },
         });
       } catch (err) {
         console.log("err", err);
       }
     } else {
-      $(".searchDown").css("display", "none");
+      toast.error("Please write something to search");
     }
   };
-  useEffect(() => {
-    searchContentApiHandler();
-  }, [everySearch]);
+
+  // useEffect(() => {
+  //   searchContentApiHandler();
+  // }, [everySearch]);
 
   useEffect(() => {
     editProfile()
@@ -77,17 +81,17 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
   const handleOpenSidebar = () => setIsOpen(true);
   const handleCloseSidebar = () => setIsOpen(false);
 
-  const handleNewSearch = () => {
-    if (window.location.pathname !== "/directory") {
-      if (everySearch !== "") {
-        navigate("/search-result", {
-          state: { searchAnswer: apiResponse, word: searcheditem },
-        });
-      } else {
-        toast.error("Please write something to search");
-      }
-    }
-  };
+  // const handleNewSearch = () => {
+  //   if (window.location.pathname !== "/directory") {
+  //     if (everySearch !== "") {
+  //       navigate("/search-result", {
+  //         state: { searchAnswer: apiResponse, word: searcheditem },
+  //       });
+  //     } else {
+  //       toast.error("Please write something to search");
+  //     }
+  //   }
+  // };
 
   return (
     <div className="top-area">
@@ -168,7 +172,10 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
                 }
               />
               <div className="search-box-icon">
-                <button className="btn-icon-content" onClick={handleNewSearch}>
+                <button
+                  className="btn-icon-content"
+                  onClick={searchContentApiHandler}
+                >
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </div>

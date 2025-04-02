@@ -241,6 +241,7 @@ const CreateNote = () => {
                     <input
                       type="date"
                       value={reminder}
+                      style={{cursor:"pointer"}}
                       onChange={(e) => setReminder(e.target.value)}
                     />
                   </div>

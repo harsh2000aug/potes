@@ -45,7 +45,6 @@ const EditContact = () => {
     spouse_details: "",
     interests: "",
     anniversary: "",
-    description: "",
   });
   const navigate = useNavigate();
 
@@ -160,7 +159,6 @@ const EditContact = () => {
       personalDetail.spouse_ani ? personalDetail.spouse_ani : "kkk"
     );
 
-    formData.append("description", personalDetail.description);
     formData.append("spouse_details", personalDetail.spouse_details);
     formData.append("children", JSON.stringify(children));
     formData.append("previous_employers", JSON.stringify(experiences));
@@ -278,7 +276,6 @@ const EditContact = () => {
         spouse_bdy: editUserFinal?.spouse_birthday || "",
         spouse_details: editUserFinal?.spouse_details || "",
         spouse_ani: editUserFinal?.anniversary || "",
-        description: editUserFinal?.description || "",
       });
       setChildren(editUserFinal?.children || []);
       setExperiences(editUserFinal?.previous_employers || []);
@@ -331,7 +328,7 @@ const EditContact = () => {
                   </div>
                   <div className="form-group flex space-bw">
                     <div className="col-50">
-                      <label htmlFor="">Full Name</label>
+                      <label htmlFor="">Name or Description</label>
                       <input
                         type="text"
                         value={personalDetail.full_name}
@@ -366,17 +363,7 @@ const EditContact = () => {
                     </div>
                   </div>
                   <div className="form-group flex space-bw">
-                    <div className="col-33">
-                      <label htmlFor="">Description</label>
-                      <input
-                        type="text"
-                        value={personalDetail.description}
-                        onChange={(e) => {
-                          handleInputChange("description", e.target.value);
-                        }}
-                      />
-                    </div>
-                    <div className="col-33">
+                    <div className="col-50">
                       <label htmlFor="">Email</label>
                       <input
                         type="email"
@@ -389,7 +376,7 @@ const EditContact = () => {
                         <p style={{ color: "red" }}>{emailError}</p>
                       )}
                     </div>
-                    <div className="col-33">
+                    <div className="col-50">
                       <label htmlFor="">Number</label>
                       <input
                         type="text"

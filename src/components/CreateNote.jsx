@@ -186,10 +186,11 @@ const profileHandler = (addId) => {
                 </div>
                 {interval === "Custom" && (
                   <div className="col-50">
-                    <label>Set a Reminder</label>
+                    <label  >Set a Reminder</label>
                     <input
                       type="date"
                       value={reminder}
+                      style={{cursor:"pointer"}}
                       onChange={(e) => setReminder(e.target.value)}
                     />
                   </div>
