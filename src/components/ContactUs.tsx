@@ -6,7 +6,7 @@ import { contactUsApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
 import { useNavigate } from "react-router-dom";
-
+import logo from "../images/logo.png";
 const ContactUs = () => {
   const [contactUs, setContactUs]: any = useState();
   const [loading, setLoading]: any = useState(false);
@@ -56,9 +56,14 @@ const ContactUs = () => {
         <Sidebar current={"Contact Us"} />
         <div className="main-area">
           <div className="back-btn">
-            <button type="button" onClick={() => navigate(-1)}>
-              <i className="fa-solid fa-chevron-left"></i>
-            </button>
+            <div className="flex al-center">
+              <button type="button" onClick={() => navigate(-1)}>
+                <i className="fa-solid fa-chevron-left"></i>
+              </button>
+              <div className="logo" onClick={() => navigate("/")}>
+                <img src={logo} alt="Logo" />
+              </div>
+            </div>
           </div>
           <div className="body-area">
             <div className="common-back">

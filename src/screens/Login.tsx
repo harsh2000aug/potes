@@ -106,6 +106,7 @@ const Login = () => {
   };
 
   const handleSubmit1 = (values: any) => {
+    setLoading(true);
     forgotPasswordEmail({
       body: {
         email: values.email,
@@ -120,6 +121,9 @@ const Login = () => {
       })
       .catch((error) => {
         toast.error(error.data.error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -150,7 +154,9 @@ const Login = () => {
           <form onSubmit={formik.handleSubmit}>
             <div className="form-control">
               <div className="coolinput">
-                <label className="text">Username:</label>
+                <label className="text">
+                  Username:<sup>*</sup>
+                </label>
                 <input
                   type="text"
                   name="username"
@@ -166,7 +172,9 @@ const Login = () => {
             </div>
             <div className="form-control">
               <div className="coolinput">
-                <label className="text">Password:</label>
+                <label className="text">
+                  Password:<sup>*</sup>
+                </label>
                 <div className="password-wrapper">
                   <input
                     type={showPassword ? "text" : "password"}
@@ -253,6 +261,73 @@ const Login = () => {
           </div>
         </div>
       )}
+      {/* {otpPopup && (
+        <div className="otpScreen">
+          <div className="otpEnter">
+            <i
+              className="fa-solid fa-xmark"
+              onClick={() => setOtpPopup(false)}
+            ></i>
+            <div className="otpContainer">
+              <h1>OTP Verification</h1>
+              <p>Enter the OTP you received on email</p>
+
+              <Formik
+                initialValues={initialValues2}
+                validationSchema={validationSchemaOtp}
+                onSubmit={handleSubmitOtp}
+              >
+                {({
+                  values,
+                  handleChange,
+                  handleBlur,
+                  errors,
+                  touched,
+                  isValid,
+                  setFieldError,
+                }) => (
+                  <Form>
+                    <div className="otp-input">
+                      {values.otp.map((digit: any, index: any) => (
+                        <Field
+                          key={index}
+                          name={`otp[${index}]`}
+                          type="text"
+                          maxLength={1}
+                          value={digit}
+                          onChange={(e: any) => {
+                            handleChange(e);
+                            if (e.target.value === "") {
+                              setFieldError("otp", "All fields are required");
+                            }
+                          }}
+                          onBlur={handleBlur}
+                          className="otp-box"
+                        />
+                      ))}
+                    </div>
+
+                    {errors.otp && (
+                      <div className="error-text">{errors.otp.slice(0, 1)}</div>
+                    )}
+
+                    <button type="submit" disabled={!isValid}>
+                      Verify
+                    </button>
+                  </Form>
+                )}
+              </Formik>
+
+              <div className="resend-text">
+                Didn't receive the code?
+                <span className="resend-link" onClick={handleResend}>
+                  Resend Code
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )} */}
       {otpPopup && (
         <div className="otpScreen">
           <div className="otpEnter">
@@ -291,6 +366,19 @@ const Login = () => {
                             handleChange(e);
                             if (e.target.value === "") {
                               setFieldError("otp", "All fields are required");
+                            }
+
+                            // Move focus to next input box
+                            if (
+                              e.target.value &&
+                              index < values.otp.length - 1
+                            ) {
+                              const nextInput = document.querySelector(
+                                `input[name="otp[${index + 1}]"]`
+                              );
+                              if (nextInput) {
+                                (nextInput as HTMLElement).focus();
+                              }
                             }
                           }}
                           onBlur={handleBlur}

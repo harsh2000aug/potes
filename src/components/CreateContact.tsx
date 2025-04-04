@@ -7,13 +7,21 @@ import $ from "jquery";
 import user from "../images/user.png";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import logo from "../images/logo.png";
 const CreateContact = () => {
-  const [children, setChildren]: any = useState([]);
-  const [experiences, setExperiences]: any = useState([]);
-  const [educationList, setEducationList]: any = useState([]);
-  const [interests, setInterests]: any = useState([]);
-  const [customField, setCustomField]: any = useState([]);
+  const [children, setChildren]: any = useState([
+    { name: "", birthday: "", details: "" },
+  ]);
+  const [experiences, setExperiences]: any = useState([
+    { name: "", details: "" },
+  ]);
+  const [educationList, setEducationList]: any = useState([
+    { name: "", details: "" },
+  ]);
+  const [interests, setInterests]: any = useState([""]);
+  const [customField, setCustomField]: any = useState([
+    { title: "", values: [""] },
+  ]);
   const [showCustomField, setShowCustomField]: any = useState(false);
   const [openDetails, setOpenDetails]: any = useState(true);
   const [openFamily, setOpenFamily]: any = useState(true);
@@ -247,9 +255,14 @@ const CreateContact = () => {
         <Sidebar current={"Create Contact"} />
         <div className="main-area">
           <div className="back-btn">
-            <button type="button" onClick={() => navigate(-1)}>
-              <i className="fa-solid fa-chevron-left"></i>
-            </button>
+            <div className="flex al-center">
+              <button type="button" onClick={() => navigate(-1)}>
+                <i className="fa-solid fa-chevron-left"></i>
+              </button>
+              <div className="logo" onClick={() => navigate("/")}>
+                <img src={logo} alt="Logo" />
+              </div>
+            </div>
           </div>
           <div className="body-area">
             <div className="common-back createContact">
@@ -283,7 +296,9 @@ const CreateContact = () => {
                   </div>
                   <div className="form-group flex space-bw">
                     <div className="col-50">
-                      <label htmlFor="">Name or Description</label>
+                      <label htmlFor="">
+                        Name or Description<sup>*</sup>
+                      </label>
                       <input
                         type="text"
                         placeholder="Enter name or description"
@@ -297,7 +312,9 @@ const CreateContact = () => {
                     </div>
                     <div className="col-50 flex space-bw">
                       <div className="col-50">
-                        <label htmlFor="">Birthday</label>
+                        <label htmlFor="">
+                          Birthday<sup>*</sup>
+                        </label>
                         <input
                           type="date"
                           value={personalDetail.birthday}
@@ -327,7 +344,9 @@ const CreateContact = () => {
                   </div>
                   <div className="form-group flex space-bw">
                     <div className="col-50">
-                      <label htmlFor="">Email</label>
+                      <label htmlFor="">
+                        Email<sup>*</sup>
+                      </label>
                       <input
                         type="email"
                         placeholder="Enter email"
@@ -337,10 +356,12 @@ const CreateContact = () => {
                       {error && <p style={{ color: "red" }}>{error}</p>}
                     </div>
                     <div className="col-50">
-                      <label htmlFor="">Number</label>
+                      <label htmlFor="">
+                        Number<sup>*</sup>
+                      </label>
                       <input
                         type="text"
-                        placeholder="Enter Number"
+                        placeholder="Enter number"
                         value={personalDetail.phone_no}
                         onChange={(e: any) => {
                           let inputValue = e.target.value.replace(/\D/g, "");
@@ -400,19 +421,6 @@ const CreateContact = () => {
                           })
                         }
                       />
-                      {/* <div className="col-50">
-                        <label>Anniversary</label>
-                        <input
-                          type="date"
-                          max={new Date().toISOString().split("T")[0]}
-                          value={personalDetail.spouse_ani}
-                          onChange={(e: any) =>
-                            setPersonalDetail((oldVal: any) => {
-                              return { ...oldVal, spouse_ani: e.target.value };
-                            })
-                          }
-                        />
-                      </div> */}
                     </div>
                   </div>
                   <div className="form-group">
@@ -484,130 +492,139 @@ const CreateContact = () => {
                 <h4 onClick={manageExpDetail}>
                   Employment <i className="fa-solid fa-plus"></i>
                 </h4>
-                {experiences.map((exp: any, index: any) => (
-                  <div key={index} className="p-relate delete-class">
-                    <i
-                      className="fa-solid fa-trash"
-                      onClick={() => removeExperience(index)}
-                    ></i>
-                    <div className="form-group flex space-bw">
-                      <div className="col-50">
-                        <label>Employer Name</label>
-                        <input
-                          placeholder="Enter employer name"
-                          type="text"
-                          value={exp.name}
+                <div id="exp">
+                  {experiences.map((exp: any, index: any) => (
+                    <div key={index} className="p-relate delete-class">
+                      <i
+                        className="fa-solid fa-trash"
+                        onClick={() => removeExperience(index)}
+                      ></i>
+                      <div className="form-group flex space-bw">
+                        <div className="col-50">
+                          <label>Employer Name</label>
+                          <input
+                            placeholder="Enter employer name"
+                            type="text"
+                            value={exp.name}
+                            onChange={(e) =>
+                              handleExperienceChange(
+                                index,
+                                "name",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <label>Employer Details</label>
+                        <textarea
+                          placeholder="Enter employer detail"
+                          value={exp.details}
                           onChange={(e) =>
                             handleExperienceChange(
                               index,
-                              "name",
+                              "details",
                               e.target.value
                             )
                           }
-                        />
+                        ></textarea>
                       </div>
                     </div>
-                    <div className="form-group">
-                      <label>Employer Details</label>
-                      <textarea
-                        placeholder="Enter employer detail"
-                        value={exp.details}
-                        onChange={(e) =>
-                          handleExperienceChange(
-                            index,
-                            "details",
-                            e.target.value
-                          )
-                        }
-                      ></textarea>
-                    </div>
+                  ))}
+                  <div className="profile-p">
+                    <p onClick={addExperience} style={{ cursor: "pointer" }}>
+                      Employment <i className="fa-solid fa-plus"></i>
+                    </p>
                   </div>
-                ))}
-                <div className="profile-p" id="exp">
-                  <p onClick={addExperience} style={{ cursor: "pointer" }}>
-                    Employment <i className="fa-solid fa-plus"></i>
-                  </p>
                 </div>
               </div>
               <div className="education">
                 <h4 onClick={manageEduDetail}>
                   Education <i className="fa-solid fa-plus"></i>
                 </h4>
-                {educationList.map((edu: any, index: any) => (
-                  <div key={index} className="p-relate delete-class">
-                    <i
-                      className="fa-solid fa-trash"
-                      onClick={() => removeEducation(index)}
-                    ></i>
-                    <div className="form-group flex space-bw">
-                      <div className="col-50">
-                        <label>University Name</label>
-                        <input
-                          placeholder="Enter university name"
-                          type="text"
-                          value={edu.name}
+                <div id="edu">
+                  {educationList.map((edu: any, index: any) => (
+                    <div key={index} className="p-relate delete-class">
+                      <i
+                        className="fa-solid fa-trash"
+                        onClick={() => removeEducation(index)}
+                      ></i>
+                      <div className="form-group flex space-bw">
+                        <div className="col-50">
+                          <label>University Name</label>
+                          <input
+                            placeholder="Enter university name"
+                            type="text"
+                            value={edu.name}
+                            onChange={(e) =>
+                              handleEducationChange(
+                                index,
+                                "name",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <label>University Details</label>
+                        <textarea
+                          placeholder="Enter university detail"
+                          value={edu.details}
                           onChange={(e) =>
-                            handleEducationChange(index, "name", e.target.value)
+                            handleEducationChange(
+                              index,
+                              "details",
+                              e.target.value
+                            )
                           }
-                        />
+                        ></textarea>
                       </div>
                     </div>
-                    <div className="form-group">
-                      <label>University Details</label>
-                      <textarea
-                        placeholder="Enter university detail"
-                        value={edu.details}
-                        onChange={(e) =>
-                          handleEducationChange(
-                            index,
-                            "details",
-                            e.target.value
-                          )
-                        }
-                      ></textarea>
-                    </div>
+                  ))}
+                  <div className="profile-p">
+                    <p onClick={addEducation} style={{ cursor: "pointer" }}>
+                      Education <i className="fa-solid fa-plus"></i>
+                    </p>
                   </div>
-                ))}
-
-                <div className="profile-p" id="edu">
-                  <p onClick={addEducation} style={{ cursor: "pointer" }}>
-                    Education <i className="fa-solid fa-plus"></i>
-                  </p>
                 </div>
               </div>
               <div className="interest">
                 <h4 onClick={manageInterest}>
                   Interest <i className="fa-solid fa-plus"></i>
                 </h4>
-                <div className="flex">
-                  {interests.map((interest: any, index: any) => (
-                    <div
-                      key={index}
-                      className="p-relate delete-class col-33 mb-15"
-                    >
-                      <i
-                        className="fa-solid fa-trash"
-                        onClick={() => removeInterest(index)}
-                      ></i>
-                      <div className="form-group">
-                        <div className="">
-                          <label>Interest</label>
-                          <input
-                            type="text"
-                            value={interest.university}
-                            onChange={(e) =>
-                              handleInterestChange(index, e.target.value)
-                            }
-                          />
+                <div id="interest">
+                  <div className="flex">
+                    {interests.map((interest: any, index: any) => (
+                      <div
+                        key={index}
+                        className="p-relate delete-class col-33 mb-15"
+                      >
+                        <i
+                          className="fa-solid fa-trash"
+                          onClick={() => removeInterest(index)}
+                        ></i>
+                        <div className="form-group">
+                          <div className="">
+                            <label>Interest</label>
+                            <input
+                              type="text"
+                              value={interest.university}
+                              onChange={(e) =>
+                                handleInterestChange(index, e.target.value)
+                              }
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="profile-p" id="interest">
-                  <p onClick={addInterest} style={{ cursor: "pointer" }}>
-                    Interest <i className="fa-solid fa-plus"></i>
-                  </p>
+                    ))}
+                  </div>
+                  <div className="profile-p">
+                    <p onClick={addInterest} style={{ cursor: "pointer" }}>
+                      Interest <i className="fa-solid fa-plus"></i>
+                    </p>
+                  </div>
                 </div>
               </div>
               {showCustomField && (

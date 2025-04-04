@@ -81,18 +81,6 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
   const handleOpenSidebar = () => setIsOpen(true);
   const handleCloseSidebar = () => setIsOpen(false);
 
-  // const handleNewSearch = () => {
-  //   if (window.location.pathname !== "/directory") {
-  //     if (everySearch !== "") {
-  //       navigate("/search-result", {
-  //         state: { searchAnswer: apiResponse, word: searcheditem },
-  //       });
-  //     } else {
-  //       toast.error("Please write something to search");
-  //     }
-  //   }
-  // };
-
   return (
     <div className="top-area">
       <div className="flex space-bw al-center">
@@ -170,6 +158,11 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
                     ? setSearch(e.target.value)
                     : setEverySearch(e.target.value)
                 }
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    searchContentApiHandler();
+                  }
+                }}
               />
               <div className="search-box-icon">
                 <button

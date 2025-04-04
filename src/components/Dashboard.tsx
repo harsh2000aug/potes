@@ -22,6 +22,13 @@ const Dashboard = () => {
   const [upcoming, setUpcoming]: any = useState(false);
   const [contactAndNotes, setContactAndNotes]: any = useState({});
   const [loading, setLoading]: any = useState(false);
+  const [thisHappenYearsAgo, setThisHappenYearsAgo]: any = useState([]);
+  const [thisSixMonthsAgo, setThisSixMonthsAgo]: any = useState([]);
+  const [thisOneMonthsAgo, setThisOneMonthsAgo]: any = useState([]);
+  const [happenYearsAgo, setHappenYearsAgo]: any = useState(true);
+  const [sixMonthsAgo, setSixMonthsAgo]: any = useState(false);
+  const [oneMonthsAgo, setOneMonthsAgo]: any = useState(false);
+
   const navigate = useNavigate();
   const profileHandler = (userId: any) => {
     profileContactApi({
@@ -73,6 +80,9 @@ const Dashboard = () => {
     yearsAgo()
       .then((res: any) => {
         setContactAndNotes(res);
+        setThisHappenYearsAgo(res.year);
+        setThisSixMonthsAgo(res.six_month);
+        setThisOneMonthsAgo(res.one_month);
       })
       .catch((err: any) => {
         console.log("err", err);
@@ -91,7 +101,31 @@ const Dashboard = () => {
     setUpcoming(!upcoming);
   };
 
+  const handleYears = () => {
+    setHappenYearsAgo(!happenYearsAgo);
+  };
+
+  const handleSixMonths = () => {
+    setSixMonthsAgo(!sixMonthsAgo);
+  };
+
+  const handleOneMonths = () => {
+    setOneMonthsAgo(!oneMonthsAgo);
+  };
+
   const handleNotePage = () => {};
+
+  const sendParticularNote = (noteData: any) => {
+    if (!noteData?.contact) {
+      console.error(
+        "Cannot navigate to notes: Missing contact ID in note data"
+      );
+      return;
+    }
+    navigate("/notes", {
+      state: { profileId: noteData.contact, currentNote: noteData },
+    });
+  };
 
   return (
     <div className="dashboard">
@@ -102,7 +136,7 @@ const Dashboard = () => {
           <div className="body-area">
             <div className="flex space-bw">
               <div className="col-50 common-back">
-                <h3>Reminders(This week)</h3>
+                <h3>Reminders</h3>
                 {/* today */}
                 <div className="today mb-15">
                   <div
@@ -148,7 +182,7 @@ const Dashboard = () => {
                                 }
                                 alt=""
                               />
-                              <p onClick={() => profileHandler(itm?.contact)}>
+                              <p onClick={() => sendParticularNote(itm)}>
                                 <b
                                   style={{
                                     marginRight: "5px",
@@ -215,7 +249,7 @@ const Dashboard = () => {
                                 }
                                 alt=""
                               />
-                              <p onClick={() => profileHandler(itm?.contact)}>
+                              <p onClick={() => sendParticularNote(itm)}>
                                 <b
                                   style={{
                                     marginRight: "5px",
@@ -282,7 +316,7 @@ const Dashboard = () => {
                                 }
                                 alt=""
                               />
-                              <p onClick={() => profileHandler(itm?.contact)}>
+                              <p onClick={() => sendParticularNote(itm)}>
                                 <b
                                   style={{
                                     marginRight: "5px",
@@ -307,9 +341,222 @@ const Dashboard = () => {
               </div>
               <div className="col-50">
                 <div className="common-back mb-15">
-                  <h3>This Happened an year ago</h3>
+                  <h3>Memories</h3>
                   <div className="scroll">
-                    <ul>
+                    {/* Year ago */}
+                    <div className="today mb-15">
+                      <div
+                        className="flex space-bw al-center"
+                        onClick={handleYears}
+                      >
+                        <div className="p-relate">
+                          <p>One Year Ago</p>
+                          <div className="number-list">
+                            <p>{thisHappenYearsAgo.length}</p>
+                          </div>
+                        </div>
+                        <i
+                          className={
+                            happenYearsAgo
+                              ? "fa-solid fa-chevron-up"
+                              : "fa-solid fa-chevron-down"
+                          }
+                          style={{
+                            color: "#fff",
+                            fontSize: "14px",
+                          }}
+                        ></i>
+                      </div>
+                      <div
+                        style={{
+                          display: happenYearsAgo ? "block" : "none",
+                        }}
+                      >
+                        <ul>
+                          {thisHappenYearsAgo?.map((itm: any) => (
+                            <li
+                              key={itm.id}
+                              className="p-relate"
+                              style={{ cursor: "pointer" }}
+                            >
+                              <div className="openNoti">
+                                <div className="notifications-pannel flex space-bw al-center">
+                                  <img
+                                    src={
+                                      itm.contact_photo
+                                        ? itm.contact_photo
+                                        : user
+                                    }
+                                    alt=""
+                                  />
+                                  <p
+                                    onClick={() => profileHandler(itm?.contact)}
+                                  >
+                                    <b
+                                      style={{
+                                        marginRight: "5px",
+                                      }}
+                                    >
+                                      {itm.contact_full_name}:
+                                    </b>
+                                    {itm.note.length > 50
+                                      ? `${itm.note.slice(
+                                          0,
+                                          25
+                                        )} ... ${itm.note.slice(-25)}`
+                                      : itm.note}
+                                  </p>
+                                </div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* six months ago */}
+                    <div className="upcoming mb-15">
+                      <div
+                        className="flex space-bw al-center"
+                        onClick={handleOneMonths}
+                      >
+                        <div className="p-relate">
+                          <p>Six Months Ago</p>
+                          <div className="number-list">
+                            <p>{thisSixMonthsAgo.length}</p>
+                          </div>
+                        </div>
+                        <i
+                          className={
+                            oneMonthsAgo
+                              ? "fa-solid fa-chevron-up"
+                              : "fa-solid fa-chevron-down"
+                          }
+                          style={{
+                            color: "#fff",
+                            fontSize: "14px",
+                          }}
+                        ></i>
+                      </div>
+                      <div
+                        style={{
+                          display: oneMonthsAgo ? "block" : "none",
+                        }}
+                      >
+                        <ul>
+                          {thisSixMonthsAgo?.map((itm: any) => (
+                            <li
+                              key={itm.id}
+                              className="p-relate"
+                              style={{ cursor: "pointer" }}
+                            >
+                              <div className="openNoti">
+                                <div className="notifications-pannel flex space-bw al-center">
+                                  <img
+                                    src={
+                                      itm.contact_photo
+                                        ? itm.contact_photo
+                                        : user
+                                    }
+                                    alt=""
+                                  />
+                                  <p
+                                    onClick={() => profileHandler(itm?.contact)}
+                                  >
+                                    <b
+                                      style={{
+                                        marginRight: "5px",
+                                      }}
+                                    >
+                                      {itm.contact_full_name}:
+                                    </b>
+                                    {itm.note.length > 50
+                                      ? `${itm.note.slice(
+                                          0,
+                                          25
+                                        )} ... ${itm.note.slice(-25)}`
+                                      : itm.note}
+                                  </p>
+                                </div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* one month ago */}
+                    <div className="tomorrow">
+                      <div
+                        className="flex space-bw al-center"
+                        onClick={handleSixMonths}
+                      >
+                        <div className="p-relate">
+                          <p>One Month Ago</p>
+                          <div className="number-list">
+                            <p>{thisOneMonthsAgo.length}</p>
+                          </div>
+                        </div>
+                        <i
+                          className={
+                            sixMonthsAgo
+                              ? "fa-solid fa-chevron-up"
+                              : "fa-solid fa-chevron-down"
+                          }
+                          style={{
+                            color: "#fff",
+                            fontSize: "14px",
+                          }}
+                        ></i>
+                      </div>
+                      <div
+                        style={{
+                          display: sixMonthsAgo ? "block" : "none",
+                        }}
+                      >
+                        <ul>
+                          {thisOneMonthsAgo?.map((itm: any) => (
+                            <li
+                              key={itm.id}
+                              className="p-relate"
+                              style={{ cursor: "pointer" }}
+                            >
+                              <div className="openNoti">
+                                <div className="notifications-pannel flex space-bw al-center">
+                                  <img
+                                    src={
+                                      itm.contact_photo
+                                        ? itm.contact_photo
+                                        : user
+                                    }
+                                    alt=""
+                                  />
+                                  <p
+                                    onClick={() => profileHandler(itm?.contact)}
+                                  >
+                                    <b
+                                      style={{
+                                        marginRight: "5px",
+                                      }}
+                                    >
+                                      {itm.contact_full_name}:
+                                    </b>
+                                    {itm.note.length > 50
+                                      ? `${itm.note.slice(
+                                          0,
+                                          25
+                                        )} ... ${itm.note.slice(-25)}`
+                                      : itm.note}
+                                  </p>
+                                </div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* <ul>
                       {contactAndNotes.notes?.map((itm: any) => (
                         <li
                           style={{
@@ -338,7 +585,7 @@ const Dashboard = () => {
                           </p>
                         </li>
                       ))}
-                    </ul>
+                    </ul> */}
                   </div>
                 </div>
                 <div className="common-back">
@@ -373,7 +620,9 @@ const Dashboard = () => {
                                 )}
                                 <p>{itm.full_name}</p>
                               </div>
-                              <p>{formatDate(itm.birthday)}</p>
+                              <p>
+                                {itm.birthday ? formatDate(itm.birthday) : ""}
+                              </p>
                             </div>
                           </li>
                         ))

@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import $ from "jquery";
 import user from "../images/user.png";
-
+import logo from "../images/logo.png";
 const EditContact = () => {
   const location = useLocation();
   const [emailError, setEmailError] = useState("");
@@ -286,15 +286,24 @@ const EditContact = () => {
     }
   }, [editUserFinal]);
 
+  useEffect(() => {
+    $("#personal").css("display", "block");
+  }, []);
+
   return (
     <div className="directory">
       <div className="flex h-100">
         <Sidebar current={"Create Contact"} />
         <div className="main-area">
           <div className="back-btn">
-            <button type="button" onClick={() => navigate(-1)}>
-              <i className="fa-solid fa-chevron-left"></i>
-            </button>
+            <div className="flex al-center">
+              <button type="button" onClick={() => navigate(-1)}>
+                <i className="fa-solid fa-chevron-left"></i>
+              </button>
+              <div className="logo" onClick={() => navigate("/")}>
+                <img src={logo} alt="Logo" />
+              </div>
+            </div>
           </div>
           <div className="body-area">
             <div className="common-back createContact">

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
 import { staticDataApi } from "../store/Services/AllApi";
 import { useNavigate } from "react-router-dom";
-
+import logo from "../images/logo.png";
 const AboutUs = () => {
   const navigate = useNavigate();
   const [apiResponse, setApiReponse]: any = useState({});
@@ -28,9 +28,14 @@ const AboutUs = () => {
         <div className="main-area">
           <div className="body-area">
             <div className="back-btn">
-              <button type="button" onClick={() => navigate(-1)}>
-                <i className="fa-solid fa-chevron-left"></i>
-              </button>
+              <div className="flex al-center">
+                <button type="button" onClick={() => navigate(-1)}>
+                  <i className="fa-solid fa-chevron-left"></i>
+                </button>
+                <div className="logo" onClick={() => navigate("/")}>
+                  <img src={logo} alt="Logo" />
+                </div>
+              </div>
             </div>
             <div className="common-back">
               <h3>About Us</h3>

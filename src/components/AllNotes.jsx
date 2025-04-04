@@ -5,6 +5,7 @@ import { deleteNotes, editNote, getNotesApi, profileContactApi } from "../store/
 import toast from "react-hot-toast";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
 import user from "../images/user.png";
+import logo from "../images/logo.png";
 
 const AllNotes = () => {
   const location = useLocation();
@@ -250,14 +251,14 @@ const AllNotes = () => {
               </div>
               <div className="form-group">
                 <div className="mb-15">
-                  <label>Contact Reminder</label>
+                  <label>Note reminder</label>
                   <select
                     name="interval"
                     id="interval"
                     value={interval}
                     onChange={(e) => setInterval(e.target.value)}
                   >
-                    <option value="">Select Interval</option>
+                    <option value="">None</option>
                     <option value="Monthly">Monthly</option>
                     <option value="Quarterly">Quarterly</option>
                     <option value="Yearly">Yearly</option>
@@ -299,10 +300,15 @@ const AllNotes = () => {
           <Sidebar />
           <div className="main-area">
           <div className="back-btn">
-            <button type="button" onClick={() => navigate(-1)}>
-              <i className="fa-solid fa-chevron-left"></i>
-            </button>
-          </div>
+                        <div className="flex al-center">
+                          <button type="button" onClick={() => navigate(-1)}>
+                            <i className="fa-solid fa-chevron-left"></i>
+                          </button>
+                          <div className="logo" onClick={() => navigate("/")}>
+                            <img src={logo} alt="Logo" />
+                          </div>
+                        </div>
+                      </div>
             <div className="body-area">
               <div className="common-back">
                 <div className="allNotes">
@@ -324,7 +330,7 @@ const AllNotes = () => {
                     {allNotes.length>0?allNotes.map((itm) => (
                       <div className="mb-15 p-relate border" key={itm.id}>
                         <div className="date">
-                          <p>{itm.reminder}</p>
+                          <p>{itm.reminder?formatDate(itm.reminder):""}</p>
                         </div>
                         <div className="note">
                           <p>{itm.note}</p>
@@ -349,7 +355,7 @@ const AllNotes = () => {
                           </div>
                           <span>
                               (<i className="fa-solid fa-keyboard"></i>
-                              {formatDate(itm.created_at)})
+                              {itm.created_at ? formatDate(itm.created_at): ""})
                             </span>
                         </div>
                       </div>

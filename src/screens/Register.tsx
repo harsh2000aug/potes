@@ -108,7 +108,9 @@ const Register = () => {
                 <div className="flex space-bw">
                   <div className="col-50">
                     <div className="coolinput">
-                      <label className="text">First name:</label>
+                      <label className="text">
+                        First name:<sup>*</sup>
+                      </label>
                       <input
                         type="text"
                         name="firstName"
@@ -124,7 +126,9 @@ const Register = () => {
                   </div>
                   <div className="col-50">
                     <div className="coolinput">
-                      <label className="text">Last name:</label>
+                      <label className="text">
+                        Last name:<sup>*</sup>
+                      </label>
                       <input
                         type="text"
                         name="lastName"
@@ -142,7 +146,9 @@ const Register = () => {
               </div>
               <div className="form-control">
                 <div className="coolinput">
-                  <label className="text">Username:</label>
+                  <label className="text">
+                    Username:<sup>*</sup>
+                  </label>
                   <input
                     type="text"
                     name="username"
@@ -158,7 +164,9 @@ const Register = () => {
               </div>
               <div className="form-control">
                 <div className="coolinput">
-                  <label className="text">Email:</label>
+                  <label className="text">
+                    Email:<sup>*</sup>
+                  </label>
                   <input
                     type="text"
                     name="email"
@@ -174,7 +182,9 @@ const Register = () => {
               </div>
               <div className="form-control p-relate">
                 <div className="coolinput">
-                  <label className="text">Password:</label>
+                  <label className="text">
+                    Password:<sup>*</sup>
+                  </label>
                   <div className="password-wrapper-register">
                     <input
                       type={showPassword ? "text" : "password"}
@@ -201,7 +211,9 @@ const Register = () => {
               </div>
               <div className="form-control p-relate">
                 <div className="coolinput">
-                  <label className="text">Confirm Password:</label>
+                  <label className="text">
+                    Confirm Password:<sup>*</sup>
+                  </label>
                   <div className="password-wrapper-register">
                     <input
                       type={showConfirmPassword ? "text" : "password"}

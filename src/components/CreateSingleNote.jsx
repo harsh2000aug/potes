@@ -4,7 +4,7 @@ import { allContactOptionApi, createNotesApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
 import { useNavigate } from "react-router-dom";
-
+import logo from "../images/logo.png";
 const CreateNote = () => {
   const [text, setText] = useState("");
   const [isListening, setIsListening] = useState(false);
@@ -178,9 +178,14 @@ const CreateNote = () => {
         <Sidebar current="Create Note" />
         <div className="main-area">
           <div className="back-btn">
-            <button type="button" onClick={() => navigate(-1)}>
-              <i className="fa-solid fa-chevron-left"></i>
-            </button>
+            <div className="flex al-center">
+              <button type="button" onClick={() => navigate(-1)}>
+                <i className="fa-solid fa-chevron-left"></i>
+              </button>
+              <div className="logo" onClick={() => navigate("/")}>
+                <img src={logo} alt="Logo" />
+              </div>
+            </div>
           </div>
           <div className="body-area">
             <div className="common-back">
@@ -221,14 +226,14 @@ const CreateNote = () => {
               </div>
               <div className="form-group flex space-bw">
                 <div className="col-50">
-                  <label>Contact Reminder</label>
+                  <label>Note reminder</label>
                   <select
                     name="interval"
                     id="interval"
                     value={interval}
                     onChange={(e) => setInterval(e.target.value)}
                   >
-                    <option value="">Select Interval</option>
+                    <option value="">None</option>
                     <option value="Monthly">Monthly</option>
                     <option value="Quarterly">Quarterly</option>
                     <option value="Yearly">Yearly</option>

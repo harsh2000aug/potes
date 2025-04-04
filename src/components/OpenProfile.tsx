@@ -4,7 +4,7 @@ import user from "../images/user.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { deleteContactApi, profileContactApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
-
+import logo from "../images/logo.png";
 const OpenProfile = () => {
   const location = useLocation();
   const [openSection, setOpenSection]: any = useState("personal");
@@ -103,9 +103,14 @@ const OpenProfile = () => {
           <Sidebar />
           <div className="main-area">
             <div className="back-btn">
-              <button type="button" onClick={() => navigate("/directory")}>
-                <i className="fa-solid fa-chevron-left"></i>
-              </button>
+              <div className="flex al-center">
+                <button type="button" onClick={() => navigate(-1)}>
+                  <i className="fa-solid fa-chevron-left"></i>
+                </button>
+                <div className="logo" onClick={() => navigate("/")}>
+                  <img src={logo} alt="Logo" />
+                </div>
+              </div>
             </div>
             <div className="body-area">
               <div className="common-back">
@@ -220,7 +225,9 @@ const OpenProfile = () => {
                             </li>
                             <li>
                               <b>Spouse Birthday:</b>{" "}
-                              {formatDate(profileData.spouse_birthday) || "-"}
+                              {profileData.spouse_birthday
+                                ? formatDate(profileData.spouse_birthday)
+                                : "-"}
                             </li>
                           </ul>
                         </div>
@@ -246,7 +253,9 @@ const OpenProfile = () => {
                                 </li>
                                 <li>
                                   <b>Child Birthday:</b>{" "}
-                                  {formatDate(itm.birthday) || "-"}
+                                  {itm.birthday
+                                    ? formatDate(itm.birthday)
+                                    : "-"}
                                 </li>
                               </ul>
                             ))
@@ -409,14 +418,15 @@ const OpenProfile = () => {
                                   display: itm.reminder ? "block" : "none",
                                 }}
                               ></i>
-                              {formatDate(itm.reminder)}
+                              {itm.reminder ? formatDate(itm.reminder) : ""}
                             </p>
                           </div>
                           <div className="note">
                             <p>{itm.note}</p>
                             <span>
                               (<i className="fa-solid fa-keyboard"></i>
-                              {formatDate(itm.created_at)})
+                              {itm.created_at ? formatDate(itm.created_at) : ""}
+                              )
                             </span>
                           </div>
                         </div>
