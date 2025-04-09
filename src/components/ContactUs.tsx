@@ -56,13 +56,16 @@ const ContactUs = () => {
         <Sidebar current={"Contact Us"} />
         <div className="main-area">
           <div className="back-btn">
-            <div className="flex al-center">
+            <div className="flex al-center space-bw">
               <button type="button" onClick={() => navigate(-1)}>
                 <i className="fa-solid fa-chevron-left"></i>
               </button>
               <div className="logo" onClick={() => navigate("/")}>
                 <img src={logo} alt="Logo" />
               </div>
+              <button type="button" onClick={() => navigate("/directory")}>
+                <i className="fa-solid fa-magnifying-glass"></i>
+              </button>
             </div>
           </div>
           <div className="body-area">

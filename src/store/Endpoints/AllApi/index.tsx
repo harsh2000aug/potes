@@ -155,4 +155,11 @@ export const allApi = {
       uri: "/contact/",
     },
   },
+  completeTaskApi: {
+    v1: {
+      ...defaults.methods.POST,
+      ...defaults.versions.v1,
+      uri: "/complete-reminder/",
+    },
+  },
 };

@@ -178,15 +178,18 @@ const CreateNote = () => {
         <Sidebar current="Create Note" />
         <div className="main-area">
           <div className="back-btn">
-            <div className="flex al-center">
-              <button type="button" onClick={() => navigate(-1)}>
-                <i className="fa-solid fa-chevron-left"></i>
-              </button>
-              <div className="logo" onClick={() => navigate("/")}>
-                <img src={logo} alt="Logo" />
-              </div>
-            </div>
-          </div>
+                        <div className="flex al-center space-bw">
+                          <button type="button" onClick={() => navigate(-1)}>
+                            <i className="fa-solid fa-chevron-left"></i>
+                          </button>
+                          <div className="logo" onClick={() => navigate("/")}>
+                            <img src={logo} alt="Logo" />
+                          </div>
+                          <button type="button" onClick={() => navigate("/directory")}>
+                            <i className="fa-solid fa-magnifying-glass"></i>
+                          </button>
+                        </div>
+                      </div>
           <div className="body-area">
             <div className="common-back">
               <h3>Create a Note</h3>

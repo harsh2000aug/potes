@@ -77,12 +77,9 @@ li {
   font-size: 18px;
   color: #fff;
   font-weight: 400;
-  margin-bottom: 20px;
+  margin-bottom: 00px;
   text-align: center;
-  /* border: 1px solid; */
-  padding: 10px;
   cursor: pointer;
-  box-shadow: #959595 0px 1px 5px;
 }
 .common-back.createContact h4 i {
   font-size: 14px;
@@ -457,7 +454,7 @@ li {
   margin: 10px 0;
 }
 .notifications-pannel p {
-  width: calc(100% - 40px);
+  width: calc(100% - 60px) !important;
   font-size: 14px !important;
 }
 .body-area table tr th,
@@ -941,15 +938,13 @@ sup {
   box-shadow: #959595 0px 1px 5px;
 }
 .accordion-content {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 15px;
+  margin: 10px 0;
 }
 .accordion-content ul {
   margin-bottom: 10px;
 }
 .employee-list li {
-  list-style: square;
+  list-style: disc;
 }
 .btn-common {
   background: transparent;
@@ -1066,19 +1061,17 @@ td {
   color: #fff;
   margin-bottom: 15px;
 }
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+
+.form-divider {
+  border-top: 3px solid #fff;
+  margin: 20px 0;
+}
+
+.sub-divider {
+  border-top: 1px solid #ccc;
+  margin: 20px 0;
 }
 @media (max-width: 480px) {
-  .back-btn .logo {
-    margin-left: 140px;
-  }
-
   .scroll2 {
     height: 250px;
     overflow: auto;

@@ -255,13 +255,16 @@ const CreateContact = () => {
         <Sidebar current={"Create Contact"} />
         <div className="main-area">
           <div className="back-btn">
-            <div className="flex al-center">
+            <div className="flex al-center space-bw">
               <button type="button" onClick={() => navigate(-1)}>
                 <i className="fa-solid fa-chevron-left"></i>
               </button>
               <div className="logo" onClick={() => navigate("/")}>
                 <img src={logo} alt="Logo" />
               </div>
+              <button type="button" onClick={() => navigate("/directory")}>
+                <i className="fa-solid fa-magnifying-glass"></i>
+              </button>
             </div>
           </div>
           <div className="body-area">
@@ -344,9 +347,7 @@ const CreateContact = () => {
                   </div>
                   <div className="form-group flex space-bw">
                     <div className="col-50">
-                      <label htmlFor="">
-                        Email<sup>*</sup>
-                      </label>
+                      <label htmlFor="">Email</label>
                       <input
                         type="email"
                         placeholder="Enter email"
@@ -356,9 +357,7 @@ const CreateContact = () => {
                       {error && <p style={{ color: "red" }}>{error}</p>}
                     </div>
                     <div className="col-50">
-                      <label htmlFor="">
-                        Number<sup>*</sup>
-                      </label>
+                      <label htmlFor="">Number</label>
                       <input
                         type="text"
                         placeholder="Enter number"
@@ -390,6 +389,7 @@ const CreateContact = () => {
                   </div>
                 </div>
               </div>
+              <div className="form-divider"></div>
               <div className="family">
                 <h4 onClick={manageFamilyDetail}>
                   Family Details <i className="fa-solid fa-plus"></i>
@@ -435,161 +435,178 @@ const CreateContact = () => {
                       }
                     />
                   </div>
+                  <div className="sub-divider"></div>
                   {/* Children Section */}
                   {children.map((child: any, index: any) => (
-                    <div key={index} className="p-relate delete-class">
-                      <i
-                        className="fa-solid fa-trash"
-                        onClick={() => removeChild(index)}
-                      ></i>
-                      <div className="flex space-bw form-group">
-                        <div className="col-50">
-                          <label>Child Name</label>
-                          <input
-                            placeholder="Enter child name"
-                            type="text"
-                            value={child.name}
-                            onChange={(e) =>
-                              handleChildChange(index, "name", e.target.value)
-                            }
-                          />
+                    <>
+                      {index !== 0 && <div className="sub-divider"></div>}
+                      <div key={index} className="p-relate delete-class">
+                        <i
+                          className="fa-solid fa-trash"
+                          onClick={() => removeChild(index)}
+                        ></i>
+                        <div className="flex space-bw form-group">
+                          <div className="col-50">
+                            <label>Child Name</label>
+                            <input
+                              placeholder="Enter child name"
+                              type="text"
+                              value={child.name}
+                              onChange={(e) =>
+                                handleChildChange(index, "name", e.target.value)
+                              }
+                            />
+                          </div>
+                          <div className="col-50">
+                            <label>Birthday</label>
+                            <input
+                              type="date"
+                              value={child.birthday}
+                              onChange={(e) =>
+                                handleChildChange(
+                                  index,
+                                  "birthday",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
                         </div>
-                        <div className="col-50">
-                          <label>Birthday</label>
-                          <input
-                            type="date"
-                            value={child.birthday}
+                        <div className="form-group">
+                          <label>Child Details</label>
+                          <textarea
+                            placeholder="Enter child details"
+                            value={child.details}
                             onChange={(e) =>
                               handleChildChange(
                                 index,
-                                "birthday",
+                                "details",
                                 e.target.value
                               )
                             }
-                          />
+                          ></textarea>
                         </div>
                       </div>
-                      <div className="form-group">
-                        <label>Child Details</label>
-                        <textarea
-                          placeholder="Enter child details"
-                          value={child.details}
-                          onChange={(e) =>
-                            handleChildChange(index, "details", e.target.value)
-                          }
-                        ></textarea>
-                      </div>
-                    </div>
+                    </>
                   ))}
                   <div className="profile-p">
                     <p onClick={addChild} style={{ cursor: "pointer" }}>
-                      Children <i className="fa-solid fa-plus"></i>
+                      Add Children <i className="fa-solid fa-plus"></i>
                     </p>
                   </div>
                 </div>
               </div>
+              <div className="form-divider"></div>
               <div className="experience">
                 <h4 onClick={manageExpDetail}>
                   Employment <i className="fa-solid fa-plus"></i>
                 </h4>
                 <div id="exp">
                   {experiences.map((exp: any, index: any) => (
-                    <div key={index} className="p-relate delete-class">
-                      <i
-                        className="fa-solid fa-trash"
-                        onClick={() => removeExperience(index)}
-                      ></i>
-                      <div className="form-group flex space-bw">
-                        <div className="col-50">
-                          <label>Employer Name</label>
-                          <input
-                            placeholder="Enter employer name"
-                            type="text"
-                            value={exp.name}
+                    <>
+                      {index !== 0 && <div className="sub-divider"></div>}
+                      <div key={index} className="p-relate delete-class">
+                        <i
+                          className="fa-solid fa-trash"
+                          onClick={() => removeExperience(index)}
+                        ></i>
+                        <div className="form-group flex space-bw">
+                          <div className="col-50">
+                            <label>Employer Name</label>
+                            <input
+                              placeholder="Enter employer name"
+                              type="text"
+                              value={exp.name}
+                              onChange={(e) =>
+                                handleExperienceChange(
+                                  index,
+                                  "name",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="form-group">
+                          <label>Employer Details</label>
+                          <textarea
+                            placeholder="Enter employer detail"
+                            value={exp.details}
                             onChange={(e) =>
                               handleExperienceChange(
                                 index,
-                                "name",
+                                "details",
                                 e.target.value
                               )
                             }
-                          />
+                          ></textarea>
                         </div>
                       </div>
-                      <div className="form-group">
-                        <label>Employer Details</label>
-                        <textarea
-                          placeholder="Enter employer detail"
-                          value={exp.details}
-                          onChange={(e) =>
-                            handleExperienceChange(
-                              index,
-                              "details",
-                              e.target.value
-                            )
-                          }
-                        ></textarea>
-                      </div>
-                    </div>
+                    </>
                   ))}
                   <div className="profile-p">
                     <p onClick={addExperience} style={{ cursor: "pointer" }}>
-                      Employment <i className="fa-solid fa-plus"></i>
+                      Add Employer <i className="fa-solid fa-plus"></i>
                     </p>
                   </div>
                 </div>
               </div>
+              <div className="form-divider"></div>
               <div className="education">
                 <h4 onClick={manageEduDetail}>
                   Education <i className="fa-solid fa-plus"></i>
                 </h4>
                 <div id="edu">
                   {educationList.map((edu: any, index: any) => (
-                    <div key={index} className="p-relate delete-class">
-                      <i
-                        className="fa-solid fa-trash"
-                        onClick={() => removeEducation(index)}
-                      ></i>
-                      <div className="form-group flex space-bw">
-                        <div className="col-50">
-                          <label>University Name</label>
-                          <input
-                            placeholder="Enter university name"
-                            type="text"
-                            value={edu.name}
+                    <>
+                      {index !== 0 && <div className="sub-divider"></div>}
+                      <div key={index} className="p-relate delete-class">
+                        <i
+                          className="fa-solid fa-trash"
+                          onClick={() => removeEducation(index)}
+                        ></i>
+                        <div className="form-group flex space-bw">
+                          <div className="col-50">
+                            <label>University Name</label>
+                            <input
+                              placeholder="Enter university name"
+                              type="text"
+                              value={edu.name}
+                              onChange={(e) =>
+                                handleEducationChange(
+                                  index,
+                                  "name",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="form-group">
+                          <label>University Details</label>
+                          <textarea
+                            placeholder="Enter university detail"
+                            value={edu.details}
                             onChange={(e) =>
                               handleEducationChange(
                                 index,
-                                "name",
+                                "details",
                                 e.target.value
                               )
                             }
-                          />
+                          ></textarea>
                         </div>
                       </div>
-                      <div className="form-group">
-                        <label>University Details</label>
-                        <textarea
-                          placeholder="Enter university detail"
-                          value={edu.details}
-                          onChange={(e) =>
-                            handleEducationChange(
-                              index,
-                              "details",
-                              e.target.value
-                            )
-                          }
-                        ></textarea>
-                      </div>
-                    </div>
+                    </>
                   ))}
                   <div className="profile-p">
                     <p onClick={addEducation} style={{ cursor: "pointer" }}>
-                      Education <i className="fa-solid fa-plus"></i>
+                      Add Education <i className="fa-solid fa-plus"></i>
                     </p>
                   </div>
                 </div>
               </div>
+              <div className="form-divider"></div>
               <div className="interest">
                 <h4 onClick={manageInterest}>
                   Interest <i className="fa-solid fa-plus"></i>
@@ -622,11 +639,12 @@ const CreateContact = () => {
                   </div>
                   <div className="profile-p">
                     <p onClick={addInterest} style={{ cursor: "pointer" }}>
-                      Interest <i className="fa-solid fa-plus"></i>
+                      Add Interest <i className="fa-solid fa-plus"></i>
                     </p>
                   </div>
                 </div>
               </div>
+              <div className="form-divider"></div>
               {showCustomField && (
                 <div className="custom-field">
                   {customField?.map((custom: any, index: any) => (

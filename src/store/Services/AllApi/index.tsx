@@ -116,3 +116,8 @@ export const deleteContactApi = ({ query }: any) =>
     uriEndPoint: allApi.deleteContactApi.v1,
     query,
   });
+export const completeTaskApi = ({ query }: any) =>
+  callApi({
+    uriEndPoint: allApi.completeTaskApi.v1,
+    query,
+  });

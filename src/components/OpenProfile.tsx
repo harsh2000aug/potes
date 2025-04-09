@@ -103,13 +103,16 @@ const OpenProfile = () => {
           <Sidebar />
           <div className="main-area">
             <div className="back-btn">
-              <div className="flex al-center">
+              <div className="flex al-center space-bw">
                 <button type="button" onClick={() => navigate(-1)}>
                   <i className="fa-solid fa-chevron-left"></i>
                 </button>
                 <div className="logo" onClick={() => navigate("/")}>
                   <img src={logo} alt="Logo" />
                 </div>
+                <button type="button" onClick={() => navigate("/directory")}>
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </button>
               </div>
             </div>
             <div className="body-area">
@@ -128,7 +131,13 @@ const OpenProfile = () => {
                       className="mr"
                       onClick={handleDeletePart}
                     >
-                      <i className="fa-solid fa-trash"></i>
+                      Delete
+                      <i
+                        className="fa-solid fa-trash"
+                        style={{
+                          marginLeft: "5px",
+                        }}
+                      ></i>
                     </button>
                     <button
                       type="button"
@@ -141,7 +150,13 @@ const OpenProfile = () => {
                         })
                       }
                     >
-                      <i className="fa-solid fa-pencil"></i>
+                      Edit
+                      <i
+                        className="fa-solid fa-pencil"
+                        style={{
+                          marginLeft: "5px",
+                        }}
+                      ></i>
                     </button>
                     <button
                       type="button"
@@ -154,7 +169,13 @@ const OpenProfile = () => {
                         })
                       }
                     >
-                      <i className="fa-solid fa-plus"></i>
+                      Add Note
+                      <i
+                        className="fa-solid fa-book"
+                        style={{
+                          marginLeft: "5px",
+                        }}
+                      ></i>
                     </button>
                   </div>
                 </div>
@@ -278,12 +299,24 @@ const OpenProfile = () => {
                         <div className="accordion-content">
                           {profileData.previous_employers.length > 0 ? (
                             profileData.previous_employers.map((itm: any) => (
-                              <ul className="employee-list">
-                                <li key={itm.id}>{itm.details}</li>
+                              <ul key={itm.id}>
+                                <li>
+                                  <b>Employer Name:</b> {itm.name || "-"}
+                                </li>
+                                <li>
+                                  <b>Employer Details:</b> {itm.details || "-"}
+                                </li>
                               </ul>
                             ))
                           ) : (
-                            <p>-</p>
+                            <ul>
+                              <li>
+                                <b>Employer Name:</b> -
+                              </li>
+                              <li>
+                                <b>Employer Details:</b> -
+                              </li>
+                            </ul>
                           )}
                         </div>
                       )}
@@ -301,12 +334,25 @@ const OpenProfile = () => {
                         <div className="accordion-content">
                           {profileData.universities.length > 0 ? (
                             profileData.universities.map((itm: any) => (
-                              <ul className="employee-list">
-                                <li key={itm.id}>{itm.details}</li>
+                              <ul key={itm.id}>
+                                <li>
+                                  <b>University Name:</b> {itm.name || "-"}
+                                </li>
+                                <li>
+                                  <b>University Details:</b>
+                                  {itm.details || "-"}
+                                </li>
                               </ul>
                             ))
                           ) : (
-                            <p>-</p>
+                            <ul>
+                              <li>
+                                <b>University Name:</b> -
+                              </li>
+                              <li>
+                                <b>University Details:</b>-
+                              </li>
+                            </ul>
                           )}
                         </div>
                       )}
@@ -325,7 +371,7 @@ const OpenProfile = () => {
                           {profileData.interests.length > 0 ? (
                             profileData.interests.map((itm: any) => (
                               <ul className="employee-list">
-                                <li key={itm.id}>{itm.name}</li>
+                                <li key={itm.id}>{itm.name || "-"}</li>
                               </ul>
                             ))
                           ) : (
@@ -349,7 +395,7 @@ const OpenProfile = () => {
                             profileData.custom_fields.map((itm: any) => (
                               <>
                                 <ul className="employee-list">
-                                  <li key={itm.id}>{itm.title}</li>
+                                  <li key={itm.id}>{itm.title || "-"}</li>
                                 </ul>
                                 <ul
                                   style={{
@@ -357,7 +403,7 @@ const OpenProfile = () => {
                                   }}
                                 >
                                   {itm.values.map((subitm: any) => (
-                                    <li>{subitm}</li>
+                                    <li>{subitm || "-"}</li>
                                   ))}
                                 </ul>
                               </>

@@ -296,13 +296,16 @@ const EditContact = () => {
         <Sidebar current={"Create Contact"} />
         <div className="main-area">
           <div className="back-btn">
-            <div className="flex al-center">
+            <div className="flex al-center space-bw">
               <button type="button" onClick={() => navigate(-1)}>
                 <i className="fa-solid fa-chevron-left"></i>
               </button>
               <div className="logo" onClick={() => navigate("/")}>
                 <img src={logo} alt="Logo" />
               </div>
+              <button type="button" onClick={() => navigate("/directory")}>
+                <i className="fa-solid fa-magnifying-glass"></i>
+              </button>
             </div>
           </div>
           <div className="body-area">
@@ -417,6 +420,7 @@ const EditContact = () => {
                   </div>
                 </div>
               </div>
+              <div className="form-divider"></div>
               <div className="family">
                 <h4 onClick={manageFamilyDetail}>
                   Family Details <i className="fa-solid fa-plus"></i>
@@ -454,152 +458,169 @@ const EditContact = () => {
                       }
                     />
                   </div>
+                  <div className="sub-divider"></div>
                   {/* Children Section */}
                   {children.map((child: any, index: any) => (
-                    <div key={index} className="p-relate delete-class">
-                      <i
-                        className="fa-solid fa-trash"
-                        onClick={() => removeChild(index)}
-                      ></i>
-                      <div className="flex space-bw form-group">
-                        <div className="col-50">
-                          <label>Child Name</label>
-                          <input
-                            type="text"
-                            value={child.name}
-                            onChange={(e) =>
-                              handleChildChange(index, "name", e.target.value)
-                            }
-                          />
+                    <>
+                      {index !== 0 && <div className="sub-divider"></div>}
+                      <div key={index} className="p-relate delete-class">
+                        <i
+                          className="fa-solid fa-trash"
+                          onClick={() => removeChild(index)}
+                        ></i>
+                        <div className="flex space-bw form-group">
+                          <div className="col-50">
+                            <label>Child Name</label>
+                            <input
+                              type="text"
+                              value={child.name}
+                              onChange={(e) =>
+                                handleChildChange(index, "name", e.target.value)
+                              }
+                            />
+                          </div>
+                          <div className="col-50">
+                            <label>Birthday</label>
+                            <input
+                              type="date"
+                              max={new Date().toISOString().split("T")[0]}
+                              value={child.birthday}
+                              onChange={(e) =>
+                                handleChildChange(
+                                  index,
+                                  "birthday",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
                         </div>
-                        <div className="col-50">
-                          <label>Birthday</label>
-                          <input
-                            type="date"
-                            max={new Date().toISOString().split("T")[0]}
-                            value={child.birthday}
+                        <div className="form-group">
+                          <label>Child Details</label>
+                          <textarea
+                            value={child.details}
                             onChange={(e) =>
                               handleChildChange(
                                 index,
-                                "birthday",
+                                "details",
                                 e.target.value
                               )
                             }
-                          />
+                          ></textarea>
                         </div>
                       </div>
-                      <div className="form-group">
-                        <label>Child Details</label>
-                        <textarea
-                          value={child.details}
-                          onChange={(e) =>
-                            handleChildChange(index, "details", e.target.value)
-                          }
-                        ></textarea>
-                      </div>
-                    </div>
+                    </>
                   ))}
                   <div className="profile-p">
                     <p onClick={addChild} style={{ cursor: "pointer" }}>
-                      Children <i className="fa-solid fa-plus"></i>
+                      Add Children <i className="fa-solid fa-plus"></i>
                     </p>
                   </div>
                 </div>
               </div>
+              <div className="form-divider"></div>
               <div className="experience">
                 <h4 onClick={manageExpDetail}>
                   Employment <i className="fa-solid fa-plus"></i>
                 </h4>
                 <div id="exp">
                   {experiences.map((exp: any, index: number) => (
-                    <div key={index} className="p-relate delete-class">
-                      <i
-                        className="fa-solid fa-trash"
-                        onClick={() => removeExperience(index)}
-                      ></i>
-                      <div className="form-group flex space-bw">
-                        <div className="col-50">
-                          <label>Employer Name</label>
-                          <input
-                            type="text"
-                            value={exp.name}
+                    <>
+                      {index !== 0 && <div className="sub-divider"></div>}
+                      <div key={index} className="p-relate delete-class">
+                        <i
+                          className="fa-solid fa-trash"
+                          onClick={() => removeExperience(index)}
+                        ></i>
+                        <div className="form-group flex space-bw">
+                          <div className="col-50">
+                            <label>Employer Name</label>
+                            <input
+                              type="text"
+                              value={exp.name}
+                              onChange={(e) =>
+                                handleExperienceChange(
+                                  index,
+                                  "name",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="form-group">
+                          <label>Employer Details</label>
+                          <textarea
+                            value={exp.details}
                             onChange={(e) =>
                               handleExperienceChange(
                                 index,
-                                "name",
+                                "details",
                                 e.target.value
                               )
                             }
-                          />
+                          ></textarea>
                         </div>
                       </div>
-                      <div className="form-group">
-                        <label>Employer Details</label>
-                        <textarea
-                          value={exp.details}
-                          onChange={(e) =>
-                            handleExperienceChange(
-                              index,
-                              "details",
-                              e.target.value
-                            )
-                          }
-                        ></textarea>
-                      </div>
-                    </div>
+                    </>
                   ))}
                   <button onClick={addExperience} className="btn-common">
-                    Add Experience <i className="fa-solid fa-plus"></i>
+                    Add Employer <i className="fa-solid fa-plus"></i>
                   </button>
                 </div>
               </div>
+              <div className="form-divider"></div>
               <div className="education">
                 <h4 onClick={manageEduDetail}>
                   Education <i className="fa-solid fa-plus"></i>
                 </h4>
                 <div id="edu">
                   {educationList.map((edu: any, index: number) => (
-                    <div key={index} className="p-relate delete-class">
-                      <i
-                        className="fa-solid fa-trash"
-                        onClick={() => removeEducation(index)}
-                      ></i>
-                      <div className="form-group flex space-bw">
-                        <div className="col-50">
-                          <label>University Name</label>
-                          <input
-                            type="text"
-                            value={edu.name}
+                    <>
+                      {index !== 0 && <div className="sub-divider"></div>}
+                      <div key={index} className="p-relate delete-class">
+                        <i
+                          className="fa-solid fa-trash"
+                          onClick={() => removeEducation(index)}
+                        ></i>
+                        <div className="form-group flex space-bw">
+                          <div className="col-50">
+                            <label>University Name</label>
+                            <input
+                              type="text"
+                              value={edu.name}
+                              onChange={(e) =>
+                                handleEducationChange(
+                                  index,
+                                  "name",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="form-group">
+                          <label>University Details</label>
+                          <textarea
+                            value={edu.details}
                             onChange={(e) =>
                               handleEducationChange(
                                 index,
-                                "name",
+                                "details",
                                 e.target.value
                               )
                             }
-                          />
+                          ></textarea>
                         </div>
                       </div>
-                      <div className="form-group">
-                        <label>University Details</label>
-                        <textarea
-                          value={edu.details}
-                          onChange={(e) =>
-                            handleEducationChange(
-                              index,
-                              "details",
-                              e.target.value
-                            )
-                          }
-                        ></textarea>
-                      </div>
-                    </div>
+                    </>
                   ))}
                   <button onClick={addEducation} className="btn-common">
                     Add University <i className="fa-solid fa-plus"></i>
                   </button>
                 </div>
               </div>
+              <div className="form-divider"></div>
               <div className="interest">
                 <h4 onClick={manageInterest}>
                   Interest <i className="fa-solid fa-plus"></i>
@@ -635,6 +656,7 @@ const EditContact = () => {
                   </button>
                 </div>
               </div>
+              <div className="form-divider"></div>
               <div className="custom-field">
                 <h4 onClick={() => setShowCustomField(!showCustomField)}>
                   Custom Field <i className="fa-solid fa-plus"></i>
@@ -703,12 +725,13 @@ const EditContact = () => {
                         onClick={addCustomeField}
                         style={{ cursor: "pointer" }}
                       >
-                        More fields <i className="fa-solid fa-plus"></i>
+                        Add More fields <i className="fa-solid fa-plus"></i>
                       </p>
                     </div>
                   </div>
                 )}
               </div>
+              <div className="form-divider"></div>
               <div className="form-group flex">
                 <div className="col-33 btn">
                   <button

@@ -3,12 +3,86 @@ import user from "../images/user.png";
 import Sidebar from "../reusable/Sidebar";
 import TopArea from "../reusable/TopArea";
 import {
+  completeTaskApi,
   profileContactApi,
   showBirthdays,
   showReminders,
   yearsAgo,
 } from "../store/Services/AllApi";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
+const ReminderComponent = ({
+  itm,
+  handleNotePage,
+  sendParticularNote,
+  text = "",
+  setMissedCount,
+}: any) => {
+  const [manageCheck, setManageCheck] = useState(itm?.completed);
+  const handleCompleteTask = (id: any) => {
+    if (!manageCheck) {
+      completeTaskApi({
+        query: {
+          note_id: id,
+        },
+      })
+        .then((res: any) => {
+          toast.success("Done");
+          setManageCheck(true);
+          if (text === "missed") {
+            setMissedCount((oldVal: any) => oldVal - 1);
+          }
+        })
+        .catch((err: any) => toast.success(err.data.err));
+    }
+  };
+  return (
+    <>
+      {manageCheck && text === "missed" ? (
+        <></>
+      ) : (
+        <li
+          key={itm.id}
+          className="p-relate"
+          style={{ cursor: "pointer" }}
+          onClick={handleNotePage}
+        >
+          <div className="openNoti">
+            <div className="notifications-pannel flex space-bw al-center">
+              <img src={itm.contact_photo ? itm.contact_photo : user} alt="" />
+              <p onClick={() => sendParticularNote(itm)}>
+                <b
+                  style={{
+                    marginRight: "5px",
+                  }}
+                >
+                  {itm.contact_full_name}:
+                </b>
+                {itm.note.length > 50
+                  ? `${itm.note.slice(0, 25)} ... ${itm.note.slice(-25)}`
+                  : itm.note}
+              </p>
+              <i
+                className={
+                  manageCheck === true
+                    ? "fa-solid fa-circle-check"
+                    : "fa-solid fa-circle"
+                }
+                style={{
+                  fontSize: "14px",
+                  color: manageCheck === true ? "#00FF00" : "#fff",
+                }}
+                onClick={() => handleCompleteTask(itm.id)}
+              ></i>
+            </div>
+          </div>
+        </li>
+      )}
+    </>
+  );
+};
+
 const Dashboard = () => {
   const [birthdays, setBirthdays]: any = useState([]);
   const [spousebirthdays, setSpouseBirthdays]: any = useState([]);
@@ -17,9 +91,11 @@ const Dashboard = () => {
   const [reminders, setReminders]: any = useState([]);
   const [remindersTomm, setRemindersTomm]: any = useState([]);
   const [remindersUpcoming, setRemindersUpcoming]: any = useState([]);
+  const [remindersMissed, setRemindersMissed]: any = useState([]);
   const [today, setToday]: any = useState(true);
   const [tommorow, setTommorow]: any = useState(false);
   const [upcoming, setUpcoming]: any = useState(false);
+  const [missed, setMissed]: any = useState(false);
   const [contactAndNotes, setContactAndNotes]: any = useState({});
   const [loading, setLoading]: any = useState(false);
   const [thisHappenYearsAgo, setThisHappenYearsAgo]: any = useState([]);
@@ -28,6 +104,7 @@ const Dashboard = () => {
   const [happenYearsAgo, setHappenYearsAgo]: any = useState(true);
   const [sixMonthsAgo, setSixMonthsAgo]: any = useState(false);
   const [oneMonthsAgo, setOneMonthsAgo]: any = useState(false);
+  const [missedCount, setMissedCount]: any = useState(0);
 
   const navigate = useNavigate();
   const profileHandler = (userId: any) => {
@@ -69,6 +146,8 @@ const Dashboard = () => {
         setReminders(res.reminders.today);
         setRemindersTomm(res.reminders.tomorrow);
         setRemindersUpcoming(res.reminders.upcoming);
+        setRemindersMissed(res.reminders.missed);
+        setMissedCount(res.reminders.missed.length);
       })
       .catch((err: any) => {
         console.log("err", err);
@@ -99,6 +178,10 @@ const Dashboard = () => {
 
   const handleUpcoming = () => {
     setUpcoming(!upcoming);
+  };
+
+  const handleMissed = () => {
+    setMissed(!missed);
   };
 
   const handleYears = () => {
@@ -168,38 +251,11 @@ const Dashboard = () => {
                   >
                     <ul>
                       {reminders?.map((itm: any) => (
-                        <li
-                          key={itm.id}
-                          className="p-relate"
-                          style={{ cursor: "pointer" }}
-                          onClick={handleNotePage}
-                        >
-                          <div className="openNoti">
-                            <div className="notifications-pannel flex space-bw al-center">
-                              <img
-                                src={
-                                  itm.contact_photo ? itm.contact_photo : user
-                                }
-                                alt=""
-                              />
-                              <p onClick={() => sendParticularNote(itm)}>
-                                <b
-                                  style={{
-                                    marginRight: "5px",
-                                  }}
-                                >
-                                  {itm.contact_full_name}:
-                                </b>
-                                {itm.note.length > 50
-                                  ? `${itm.note.slice(
-                                      0,
-                                      25
-                                    )} ... ${itm.note.slice(-25)}`
-                                  : itm.note}
-                              </p>
-                            </div>
-                          </div>
-                        </li>
+                        <ReminderComponent
+                          itm={itm}
+                          handleNotePage={handleNotePage}
+                          sendParticularNote={sendParticularNote}
+                        />
                       ))}
                     </ul>
                   </div>
@@ -273,7 +329,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* upcoming */}
-                <div className="upcoming">
+                <div className="upcoming mb-15">
                   <div
                     className="flex space-bw al-center"
                     onClick={handleUpcoming}
@@ -334,6 +390,49 @@ const Dashboard = () => {
                             </div>
                           </div>
                         </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* missed */}
+                <div className="missed">
+                  <div
+                    className="flex space-bw al-center"
+                    onClick={handleMissed}
+                  >
+                    <div className="p-relate">
+                      <p>Missed</p>
+                      <div className="number-list">
+                        <p>{missedCount}</p>
+                      </div>
+                    </div>
+                    <i
+                      className={
+                        missed
+                          ? "fa-solid fa-chevron-up"
+                          : "fa-solid fa-chevron-down"
+                      }
+                      style={{
+                        color: "#fff",
+                        fontSize: "14px",
+                      }}
+                    ></i>
+                  </div>
+                  <div
+                    style={{
+                      display: missed ? "block" : "none",
+                    }}
+                  >
+                    <ul>
+                      {remindersMissed?.map((itm: any) => (
+                        <ReminderComponent
+                          itm={itm}
+                          handleNotePage={handleNotePage}
+                          sendParticularNote={sendParticularNote}
+                          text="missed"
+                          setMissedCount={setMissedCount}
+                        />
                       ))}
                     </ul>
                   </div>
