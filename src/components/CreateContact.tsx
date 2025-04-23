@@ -409,7 +409,7 @@ const CreateContact = () => {
                         }
                       />
                     </div>
-                    <div className="col-50 flex space-bw">
+                    <div className="col-50">
                       <label>Birthday</label>
                       <input
                         type="date"
@@ -612,31 +612,29 @@ const CreateContact = () => {
                   Interest <i className="fa-solid fa-plus"></i>
                 </h4>
                 <div id="interest">
-                  <div className="flex">
-                    {interests.map((interest: any, index: any) => (
-                      <div
-                        key={index}
-                        className="p-relate delete-class col-33 mb-15"
-                      >
-                        <i
-                          className="fa-solid fa-trash"
-                          onClick={() => removeInterest(index)}
-                        ></i>
-                        <div className="form-group">
-                          <div className="">
-                            <label>Interest</label>
-                            <input
-                              type="text"
-                              value={interest.university}
-                              onChange={(e) =>
-                                handleInterestChange(index, e.target.value)
-                              }
-                            />
-                          </div>
+                  {interests.map((interest: any, index: any) => (
+                    <div
+                      key={index}
+                      className="p-relate delete-class col-33 mb-15"
+                    >
+                      <i
+                        className="fa-solid fa-trash"
+                        onClick={() => removeInterest(index)}
+                      ></i>
+                      <div className="form-group">
+                        <div className="">
+                          <label>Interest</label>
+                          <input
+                            type="text"
+                            value={interest.university}
+                            onChange={(e) =>
+                              handleInterestChange(index, e.target.value)
+                            }
+                          />
                         </div>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                   <div className="profile-p">
                     <p onClick={addInterest} style={{ cursor: "pointer" }}>
                       Add Interest <i className="fa-solid fa-plus"></i>
@@ -650,7 +648,7 @@ const CreateContact = () => {
                   {customField?.map((custom: any, index: any) => (
                     <div key={index} className="mb-15">
                       <div className="form-group flex space-bw">
-                        <div className="col-50">
+                        <div className="col-33">
                           <label>Custom field title</label>
                           <input
                             type="text"

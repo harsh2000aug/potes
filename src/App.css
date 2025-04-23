@@ -77,7 +77,7 @@ li {
   font-size: 18px;
   color: #fff;
   font-weight: 400;
-  margin-bottom: 00px;
+  margin-bottom: 15px;
   text-align: center;
   cursor: pointer;
 }
@@ -263,6 +263,9 @@ li {
   color: #fff;
   font-weight: 500;
 }
+.sidebar .menu ul li span {
+  font-size: 16px;
+}
 .sidebar .menu ul li.active {
   background: #fff;
   color: #000;
@@ -283,6 +286,7 @@ li {
   font-weight: 600;
   cursor: pointer;
   text-align: left;
+  font-size: 16px;
 }
 .sidebar .menu ul li.btns {
   padding: 0;
@@ -637,9 +641,13 @@ li {
   white-space: normal;
   color: #000;
   font-size: 14px;
-  width: 96%;
 }
-
+.notedarea {
+  width: 84%;
+}
+.creationarea {
+  width: 14%;
+}
 .note .editDelete {
   position: absolute;
   right: 0;
@@ -943,8 +951,14 @@ sup {
 .accordion-content ul {
   margin-bottom: 10px;
 }
+ul.employee-list.intes {
+  padding-left: 25px;
+}
 .employee-list li {
   list-style: disc;
+}
+.employee-list ul {
+  padding-left: 30px;
 }
 .btn-common {
   background: transparent;
@@ -1477,6 +1491,13 @@ td {
   .common-back h4 {
     font-size: 14px;
     margin-bottom: 15px;
+  }
+  .notedarea {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  .creationarea {
+    width: 100%;
   }
 }
 

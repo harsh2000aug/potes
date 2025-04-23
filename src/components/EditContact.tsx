@@ -626,31 +626,29 @@ const EditContact = () => {
                   Interest <i className="fa-solid fa-plus"></i>
                 </h4>
                 <div id="interest">
-                  <div className="flex">
-                    {interests.map((interest: any, index: number) => (
-                      <div
-                        key={index}
-                        className="p-relate delete-class col-33 mb-15"
-                      >
-                        <i
-                          className="fa-solid fa-trash"
-                          onClick={() => removeInterest(index)}
-                        ></i>
-                        <div className="form-group">
-                          <div>
-                            <label>Interest</label>
-                            <input
-                              type="text"
-                              value={interest}
-                              onChange={(e) =>
-                                handleInterestChange(index, e.target.value)
-                              }
-                            />
-                          </div>
+                  {interests.map((interest: any, index: number) => (
+                    <div
+                      key={index}
+                      className="p-relate delete-class col-33 mb-15"
+                    >
+                      <i
+                        className="fa-solid fa-trash"
+                        onClick={() => removeInterest(index)}
+                      ></i>
+                      <div className="form-group">
+                        <div>
+                          <label>Interest</label>
+                          <input
+                            type="text"
+                            value={interest}
+                            onChange={(e) =>
+                              handleInterestChange(index, e.target.value)
+                            }
+                          />
                         </div>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                   <button onClick={addInterest} className="btn-common">
                     Add Interest <i className="fa-solid fa-plus"></i>
                   </button>

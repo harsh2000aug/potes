@@ -39,7 +39,6 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
         setApiResponse(res);
         setSearchedItem(everySearch);
 
-        // Pass res and everySearch directly
         navigate("/search-result", {
           state: { searchAnswer: res, word: everySearch },
         });
@@ -47,7 +46,9 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
         console.log("err", err);
       }
     } else {
-      toast.error("Please write something to search");
+      if (window.location.pathname === "/") {
+        toast.error("Please write something to search");
+      }
     }
   };
 
