@@ -562,7 +562,6 @@ const OpenProfile = () => {
                       notes?.map((itm: any) => (
                         <div
                           onClick={() => {
-                            setOpenEdit(true);
                             setTextComponent(itm.note);
                             setUserId(itm.id);
                           }}
@@ -581,7 +580,10 @@ const OpenProfile = () => {
                                 {itm.reminder ? formatDate(itm.reminder) : ""}
                               </p>
                             </div>
-                            <div className="note">
+                            <div
+                              className="note"
+                              onClick={() => setOpenEdit(true)}
+                            >
                               <p>{itm.note}</p>
                             </div>
                           </div>

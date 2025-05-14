@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
 import { useLocation, useNavigate } from "react-router-dom";
-import { deleteNotes, editNote, getNotesApi, profileContactApi } from "../store/Services/AllApi";
+import {
+  deleteNotes,
+  editNote,
+  getNotesApi,
+  profileContactApi,
+} from "../store/Services/AllApi";
 import toast from "react-hot-toast";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
 import user from "../images/user.png";
@@ -23,7 +28,7 @@ const AllNotes = () => {
   const [loading, setLoading] = useState(false);
   const [interval, setInterval] = useState("");
   const [reminder, setReminder] = useState("");
-  const [saveId,setSaveId]= useState("");
+  const [saveId, setSaveId] = useState("");
 
   const navigate = useNavigate();
 
@@ -103,27 +108,28 @@ const AllNotes = () => {
       },
     })
       .then((res) => {
-        setSaveId(res[0].contact)
+        setSaveId(res[0].contact);
         if (currentNote) {
           setAllNotes(res?.filter((item) => item?.id === currentNote?.id));
-         
         } else {
           setAllNotes(res);
         }
       })
       .catch((err) => {
-        toast.error(err?.data?.error.length> 0 ? err?.data?.error : "No note found");
+        toast.error(
+          err?.data?.error.length > 0 ? err?.data?.error : "No note found"
+        );
         console.log(err);
       })
       .finally(() => {
         setLoading(false);
       });
   };
- 
+
   useEffect(() => {
     fetchNotes();
   }, []);
-  
+
   const profileHandler = () => {
     profileContactApi({
       query: {
@@ -142,7 +148,7 @@ const AllNotes = () => {
       .then((res) => {
         toast.success("Note Deleted Successfully");
         setPopupOpen(false);
-        profileHandler()
+        profileHandler();
         // fetchNotes();
         // navigate("/directory");
       })
@@ -167,9 +173,8 @@ const AllNotes = () => {
       .then((res) => {
         toast.success("Noted Edited successfully");
         setOpenEdit(false);
-        profileHandler()
+        profileHandler();
         // fetchNotes();
-       
       })
       .catch((err) => {
         toast.error("Please enter all details");
@@ -188,8 +193,6 @@ const AllNotes = () => {
 
     return `${mm}-${dd}-${yy}`;
   }
-
-
 
   return (
     <>
@@ -271,7 +274,7 @@ const AllNotes = () => {
                     <input
                       type="date"
                       value={reminder}
-                      style={{cursor:"pointer"}}
+                      style={{ cursor: "pointer" }}
                       onChange={(e) => setReminder(e.target.value)}
                     />
                   </div>
@@ -299,70 +302,88 @@ const AllNotes = () => {
         <div className="flex h-100">
           <Sidebar />
           <div className="main-area">
-          <div className="back-btn">
-                        <div className="flex al-center space-bw">
-                          <button type="button" onClick={() => navigate(-1)}>
-                            <i className="fa-solid fa-chevron-left"></i>
-                          </button>
-                          <div className="logo" onClick={() => navigate("/")}>
-                            <img src={logo} alt="Logo" />
-                          </div>
-                          <button type="button" onClick={() => navigate("/directory")}>
-                            <i className="fa-solid fa-magnifying-glass"></i>
-                          </button>
-                        </div>
-                      </div>
+            <div className="back-btn">
+              <div className="flex al-center space-bw">
+                <button type="button" onClick={() => navigate(-1)}>
+                  <i className="fa-solid fa-chevron-left"></i>
+                </button>
+                <div className="logo" onClick={() => navigate("/")}>
+                  <img src={logo} alt="Logo" />
+                </div>
+                <button type="button" onClick={() => navigate("/directory")}>
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </div>
+            </div>
             <div className="body-area">
               <div className="common-back">
                 <div className="allNotes">
-                  <div className="flex space-bw al-center"
-                      style={{
-                        marginBottom: "15px",
-                      }}>
-                    <h4>
-                    Notes
+                  <div
+                    className="flex space-bw al-center"
+                    style={{
+                      marginBottom: "15px",
+                    }}
+                  >
+                    <h4>Notes</h4>
+                  </div>
+                  <div
+                    className="flex"
+                    onClick={profileHandler}
+                    style={{ marginBottom: "10px", cursor: "pointer" }}
+                  >
+                    <img
+                      src={
+                        allNotes[0]?.contact_photo
+                          ? allNotes[0]?.contact_photo
+                          : user
+                      }
+                      alt=""
+                    />
+                    <h4 style={{ fontSize: "15px" }}>
+                      {allNotes?.[0]?.contact_full_name}
                     </h4>
                   </div>
-                    <div className="flex" onClick={profileHandler} style={{marginBottom:"10px",cursor:"pointer"}}>
-                      <img src={allNotes[0]?.contact_photo ?allNotes[0]?.contact_photo:user } alt="" />
-                      <h4 style={{fontSize:"15px"}}>
-                        {allNotes?.[0]?.contact_full_name}
-                      </h4>
-                    </div>
                   <div>
-                    {allNotes.length>0?allNotes.map((itm) => (
-                      <div className="mb-15 p-relate border" key={itm.id}>
-                        <div className="date">
-                          <p>{itm.reminder?formatDate(itm.reminder):""}</p>
-                        </div>
-                        <div className="note">
-                          <p>{itm.note}</p>
-                          <div className="editDelete">
-                            <i
-                              className="fa-solid fa-trash"
-                              onClick={() => {
-                                setUserId(itm.id);
-                                setPopupOpen(true);
-                              }}
-                            ></i>
-                            <i
-                              onClick={() => {
-                                setOpenEdit(true);
-                                setInterval(itm?.reminder_type);
-                                setReminder(itm?.reminder);
-                                setEditText(itm.note);
-                                setUserId(itm.id);
-                              }}
-                              className="fa-solid fa-pencil"
-                            ></i>
+                    {allNotes.length > 0 ? (
+                      allNotes.map((itm) => (
+                        <div className="mb-15 p-relate border" key={itm.id}>
+                          <div className="date">
+                            <p>
+                              {itm.reminder ? formatDate(itm.reminder) : ""}
+                            </p>
                           </div>
-                          <span>
+                          <div className="note cut-size">
+                            <p>{itm.note}</p>
+                            <div className="editDelete">
+                              <i
+                                className="fa-solid fa-trash"
+                                onClick={() => {
+                                  setUserId(itm.id);
+                                  setPopupOpen(true);
+                                }}
+                              ></i>
+                              <i
+                                onClick={() => {
+                                  setOpenEdit(true);
+                                  setInterval(itm?.reminder_type);
+                                  setReminder(itm?.reminder);
+                                  setEditText(itm.note);
+                                  setUserId(itm.id);
+                                }}
+                                className="fa-solid fa-pencil"
+                              ></i>
+                            </div>
+                            <span>
                               (<i className="fa-solid fa-keyboard"></i>
-                              {itm.created_at ? formatDate(itm.created_at): ""})
+                              {itm.created_at ? formatDate(itm.created_at) : ""}
+                              )
                             </span>
+                          </div>
                         </div>
-                      </div>
-                    )):<p>No Note found</p>}
+                      ))
+                    ) : (
+                      <p>No Note found</p>
+                    )}
                   </div>
                 </div>
               </div>

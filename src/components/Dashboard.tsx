@@ -479,7 +479,7 @@ const Dashboard = () => {
                               style={{ cursor: "pointer" }}
                             >
                               <div className="openNoti">
-                                <div className="notifications-pannel flex space-bw al-center">
+                                <div className="notifications-pannel flex al-center">
                                   <img
                                     src={
                                       itm.contact_photo
@@ -550,7 +550,7 @@ const Dashboard = () => {
                               style={{ cursor: "pointer" }}
                             >
                               <div className="openNoti">
-                                <div className="notifications-pannel flex space-bw al-center">
+                                <div className="notifications-pannel flex al-center">
                                   <img
                                     src={
                                       itm.contact_photo
@@ -621,7 +621,7 @@ const Dashboard = () => {
                               style={{ cursor: "pointer" }}
                             >
                               <div className="openNoti">
-                                <div className="notifications-pannel flex space-bw al-center">
+                                <div className="notifications-pannel flex  al-center">
                                   <img
                                     src={
                                       itm.contact_photo

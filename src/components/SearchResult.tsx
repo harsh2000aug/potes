@@ -13,6 +13,9 @@ const SearchResult = () => {
     contacts: [],
     notes: [],
   };
+
+  console.log("harish", fetchedresults.notes.length);
+
   const fetchedword = location?.state?.word || "";
 
   const profileHandler = (contactId: string | number) => {
@@ -104,93 +107,370 @@ const SearchResult = () => {
             <h3 className="result-heading">
               Search result for "{fetchedword || "..."}"
             </h3>
-            <div className="common-back mb-15">
-              <div className="contact">
-                <h4>Contacts</h4>
-                {fetchedresults?.contacts?.length > 0 ? (
-                  <ul
-                    style={{
-                      maxHeight:
-                        fetchedresults.contacts.length > 16 ? "400px" : "auto",
-                      overflowY:
-                        fetchedresults.contacts.length > 16
-                          ? "scroll"
-                          : "visible",
-                    }}
-                  >
-                    {fetchedresults.contacts.map((itm: any) => (
-                      <li
-                        key={itm.id}
-                        style={{ cursor: "pointer" }}
-                        onClick={() => profileHandler(itm.id)}
-                        className="search-result-item"
-                      >
-                        <div className="flex al-center space-bw">
-                          <img
-                            alt={`${itm.full_name} profile`}
-                            src={itm.photo || user}
-                            onError={(e) => (e.currentTarget.src = user)}
-                            className="search-result-avatar"
-                          />
-                          <p className="search-result-name">{itm.full_name}</p>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="no-results-message">
-                    No contacts found matching "{fetchedword}".
-                  </p>
-                )}
+            {fetchedresults.contacts?.length === 0 &&
+            fetchedresults.spouse?.length === 0 &&
+            fetchedresults.childs?.length === 0 &&
+            fetchedresults.employers?.length === 0 &&
+            fetchedresults.universities?.length === 0 &&
+            fetchedresults.interests?.length === 0 &&
+            fetchedresults.notes?.length === 0 ? (
+              <div className="common-back">
+                <p>
+                  No search results found for "<b>{fetchedword}</b>"
+                </p>
               </div>
-            </div>
-            <div className="common-back">
-              <div className="notes-search">
-                <h4>Notes</h4>
-                {fetchedresults?.notes?.length > 0 ? (
-                  <ul
-                    style={{
-                      maxHeight:
-                        fetchedresults.notes.length > 16 ? "400px" : "auto",
-                      overflowY:
-                        fetchedresults.notes.length > 16 ? "scroll" : "visible",
-                    }}
-                  >
-                    {fetchedresults.notes.map((itm: any) => (
-                      <li
-                        key={itm.id}
-                        style={{ cursor: "pointer" }}
-                        onClick={() => sendParticularNote(itm)}
-                        className="search-result-item"
+            ) : (
+              <>
+                {fetchedresults?.contacts?.length > 0 && (
+                  <div className="common-back mb-15">
+                    <div className="contact">
+                      <h4>
+                        <b>Contacts</b>
+                      </h4>
+                      <ul
+                        style={{
+                          maxHeight:
+                            fetchedresults.contacts.length > 16
+                              ? "400px"
+                              : "auto",
+                          overflowY:
+                            fetchedresults.contacts.length > 16
+                              ? "scroll"
+                              : "visible",
+                        }}
                       >
-                        <div className="flex space-bw note-result-layout">
-                          <div className="flex note-contact-info">
-                            <img
-                              alt={`${
-                                itm.contact?.full_name || "Contact"
-                              } profile`}
-                              src={itm.contact?.photo || user}
-                              onError={(e) => (e.currentTarget.src = user)}
-                              className="search-result-avatar"
-                            />
-                            <p className="search-result-name">
-                              {itm.contact?.full_name || "Unknown Contact"}
-                            </p>
-                          </div>
-                          <p className="searchnote search-result-snippet">
-                            {highlightAndShowContext(itm.note, fetchedword, 50)}
-                          </p>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="no-results-message">
-                    No notes found matching "{fetchedword}".
-                  </p>
+                        {fetchedresults.contacts.map((itm: any) => (
+                          <li
+                            key={itm.id}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => profileHandler(itm.id)}
+                            className="search-result-item"
+                          >
+                            <div className="flex al-center space-bw">
+                              <img
+                                alt={`${itm.full_name} profile`}
+                                src={itm.photo || user}
+                                onError={(e) => (e.currentTarget.src = user)}
+                                className="search-result-avatar"
+                              />
+                              <p className="search-result-name">
+                                {itm.full_name}
+                              </p>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 )}
-              </div>
-            </div>
+                {fetchedresults?.spouse?.length > 0 && (
+                  <div className="common-back mb-15">
+                    <div className="notes-search">
+                      <h4>
+                        <b>Spouse</b>
+                      </h4>
+                      <ul
+                        style={{
+                          maxHeight:
+                            fetchedresults.notes.length > 16 ? "400px" : "auto",
+                          overflowY:
+                            fetchedresults.notes.length > 16
+                              ? "scroll"
+                              : "visible",
+                        }}
+                      >
+                        {fetchedresults.spouse.map((itm: any) => (
+                          <li
+                            key={itm.id}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => profileHandler(itm.id)}
+                            className="search-result-item"
+                          >
+                            <div className="flex space-bw note-result-layout">
+                              <div className="flex note-contact-info">
+                                <img
+                                  alt={`${
+                                    itm.contact?.full_name || "Contact"
+                                  } profile`}
+                                  src={itm.contact?.photo || user}
+                                  onError={(e) => (e.currentTarget.src = user)}
+                                  className="search-result-avatar"
+                                />
+                                <p className="search-result-name">
+                                  {itm.full_name || "Unknown Contact"}
+                                </p>
+                              </div>
+                              <p className="searchnote search-result-snippet">
+                                {highlightAndShowContext(
+                                  itm.spouse_name,
+                                  fetchedword,
+                                  50
+                                )}
+                              </p>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+                {fetchedresults?.childs?.length > 0 && (
+                  <div className="common-back mb-15">
+                    <div className="notes-search">
+                      <h4>
+                        <b>Children</b>
+                      </h4>
+                      <ul
+                        style={{
+                          maxHeight:
+                            fetchedresults.notes.length > 16 ? "400px" : "auto",
+                          overflowY:
+                            fetchedresults.notes.length > 16
+                              ? "scroll"
+                              : "visible",
+                        }}
+                      >
+                        {fetchedresults.childs.map((itm: any) => (
+                          <li
+                            key={itm.id}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => profileHandler(itm.id)}
+                            className="search-result-item"
+                          >
+                            <div className="flex space-bw note-result-layout">
+                              <div className="flex note-contact-info">
+                                <img
+                                  alt={`${
+                                    itm.contact?.full_name || "Contact"
+                                  } profile`}
+                                  src={itm.contact?.photo || user}
+                                  onError={(e) => (e.currentTarget.src = user)}
+                                  className="search-result-avatar"
+                                />
+                                <p className="search-result-name">
+                                  {itm.full_name || "Unknown Contact"}
+                                </p>
+                              </div>
+                              <p className="searchnote search-result-snippet">
+                                {highlightAndShowContext(
+                                  itm.child_name,
+                                  fetchedword,
+                                  50
+                                )}
+                              </p>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+                {fetchedresults?.employers?.length > 0 && (
+                  <div className="common-back mb-15">
+                    <div className="notes-search">
+                      <h4>
+                        <b>Employer</b>
+                      </h4>
+                      <ul
+                        style={{
+                          maxHeight:
+                            fetchedresults.notes.length > 16 ? "400px" : "auto",
+                          overflowY:
+                            fetchedresults.notes.length > 16
+                              ? "scroll"
+                              : "visible",
+                        }}
+                      >
+                        {fetchedresults.employers.map((itm: any) => (
+                          <li
+                            key={itm.id}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => profileHandler(itm.id)}
+                            className="search-result-item"
+                          >
+                            <div className="flex space-bw note-result-layout">
+                              <div className="flex note-contact-info">
+                                <img
+                                  alt={`${
+                                    itm.contact?.full_name || "Contact"
+                                  } profile`}
+                                  src={itm.contact?.photo || user}
+                                  onError={(e) => (e.currentTarget.src = user)}
+                                  className="search-result-avatar"
+                                />
+                                <p className="search-result-name">
+                                  {itm.full_name || "Unknown Contact"}
+                                </p>
+                              </div>
+                              <p className="searchnote search-result-snippet">
+                                {highlightAndShowContext(
+                                  itm.employer_name,
+                                  fetchedword,
+                                  50
+                                )}
+                              </p>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+                {fetchedresults?.universities?.length > 0 && (
+                  <div className="common-back mb-15">
+                    <div className="notes-search">
+                      <h4>
+                        <b>University</b>
+                      </h4>
+                      <ul
+                        style={{
+                          maxHeight:
+                            fetchedresults.notes.length > 16 ? "400px" : "auto",
+                          overflowY:
+                            fetchedresults.notes.length > 16
+                              ? "scroll"
+                              : "visible",
+                        }}
+                      >
+                        {fetchedresults.universities.map((itm: any) => (
+                          <li
+                            key={itm.id}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => profileHandler(itm.id)}
+                            className="search-result-item"
+                          >
+                            <div className="flex space-bw note-result-layout">
+                              <div className="flex note-contact-info">
+                                <img
+                                  alt={`${
+                                    itm.contact?.full_name || "Contact"
+                                  } profile`}
+                                  src={itm.contact?.photo || user}
+                                  onError={(e) => (e.currentTarget.src = user)}
+                                  className="search-result-avatar"
+                                />
+                                <p className="search-result-name">
+                                  {itm.full_name || "Unknown Contact"}
+                                </p>
+                              </div>
+                              <p className="searchnote search-result-snippet">
+                                {highlightAndShowContext(
+                                  itm.university,
+                                  fetchedword,
+                                  50
+                                )}
+                              </p>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+                {fetchedresults?.interests?.length > 0 && (
+                  <div className="common-back mb-15">
+                    <div className="notes-search">
+                      <h4>
+                        <b>Interest</b>
+                      </h4>
+                      <ul
+                        style={{
+                          maxHeight:
+                            fetchedresults.notes.length > 16 ? "400px" : "auto",
+                          overflowY:
+                            fetchedresults.notes.length > 16
+                              ? "scroll"
+                              : "visible",
+                        }}
+                      >
+                        {fetchedresults.interests.map((itm: any) => (
+                          <li
+                            key={itm.id}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => profileHandler(itm.id)}
+                            className="search-result-item"
+                          >
+                            <div className="flex space-bw note-result-layout">
+                              <div className="flex note-contact-info">
+                                <img
+                                  alt={`${
+                                    itm.contact?.full_name || "Contact"
+                                  } profile`}
+                                  src={itm.contact?.photo || user}
+                                  onError={(e) => (e.currentTarget.src = user)}
+                                  className="search-result-avatar"
+                                />
+                                <p className="search-result-name">
+                                  {itm.full_name || "Unknown Contact"}
+                                </p>
+                              </div>
+                              <p className="searchnote search-result-snippet">
+                                {highlightAndShowContext(
+                                  itm.interest,
+                                  fetchedword,
+                                  50
+                                )}
+                              </p>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+                {fetchedresults?.notes?.length > 0 && (
+                  <div className="common-back">
+                    <div className="notes-search">
+                      <h4>
+                        <b>Notes</b>
+                      </h4>
+                      <ul
+                        style={{
+                          maxHeight:
+                            fetchedresults.notes.length > 16 ? "400px" : "auto",
+                          overflowY:
+                            fetchedresults.notes.length > 16
+                              ? "scroll"
+                              : "visible",
+                        }}
+                      >
+                        {fetchedresults.notes.map((itm: any) => (
+                          <li
+                            key={itm.id}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => sendParticularNote(itm)}
+                            className="search-result-item"
+                          >
+                            <div className="flex space-bw note-result-layout">
+                              <div className="flex note-contact-info">
+                                <img
+                                  alt={`${
+                                    itm.contact?.full_name || "Contact"
+                                  } profile`}
+                                  src={itm.contact?.photo || user}
+                                  onError={(e) => (e.currentTarget.src = user)}
+                                  className="search-result-avatar"
+                                />
+                                <p className="search-result-name">
+                                  {itm.contact?.full_name || "Unknown Contact"}
+                                </p>
+                              </div>
+                              <p className="searchnote search-result-snippet">
+                                {highlightAndShowContext(
+                                  itm.note,
+                                  fetchedword,
+                                  50
+                                )}
+                              </p>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>

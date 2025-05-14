@@ -321,7 +321,6 @@ const CreateContact = () => {
                         <input
                           type="date"
                           value={personalDetail.birthday}
-                          max={new Date().toISOString().split("T")[0]}
                           onChange={(e: any) =>
                             setPersonalDetail((oldVal: any) => ({
                               ...oldVal,
@@ -334,7 +333,6 @@ const CreateContact = () => {
                         <label>Anniversary</label>
                         <input
                           type="date"
-                          max={new Date().toISOString().split("T")[0]}
                           value={personalDetail.spouse_ani}
                           onChange={(e: any) =>
                             setPersonalDetail((oldVal: any) => {
@@ -413,7 +411,6 @@ const CreateContact = () => {
                       <label>Birthday</label>
                       <input
                         type="date"
-                        max={new Date().toISOString().split("T")[0]}
                         value={personalDetail.spouse_bdy}
                         onChange={(e: any) =>
                           setPersonalDetail((oldVal: any) => {

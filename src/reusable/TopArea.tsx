@@ -84,22 +84,30 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
 
   return (
     <div className="top-area">
-      <div className="flex space-bw al-center">
-        <div className="toggle" onClick={handleOpenSidebar}>
-          <i className="fa-solid fa-bars"></i>
-        </div>
-        {isOpen && <div className="overlay" onClick={handleCloseSidebar}></div>}
-        {isOpen && (
-          <div className={`mobileSidebar ${isOpen ? "open" : ""}`}>
-            <button className="close-btn" onClick={handleCloseSidebar}>
-              &times;
-            </button>
-            <div className="logo" onClick={() => navigate("/")}>
-              <img src={logo} alt="Logo" />
-            </div>
-            <div className="menu">
-              <ul>
-                {/* <li
+      <div>
+        <div
+          className="flex justify-center"
+          style={{
+            marginBottom: "10px",
+          }}
+        >
+          <div className="logo" onClick={() => navigate("/")}>
+            <img src={logo} alt="Logo" />
+          </div>
+          {isOpen && (
+            <div className="overlay" onClick={handleCloseSidebar}></div>
+          )}
+          {isOpen && (
+            <div className={`mobileSidebar ${isOpen ? "open" : ""}`}>
+              <button className="close-btn" onClick={handleCloseSidebar}>
+                &times;
+              </button>
+              <div className="logo" onClick={() => navigate("/")}>
+                <img src={logo} alt="Logo" />
+              </div>
+              <div className="menu">
+                <ul>
+                  {/* <li
                   className="btn-type"
                   onClick={() => navigate("/create-contact")}
                 >
@@ -113,112 +121,121 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
                   <i className="fa-solid fa-plus"></i>
                   Create Note
                 </li> */}
-                <li onClick={() => navigate("/")}>
-                  <i className="fa-solid fa-house"></i>
-                  Home
-                </li>
-                <li onClick={() => navigate("/directory")}>
-                  <i className="fa-solid fa-user"></i>
-                  Directory
-                </li>
-                <li onClick={() => navigate("/about-us")}>
-                  <i className="fa-solid fa-circle-exclamation"></i>
-                  About Us
-                </li>
-                <li onClick={() => navigate("/contact-us")}>
-                  <i className="fa-solid fa-phone"></i>
-                  Contact Us
-                </li>
-                <li
-                  onClick={() => {
-                    setIsOpen(false);
-                    setLogoutPopup(true);
-                  }}
-                >
-                  <i className="fa-solid fa-right-from-bracket"></i>
-                  Logout
-                </li>
-              </ul>
-            </div>
-          </div>
-        )}
-        <div className="search">
-          <div className="search-box">
-            <div className="search-field">
-              <input
-                placeholder="Search..."
-                value={
-                  window.location.pathname === "/directory"
-                    ? search
-                    : everySearch
-                }
-                className="input-search"
-                type="text"
-                onChange={(e) =>
-                  window.location.pathname === "/directory"
-                    ? setSearch(e.target.value)
-                    : setEverySearch(e.target.value)
-                }
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    searchContentApiHandler();
-                  }
-                }}
-              />
-              <div className="search-box-icon">
-                <button
-                  className="btn-icon-content"
-                  onClick={searchContentApiHandler}
-                >
-                  <i className="fa-solid fa-magnifying-glass"></i>
-                </button>
+                  <li onClick={() => navigate("/")}>
+                    <i className="fa-solid fa-house"></i>
+                    Home
+                  </li>
+                  <li onClick={() => navigate("/directory")}>
+                    <i className="fa-solid fa-user"></i>
+                    Directory
+                  </li>
+                  <li onClick={() => navigate("/about-us")}>
+                    <i className="fa-solid fa-circle-exclamation"></i>
+                    About Us
+                  </li>
+                  <li onClick={() => navigate("/contact-us")}>
+                    <i className="fa-solid fa-phone"></i>
+                    Contact Us
+                  </li>
+                  <li
+                    onClick={() => {
+                      setIsOpen(false);
+                      setLogoutPopup(true);
+                    }}
+                  >
+                    <i className="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                  </li>
+                </ul>
               </div>
-            </div>
-          </div>
-          {window.location.pathname !== "/directory" && (
-            <div className="searchDown">
-              <ul>
-                <h3>Contact</h3>
-                {apiResponse?.contacts?.length ? (
-                  apiResponse.contacts.map((itm: any) => (
-                    <li key={itm.id} onClick={() => profileHandler(itm.id)}>
-                      {itm.full_name}
-                    </li>
-                  ))
-                ) : (
-                  <li>No result found for "{everySearch}"</li>
-                )}
-                <h3>Notes</h3>
-                {apiResponse?.notes?.length ? (
-                  apiResponse.notes.map((itm: any) => (
-                    <li
-                      key={itm.id}
-                      className="flex"
-                      onClick={() => sendParticularNote(itm)}
-                    >
-                      <span>{itm?.contact?.full_name}</span>
-                      <p>
-                        {itm?.note?.length < 30
-                          ? itm?.note
-                          : `${itm?.note?.slice(0, 30)}...`}
-                      </p>
-                    </li>
-                  ))
-                ) : (
-                  <li>No note found</li>
-                )}
-              </ul>
             </div>
           )}
         </div>
-        <div className="user-profile" onClick={() => navigate("/edit-profile")}>
-          {imageFile ? (
-            <img src={imageFile} alt="" />
-          ) : getImage ? (
-            <img src={getImage} alt="" />
-          ) : (
-            <i className="fa-regular fa-circle-user"></i>
-          )}
+        <div className="flex space-bw al-center">
+          <div className="toggle" onClick={handleOpenSidebar}>
+            <i className="fa-solid fa-bars"></i>
+          </div>
+          <div className="search">
+            <div className="search-box">
+              <div className="search-field">
+                <input
+                  placeholder="Search..."
+                  value={
+                    window.location.pathname === "/directory"
+                      ? search
+                      : everySearch
+                  }
+                  className="input-search"
+                  type="text"
+                  onChange={(e) =>
+                    window.location.pathname === "/directory"
+                      ? setSearch(e.target.value)
+                      : setEverySearch(e.target.value)
+                  }
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      searchContentApiHandler();
+                    }
+                  }}
+                />
+                <div className="search-box-icon">
+                  <button
+                    className="btn-icon-content"
+                    onClick={searchContentApiHandler}
+                  >
+                    <i className="fa-solid fa-magnifying-glass"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            {window.location.pathname !== "/directory" && (
+              <div className="searchDown">
+                <ul>
+                  <h3>Contact</h3>
+                  {apiResponse?.contacts?.length ? (
+                    apiResponse.contacts.map((itm: any) => (
+                      <li key={itm.id} onClick={() => profileHandler(itm.id)}>
+                        {itm.full_name}
+                      </li>
+                    ))
+                  ) : (
+                    <li>No result found for "{everySearch}"</li>
+                  )}
+                  <h3>Notes</h3>
+                  {apiResponse?.notes?.length ? (
+                    apiResponse.notes.map((itm: any) => (
+                      <li
+                        key={itm.id}
+                        className="flex"
+                        onClick={() => sendParticularNote(itm)}
+                      >
+                        <span>{itm?.contact?.full_name}</span>
+                        <p>
+                          {itm?.note?.length < 30
+                            ? itm?.note
+                            : `${itm?.note?.slice(0, 30)}...`}
+                        </p>
+                      </li>
+                    ))
+                  ) : (
+                    <li>No note found</li>
+                  )}
+                </ul>
+              </div>
+            )}
+          </div>
+          <div
+            className="user-profile"
+            onClick={() => navigate("/edit-profile")}
+          >
+            {imageFile ? (
+              <img src={imageFile} alt="" />
+            ) : getImage ? (
+              <img src={getImage} alt="" />
+            ) : (
+              <i className="fa-regular fa-circle-user"></i>
+            )}
+          </div>
         </div>
       </div>
       <div className="note-contact">

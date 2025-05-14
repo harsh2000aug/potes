@@ -37,6 +37,9 @@ li {
 .al-center {
   align-items: center;
 }
+.justify-center {
+  justify-content: center;
+}
 .mr {
   margin-right: 10px;
 }
@@ -255,6 +258,7 @@ li {
 .sidebar .logo img {
   width: 150px;
 }
+
 .sidebar .menu ul li {
   cursor: pointer;
   margin-bottom: 10px;
@@ -642,6 +646,11 @@ li {
   color: #000;
   font-size: 14px;
 }
+
+.note.cut-size p {
+  width: calc(100% - 5%);
+}
+
 .notedarea {
   width: 84%;
 }
@@ -1085,7 +1094,20 @@ td {
   border-top: 1px solid #ccc;
   margin: 20px 0;
 }
-@media (max-width: 480px) {
+.top-area .logo {
+  display: none;
+}
+@media (max-width: 767px) {
+  .top-area .logo {
+    margin-bottom: 0px;
+    cursor: pointer;
+    display: block;
+  }
+
+  .top-area .logo img {
+    width: 100px;
+  }
+
   .scroll2 {
     height: 250px;
     overflow: auto;
