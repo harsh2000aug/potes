@@ -143,7 +143,7 @@ const Directory = () => {
           {!initialLoading && (
             <div className="body-area">
               <div className="common-back">
-                <div className="table-container">
+                <div className="table-container directory">
                   <table>
                     <thead>
                       <tr>
@@ -162,9 +162,9 @@ const Directory = () => {
                                 <tr className="table-header-row">
                                   <td colSpan={4}>
                                     {" "}
-                                    <p className="table-header">
+                                    <tr className="table-header">
                                       {getHeaderChar(itm)}
-                                    </p>
+                                    </tr>
                                   </td>
                                 </tr>
                               )}

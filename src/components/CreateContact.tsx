@@ -315,9 +315,7 @@ const CreateContact = () => {
                     </div>
                     <div className="col-50 flex space-bw">
                       <div className="col-50">
-                        <label htmlFor="">
-                          Birthday<sup>*</sup>
-                        </label>
+                        <label>Birthday</label>
                         <input
                           type="date"
                           value={personalDetail.birthday}

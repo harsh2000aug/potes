@@ -475,7 +475,7 @@ const OpenProfile = () => {
                         className="accordion-header"
                         onClick={() => toggleSection("interests")}
                       >
-                        <h3>Interests +</h3>
+                        <h3>Interest +</h3>
                       </div>
                       {openSections.includes("interests") && (
                         <div className="accordion-content">
