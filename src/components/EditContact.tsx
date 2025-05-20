@@ -619,7 +619,7 @@ const EditContact = () => {
               <div className="form-divider"></div>
               <div className="interest">
                 <h4 onClick={manageInterest}>
-                  Interest <i className="fa-solid fa-plus"></i>
+                  Interests <i className="fa-solid fa-plus"></i>
                 </h4>
                 <div id="interest">
                   {interests.map((interest: any, index: number) => (

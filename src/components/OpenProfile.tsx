@@ -199,7 +199,7 @@ const OpenProfile = () => {
             </div>
             <div className="body-area">
               <div className="common-back">
-                <div className="name flex space-bw al-center">
+                <div className="nameChanged">
                   <h4
                     style={{
                       fontWeight: 800,
@@ -207,69 +207,69 @@ const OpenProfile = () => {
                   >
                     {profileData?.full_name}
                   </h4>
-                  <div className="btn">
-                    <button
-                      type="button"
-                      className="mr"
-                      onClick={handleDeletePart}
-                    >
-                      Delete
-                      <i
-                        className="fa-solid fa-trash"
-                        style={{
-                          marginLeft: "5px",
-                        }}
-                      ></i>
-                    </button>
-                    <button
-                      type="button"
-                      className="mr"
-                      onClick={() =>
-                        navigate("/edit-contact", {
-                          state: {
-                            editUser: profileData,
-                          },
-                        })
-                      }
-                    >
-                      Edit
-                      <i
-                        className="fa-solid fa-pencil"
-                        style={{
-                          marginLeft: "5px",
-                        }}
-                      ></i>
-                    </button>
-                    <button
-                      type="button"
-                      className="mr"
-                      onClick={() =>
-                        navigate("/create-note", {
-                          state: {
-                            profileName: profileData.full_name,
-                            profileId: profileData.id,
-                          },
-                        })
-                      }
-                    >
-                      Add Note
-                      <i
-                        className="fa-solid fa-book"
-                        style={{
-                          marginLeft: "5px",
-                        }}
-                      ></i>
-                    </button>
-                    <button type="button" onClick={toggleAllSections}>
-                      {allExpanded ? "Collapse" : "Expand"}
-                      <i
-                        className={`fa-solid ${
-                          allExpanded ? "fa-minus" : "fa-plus"
-                        }`}
-                        style={{ marginLeft: "5px" }}
-                      ></i>
-                    </button>
-                  </div>
+                </div>
+                <div className="btn nameChanged">
+                  <button
+                    type="button"
+                    className="mr"
+                    onClick={handleDeletePart}
+                  >
+                    Delete
+                    <i
+                      className="fa-solid fa-trash"
+                      style={{
+                        marginLeft: "5px",
+                      }}
+                    ></i>
+                  </button>
+                  <button
+                    type="button"
+                    className="mr"
+                    onClick={() =>
+                      navigate("/edit-contact", {
+                        state: {
+                          editUser: profileData,
+                        },
+                      })
+                    }
+                  >
+                    Edit
+                    <i
+                      className="fa-solid fa-pencil"
+                      style={{
+                        marginLeft: "5px",
+                      }}
+                    ></i>
+                  </button>
+                  <button
+                    type="button"
+                    className="mr"
+                    onClick={() =>
+                      navigate("/create-note", {
+                        state: {
+                          profileName: profileData.full_name,
+                          profileId: profileData.id,
+                        },
+                      })
+                    }
+                  >
+                    Add Note
+                    <i
+                      className="fa-solid fa-book"
+                      style={{
+                        marginLeft: "5px",
+                      }}
+                    ></i>
+                  </button>
+                  <button type="button" onClick={toggleAllSections}>
+                    {allExpanded ? "Collapse" : "Expand"}
+                    <i
+                      className={`fa-solid ${
+                        allExpanded ? "fa-minus" : "fa-plus"
+                      }`}
+                      style={{ marginLeft: "5px" }}
+                    ></i>
+                  </button>
                 </div>
                 <div className="flex space-bw">
                   <div className="profile-pic-upload">
@@ -475,7 +475,7 @@ const OpenProfile = () => {
                         className="accordion-header"
                         onClick={() => toggleSection("interests")}
                       >
-                        <h3>Interest +</h3>
+                        <h3>Interests +</h3>
                       </div>
                       {openSections.includes("interests") && (
                         <div className="accordion-content">

@@ -88,7 +88,7 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
         <div
           className="flex justify-center"
           style={{
-            marginBottom: "15px",
+            marginBottom: "2px",
           }}
         >
           <div className="logo" onClick={() => navigate("/")}>

@@ -192,10 +192,46 @@ const Directory = () => {
                                     ) : (
                                       <i className="fa-regular fa-circle-user default-user-icon"></i>
                                     )}
-                                    <p>{itm.full_name || "-"}</p>
+                                    <div
+                                      className={
+                                        itm.full_name?.length > 20
+                                          ? "marquee"
+                                          : ""
+                                      }
+                                    >
+                                      <span>{itm.full_name || "-"}</span>
+                                    </div>
+                                    {/* <div>
+                                      <span>
+                                        {itm.full_name
+                                          ? itm.full_name
+                                              .match(/.{1,20}/g)
+                                              .map((chunk: any, index: any) => (
+                                                <React.Fragment key={index}>
+                                                  {chunk}
+                                                  <br />
+                                                </React.Fragment>
+                                              ))
+                                          : "-"}
+                                      </span>
+                                    </div> */}
                                   </div>
                                 </td>
-                                <td>{itm.email || "-"}</td>
+                                <td>
+                                  {itm.email ? (
+                                    itm.email.length > 20 ? (
+                                      <>
+                                        {itm.email.slice(0, 19)}
+                                        <br />
+                                        {itm.email.slice(19)}
+                                      </>
+                                    ) : (
+                                      itm.email
+                                    )
+                                  ) : (
+                                    "-"
+                                  )}
+                                </td>
                                 <td>{itm.phone || "-"}</td>
                                 <td>
                                   {itm.birthday
