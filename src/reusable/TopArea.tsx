@@ -161,16 +161,16 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
                 <input
                   placeholder="Search..."
                   value={
-                    window.location.pathname === "/directory"
-                      ? search
-                      : everySearch
+                    // window.location.pathname === "/directory"
+                    //   ? search
+                    everySearch
                   }
                   className="input-search"
                   type="text"
                   onChange={(e) =>
-                    window.location.pathname === "/directory"
-                      ? setSearch(e.target.value)
-                      : setEverySearch(e.target.value)
+                    // window.location.pathname === "/directory"
+                    // ? setSearch(e.target.value)
+                    setEverySearch(e.target.value)
                   }
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -188,7 +188,7 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
                 </div>
               </div>
             </div>
-            {window.location.pathname !== "/directory" && (
+            {/* {window.location.pathname !== "/directory" && (
               <div className="searchDown">
                 <ul>
                   <h3>Contact</h3>
@@ -222,7 +222,7 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
                   )}
                 </ul>
               </div>
-            )}
+            )} */}
           </div>
           <div
             className="user-profile"

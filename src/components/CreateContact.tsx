@@ -130,6 +130,13 @@ const CreateContact = () => {
     updatedCustomField[index].values.push(""); // Add an empty value field
     setCustomField(updatedCustomField);
   };
+  function formatDateToLocal(dateStr: string) {
+    const date = new Date(dateStr);
+    const offsetDate = new Date(
+      date.getTime() + Math.abs(date.getTimezoneOffset()) * 60000
+    );
+    return offsetDate.toISOString().split("T")[0]; // yyyy-MM-dd
+  }
 
   const removeValueField = (index: number, valueIndex: number) => {
     const updatedCustomField = [...customField];
@@ -150,7 +157,7 @@ const CreateContact = () => {
     formData.append("full_name", personalDetail.full_name);
     formData.append("phone", personalDetail.phone_no);
     if (personalDetail.birthday)
-      formData.append("birthday", personalDetail.birthday);
+      formData.append("birthday", formatDateToLocal(personalDetail.birthday));
     if (error.length === 0) formData.append("email", personalDetail.email);
     formData.append("spouse_name", personalDetail.spouse_name);
     if (personalDetail.spouse_bdy)
@@ -158,7 +165,6 @@ const CreateContact = () => {
     if (personalDetail.spouse_ani) {
       formData.append("anniversary", personalDetail.spouse_ani);
     }
-
     formData.append("spouse_details", personalDetail.spouse_details);
     formData.append("children", JSON.stringify(children));
     formData.append("previous_employers", JSON.stringify(experiences));
@@ -171,7 +177,6 @@ const CreateContact = () => {
     if (imageFile) {
       formData.append("photo", imageFile, imageFile.name);
     }
-
     try {
       if (error.length === 0) {
         const response: any = await createContactApi({
