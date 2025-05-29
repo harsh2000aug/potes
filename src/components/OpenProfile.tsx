@@ -44,7 +44,6 @@ const OpenProfile = () => {
   };
 
   const toggleSection = (section: string) => {
-    if (section === "personal") return;
     setOpenSections((prev: string[]) =>
       prev.includes(section)
         ? prev.filter((s) => s !== section)

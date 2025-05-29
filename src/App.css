@@ -555,8 +555,9 @@ li {
 }
 .circle img {
   max-width: 100%;
-  height: auto;
+  height: 100%;
   margin-right: 0 !important;
+  object-fit: cover;
 }
 .p-image {
   width: 30px;

@@ -77,13 +77,23 @@ const EditProfile = () => {
   //   }
   // };
 
-  const changeImageHandler = (event: any) => {
+  const changeImageHandler = async (event: any) => {
     const file: File | null = event.target.files[0];
     if (file) {
       setImageFile(file);
       setContactImage(URL.createObjectURL(file));
+      const formData = new FormData();
+
+      formData.append("profile_pic", file, file.name);
+
+      try {
+        await changeProfileName({ body: formData });
+        toast.success("Profile updated successfully");
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        toast.error("Failed to update profile");
+      }
     }
-    // If no file is selected, do nothing to retain the previous image
   };
 
   useEffect(() => {
