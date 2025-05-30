@@ -185,13 +185,52 @@ const AllNotes = () => {
       });
   };
 
-  function formatDate(timestamp) {
-    const date = new Date(timestamp);
-    const yy = String(date.getFullYear());
-    const mm = String(date.getMonth() + 1).padStart(2, "0");
-    const dd = String(date.getDate()).padStart(2, "0");
+  function formatDate(dateStringYMD) {
+    if (!dateStringYMD || typeof dateStringYMD !== "string") {
+      console.error("Invalid input: Please provide a date string.");
+      return null;
+    }
 
-    return `${mm}-${dd}-${yy}`;
+    const parts = dateStringYMD.split("-");
+
+    if (parts.length !== 3) {
+      console.error(
+        `Invalid date format: Expected YYYY-MM-DD, but received "${dateStringYMD}"`
+      );
+      return null;
+    }
+
+    const year = parts[0];
+    const month = parts[1];
+    const day = parts[2];
+
+    if (
+      year.length !== 4 ||
+      month.length !== 2 ||
+      day.length !== 2 ||
+      isNaN(parseInt(year)) ||
+      isNaN(parseInt(month)) ||
+      isNaN(parseInt(day))
+    ) {
+      console.warn(
+        `Potentially invalid date parts in "${dateStringYMD}". Proceeding with formatting.`
+      );
+    }
+
+    return `${month}-${day}-${year}`;
+  }
+
+  function formatDateToMmDdYyyy(isoTimestamp) {
+    const dateObj = new Date(isoTimestamp);
+
+    const month = dateObj.getMonth() + 1;
+    const day = dateObj.getDate();
+    const year = dateObj.getFullYear();
+
+    const paddedMonth = String(month).padStart(2, "0");
+    const paddedDay = String(day).padStart(2, "0");
+
+    return `${paddedMonth}-${paddedDay}-${year}`;
   }
 
   return (
@@ -375,7 +414,9 @@ const AllNotes = () => {
                             </div>
                             <span>
                               (<i className="fa-solid fa-keyboard"></i>
-                              {itm.created_at ? formatDate(itm.created_at) : ""}
+                              {itm.created_at
+                                ? formatDateToMmDdYyyy(itm.created_at)
+                                : ""}
                               )
                             </span>
                           </div>

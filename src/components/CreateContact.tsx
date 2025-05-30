@@ -157,7 +157,7 @@ const CreateContact = () => {
     formData.append("full_name", personalDetail.full_name);
     formData.append("phone", personalDetail.phone_no);
     if (personalDetail.birthday)
-      formData.append("birthday", formatDateToLocal(personalDetail.birthday));
+      formData.append("birthday", personalDetail.birthday);
     if (error.length === 0) formData.append("email", personalDetail.email);
     formData.append("spouse_name", personalDetail.spouse_name);
     if (personalDetail.spouse_bdy)

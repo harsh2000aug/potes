@@ -108,12 +108,52 @@ const OpenProfile = () => {
     });
   };
 
-  function formatDate(date: any) {
-    const d = new Date(date);
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    const year = d.getFullYear();
+  function formatDate(dateStringYMD: any) {
+    if (!dateStringYMD || typeof dateStringYMD !== "string") {
+      console.error("Invalid input: Please provide a date string.");
+      return null;
+    }
+
+    const parts = dateStringYMD.split("-");
+
+    if (parts.length !== 3) {
+      console.error(
+        `Invalid date format: Expected YYYY-MM-DD, but received "${dateStringYMD}"`
+      );
+      return null;
+    }
+
+    const year = parts[0];
+    const month = parts[1];
+    const day = parts[2];
+
+    if (
+      year.length !== 4 ||
+      month.length !== 2 ||
+      day.length !== 2 ||
+      isNaN(parseInt(year)) ||
+      isNaN(parseInt(month)) ||
+      isNaN(parseInt(day))
+    ) {
+      console.warn(
+        `Potentially invalid date parts in "${dateStringYMD}". Proceeding with formatting.`
+      );
+    }
+
     return `${month}-${day}-${year}`;
+  }
+
+  function formatDateToMmDdYyyy(isoTimestamp: any) {
+    const dateObj = new Date(isoTimestamp);
+
+    const month = dateObj.getMonth() + 1;
+    const day = dateObj.getDate();
+    const year = dateObj.getFullYear();
+
+    const paddedMonth = String(month).padStart(2, "0");
+    const paddedDay = String(day).padStart(2, "0");
+
+    return `${paddedMonth}-${paddedDay}-${year}`;
   }
 
   const profileHandler = () => {
@@ -587,10 +627,12 @@ const OpenProfile = () => {
                             </div>
                           </div>
                           <div className="date creationarea">
-                            <p>Noted created at</p>
+                            <p>Note created at</p>
                             <p>
                               <i className="fa-solid fa-keyboard"></i>
-                              {itm.created_at ? formatDate(itm.created_at) : ""}
+                              {itm.created_at
+                                ? formatDateToMmDdYyyy(itm.created_at)
+                                : ""}
                             </p>
                           </div>
                         </div>
