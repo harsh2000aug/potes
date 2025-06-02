@@ -162,4 +162,11 @@ export const allApi = {
       uri: "/complete-reminder/",
     },
   },
+  updateReminders: {
+    v1: {
+      ...defaults.methods.GET,
+      ...defaults.versions.v1,
+      uri: "/update-reminders/",
+    },
+  },
 };

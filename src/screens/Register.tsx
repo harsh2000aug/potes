@@ -200,7 +200,7 @@ const Register = () => {
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       <FontAwesomeIcon
-                        icon={showPassword ? faEyeSlash : faEye}
+                        icon={showPassword ? faEye : faEyeSlash}
                       />
                     </button>
                   </div>
@@ -231,7 +231,7 @@ const Register = () => {
                       }
                     >
                       <FontAwesomeIcon
-                        icon={showConfirmPassword ? faEyeSlash : faEye}
+                        icon={showConfirmPassword ? faEye : faEyeSlash}
                       />
                     </button>
                   </div>

@@ -10,6 +10,7 @@ import {
 import toast from "react-hot-toast";
 import logo from "../images/logo.png";
 import Mic from "../reusable/Mic";
+import dayjs from "dayjs";
 const OpenProfile = () => {
   const location = useLocation();
   const [openSections, setOpenSections] = useState<string[]>(["personal"]);
@@ -143,19 +144,9 @@ const OpenProfile = () => {
     return `${month}-${day}-${year}`;
   }
 
-  function formatDateToMmDdYyyy(isoTimestamp: any) {
-    const dateObj = new Date(isoTimestamp);
-
-    const month = dateObj.getMonth() + 1;
-    const day = dateObj.getDate();
-    const year = dateObj.getFullYear();
-
-    const paddedMonth = String(month).padStart(2, "0");
-    const paddedDay = String(day).padStart(2, "0");
-
-    return `${paddedMonth}-${paddedDay}-${year}`;
+  function formatDateToMmDdYyyy(timestamp: any, format = "MM-DD-YYYY") {
+    return dayjs(timestamp).format(format);
   }
-
   const profileHandler = () => {
     profileContactApi({
       query: {

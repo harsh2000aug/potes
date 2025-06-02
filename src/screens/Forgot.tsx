@@ -70,7 +70,7 @@ const Forgot = () => {
                       value={formik.values.password}
                     />
                     <FontAwesomeIcon
-                      icon={showPassword ? faEyeSlash : faEye}
+                      icon={showPassword ? faEye : faEyeSlash}
                       onClick={() => setShowPassword(!showPassword)}
                       className="eye-icon"
                     />
@@ -91,7 +91,7 @@ const Forgot = () => {
                       value={formik.values.confirmPassword}
                     />
                     <FontAwesomeIcon
-                      icon={showConfirmPassword ? faEyeSlash : faEye}
+                      icon={showConfirmPassword ? faEye : faEyeSlash}
                       onClick={() =>
                         setShowConfirmPassword(!showConfirmPassword)
                       }

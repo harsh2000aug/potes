@@ -7,6 +7,7 @@ import {
   profileContactApi,
   showBirthdays,
   showReminders,
+  updateReminders,
   yearsAgo,
 } from "../store/Services/AllApi";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +21,7 @@ const ReminderComponent = ({
   setMissedCount,
 }: any) => {
   const [manageCheck, setManageCheck] = useState(itm?.completed);
+
   const handleCompleteTask = (id: any) => {
     if (!manageCheck) {
       completeTaskApi({
@@ -37,6 +39,7 @@ const ReminderComponent = ({
         .catch((err: any) => toast.success(err.data.err));
     }
   };
+
   return (
     <>
       {manageCheck && text === "missed" ? (
@@ -105,6 +108,19 @@ const Dashboard = () => {
   const [sixMonthsAgo, setSixMonthsAgo]: any = useState(false);
   const [oneMonthsAgo, setOneMonthsAgo]: any = useState(false);
   const [missedCount, setMissedCount]: any = useState(0);
+  useEffect(() => {
+    const fetchReminders = () => {
+      updateReminders()
+        .then((res: any) => console.log("res", res))
+        .catch((err: any) => console.log("err", err));
+    };
+
+    fetchReminders();
+
+    const intervalId = setInterval(fetchReminders, 3600000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const navigate = useNavigate();
   const profileHandler = (userId: any) => {

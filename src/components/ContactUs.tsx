@@ -122,7 +122,7 @@ const ContactUs = () => {
                     <div className="form-group">
                       <div className="col-33 btn">
                         <button type="submit" disabled={isSubmitting}>
-                          {isSubmitting ? "Submitting..." : "Submit"}
+                          Submit
                         </button>
                       </div>
                     </div>

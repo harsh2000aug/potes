@@ -121,3 +121,7 @@ export const completeTaskApi = ({ query }: any) =>
     uriEndPoint: allApi.completeTaskApi.v1,
     query,
   });
+export const updateReminders = () =>
+  callApi({
+    uriEndPoint: allApi.updateReminders.v1,
+  });

@@ -185,7 +185,7 @@ const Login = () => {
                     onBlur={formik.handleBlur}
                   />
                   <FontAwesomeIcon
-                    icon={showPassword ? faEyeSlash : faEye}
+                    icon={showPassword ? faEye : faEyeSlash}
                     className="eye-icon"
                     onClick={() => setShowPassword(!showPassword)}
                   />
@@ -251,7 +251,7 @@ const Login = () => {
                         className="btn-secondary"
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? "Submitting..." : "Submit"}
+                        Submit
                       </button>
                     </div>
                   </Form>
