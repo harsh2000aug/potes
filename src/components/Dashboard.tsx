@@ -12,6 +12,7 @@ import {
 } from "../store/Services/AllApi";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import dayjs from "dayjs";
 
 const ReminderComponent = ({
   itm,
@@ -133,40 +134,40 @@ const Dashboard = () => {
     });
   };
 
-  function formatDate(dateStringYMD: any) {
-    if (!dateStringYMD || typeof dateStringYMD !== "string") {
-      console.error("Invalid input: Please provide a date string.");
-      return null;
-    }
+  // function formatDate(dateStringYMD: any) {
+  //   if (!dateStringYMD || typeof dateStringYMD !== "string") {
+  //     console.error("Invalid input: Please provide a date string.");
+  //     return null;
+  //   }
 
-    const parts = dateStringYMD.split("-");
+  //   const parts = dateStringYMD.split("-");
 
-    if (parts.length !== 3) {
-      console.error(
-        `Invalid date format: Expected YYYY-MM-DD, but received "${dateStringYMD}"`
-      );
-      return null;
-    }
+  //   if (parts.length !== 3) {
+  //     console.error(
+  //       `Invalid date format: Expected YYYY-MM-DD, but received "${dateStringYMD}"`
+  //     );
+  //     return null;
+  //   }
 
-    const year = parts[0];
-    const month = parts[1];
-    const day = parts[2];
+  //   const year = parts[0];
+  //   const month = parts[1];
+  //   const day = parts[2];
 
-    if (
-      year.length !== 4 ||
-      month.length !== 2 ||
-      day.length !== 2 ||
-      isNaN(parseInt(year)) ||
-      isNaN(parseInt(month)) ||
-      isNaN(parseInt(day))
-    ) {
-      console.warn(
-        `Potentially invalid date parts in "${dateStringYMD}". Proceeding with formatting.`
-      );
-    }
+  //   if (
+  //     year.length !== 4 ||
+  //     month.length !== 2 ||
+  //     day.length !== 2 ||
+  //     isNaN(parseInt(year)) ||
+  //     isNaN(parseInt(month)) ||
+  //     isNaN(parseInt(day))
+  //   ) {
+  //     console.warn(
+  //       `Potentially invalid date parts in "${dateStringYMD}". Proceeding with formatting.`
+  //     );
+  //   }
 
-    return `${month}-${day}-${year}`;
-  }
+  //   return `${month}-${day}-${year}`;
+  // }
 
   useEffect(() => {
     setLoading(true);
@@ -762,7 +763,9 @@ const Dashboard = () => {
                                 <p>{itm.full_name}</p>
                               </div>
                               <p>
-                                {itm.birthday ? formatDate(itm.birthday) : ""}
+                                {itm.birthday
+                                  ? dayjs(itm.birthday).format("MM-DD-YYYY")
+                                  : ""}
                               </p>
                             </div>
                           </li>
@@ -800,7 +803,9 @@ const Dashboard = () => {
                                 )}
                                 <p>{itm.full_name}</p>
                               </div>
-                              <p>{formatDate(itm.anniversary)}</p>
+                              <p>
+                                {dayjs(itm.anniversary).format("MM-DD-YYYY")}
+                              </p>
                             </div>
                           </li>
                         ))
@@ -839,7 +844,11 @@ const Dashboard = () => {
                                   {itm.spouse_name} ({itm.full_name}'s Spouse)
                                 </p>
                               </div>
-                              <p>{formatDate(itm.spouse_birthday)}</p>
+                              <p>
+                                {dayjs(itm.spouse_birthday).format(
+                                  "MM-DD-YYYY"
+                                )}
+                              </p>
                             </div>
                           </li>
                         ))
@@ -878,7 +887,7 @@ const Dashboard = () => {
                                   {itm.name} ({itm.contact__full_name}'s Child)
                                 </p>
                               </div>
-                              <p>{formatDate(itm.birthday)}</p>
+                              <p>{dayjs(itm.birthday).format("MM-DD-YYYY")}</p>
                             </div>
                           </li>
                         ))

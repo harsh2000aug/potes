@@ -130,13 +130,13 @@ const CreateContact = () => {
     updatedCustomField[index].values.push(""); // Add an empty value field
     setCustomField(updatedCustomField);
   };
-  function formatDateToLocal(dateStr: string) {
-    const date = new Date(dateStr);
-    const offsetDate = new Date(
-      date.getTime() + Math.abs(date.getTimezoneOffset()) * 60000
-    );
-    return offsetDate.toISOString().split("T")[0]; // yyyy-MM-dd
-  }
+  // function formatDateToLocal(dateStr: string) {
+  //   const date = new Date(dateStr);
+  //   const offsetDate = new Date(
+  //     date.getTime() + Math.abs(date.getTimezoneOffset()) * 60000
+  //   );
+  //   return offsetDate.toISOString().split("T")[0]; // yyyy-MM-dd
+  // }
 
   const removeValueField = (index: number, valueIndex: number) => {
     const updatedCustomField = [...customField];
@@ -319,10 +319,11 @@ const CreateContact = () => {
                       />
                     </div>
                     <div className="col-50 flex space-bw">
-                      <div className="col-50">
+                      <div className="col-50-mobile">
                         <label>Birthday</label>
                         <input
                           type="date"
+                          className="phone-birthday-right"
                           value={personalDetail.birthday}
                           onChange={(e: any) =>
                             setPersonalDetail((oldVal: any) => ({
@@ -332,10 +333,11 @@ const CreateContact = () => {
                           }
                         />
                       </div>
-                      <div className="col-50">
+                      <div className="col-50-mobile">
                         <label>Anniversary</label>
                         <input
                           type="date"
+                          className="phone-birthday-right"
                           value={personalDetail.spouse_ani}
                           onChange={(e: any) =>
                             setPersonalDetail((oldVal: any) => {
@@ -414,6 +416,7 @@ const CreateContact = () => {
                       <label>Birthday</label>
                       <input
                         type="date"
+                        className="phone-birthday-details"
                         value={personalDetail.spouse_bdy}
                         onChange={(e: any) =>
                           setPersonalDetail((oldVal: any) => {
@@ -462,6 +465,7 @@ const CreateContact = () => {
                             <input
                               type="date"
                               value={child.birthday}
+                              className="phone-birthday-details"
                               onChange={(e) =>
                                 handleChildChange(
                                   index,

@@ -3,7 +3,7 @@ import queryString from "querystring";
 
 export const hostname = () => {
   // let hostUrl = "http://.168.0.19:8000/api";
-  let hostUrl = "http://192.168.0.156:8001/api";
+  let hostUrl = "http://192.168.0.101:8001/api";
 
   return hostUrl;
 };
@@ -94,12 +94,14 @@ const callAxios = async (
       ...defHeaders,
     };
   }
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   return Axios({
     method: uriEndPoint.method,
     url: makeUrl({ ...uriEndPoint, pathParams, query }, apiHostUrl),
     headers: {
       ...headers,
       ...uriEndPoint.headerProps,
+      "Time-Zone": timezone,
     },
     data: body || undefined,
     withCredentials: withCredentials || false, // Add withCredentials here

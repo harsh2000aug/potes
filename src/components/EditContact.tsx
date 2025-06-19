@@ -350,20 +350,22 @@ const EditContact = () => {
                       />
                     </div>
                     <div className="col-50 flex space-bw">
-                      <div className="col-50">
+                      <div className="col-50-mobile">
                         <label htmlFor="">Birthday</label>
                         <input
                           type="date"
+                          className="phone-birthday-right"
                           value={personalDetail.birthday}
                           onChange={(e) =>
                             handleInputChange("birthday", e.target.value)
                           }
                         />
                       </div>
-                      <div className="col-50">
+                      <div className="col-50-mobile">
                         <label>Anniversary</label>
                         <input
                           type="date"
+                          className="phone-birthday-right"
                           value={personalDetail.spouse_ani}
                           onChange={(e) => {
                             handleInputChange("spouse_ani", e.target.value);
@@ -439,6 +441,7 @@ const EditContact = () => {
                       <label>Birthday</label>
                       <input
                         type="date"
+                        className="phone-birthday-details"
                         value={personalDetail.spouse_bdy}
                         onChange={(e) =>
                           handleInputChange("spouse_bdy", e.target.value)
@@ -480,6 +483,7 @@ const EditContact = () => {
                             <label>Birthday</label>
                             <input
                               type="date"
+                              className="phone-birthday-details"
                               value={child.birthday}
                               onChange={(e) =>
                                 handleChildChange(

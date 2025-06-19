@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
-import { allContactApi, createNotesApi, profileContactApi } from "../store/Services/AllApi";
+import {
+  allContactApi,
+  createNotesApi,
+  profileContactApi,
+} from "../store/Services/AllApi";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
@@ -17,11 +21,11 @@ const CreateNote = () => {
   const location = useLocation();
   const [interval, setInterval] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
   const profileData = location.state?.profileName;
   const profileIdUser = location.state?.profileId;
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     if (
       !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
@@ -31,13 +35,13 @@ const CreateNote = () => {
     }
 
     const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
+      window.SpeechRecognition || window.webkitSpeechRecognition;
     recognitionRef.current = new SpeechRecognition();
     recognitionRef.current.continuous = true;
     recognitionRef.current.interimResults = true;
     recognitionRef.current.lang = "en-US";
 
-    let silenceTimeout; 
+    let silenceTimeout;
 
     recognitionRef.current.onstart = () => {
       setIsListening(true);
@@ -59,7 +63,7 @@ const CreateNote = () => {
           setFinalTranscript(
             (prevFinalTranscript) =>
               prevFinalTranscript + result[0].transcript + " "
-          ); 
+          );
         }
       }
       setText(finalTranscript + interimTranscript);
@@ -93,7 +97,7 @@ const CreateNote = () => {
     }
   };
 
-const profileHandler = (addId) => {
+  const profileHandler = (addId) => {
     profileContactApi({
       query: {
         id: addId,
@@ -121,9 +125,8 @@ const profileHandler = (addId) => {
         setText("");
         setFinalTranscript("");
         setInterval("");
-       
-        profileHandler(res.data.contact)
-      
+
+        profileHandler(res.data.contact);
       })
       .catch((err) => {
         toast.error(err.data.error);
@@ -141,18 +144,18 @@ const profileHandler = (addId) => {
         <Sidebar current="Create Note" />
         <div className="main-area">
           <div className="back-btn">
-                        <div className="flex al-center space-bw">
-                          <button type="button" onClick={() => navigate(-1)}>
-                            <i className="fa-solid fa-chevron-left"></i>
-                          </button>
-                          <div className="logo" onClick={() => navigate("/")}>
-                            <img src={logo} alt="Logo" />
-                          </div>
-                          <button type="button" onClick={() => navigate("/directory")}>
-                            <i className="fa-solid fa-magnifying-glass"></i>
-                          </button>
-                        </div>
-                      </div>
+            <div className="flex al-center space-bw">
+              <button type="button" onClick={() => navigate(-1)}>
+                <i className="fa-solid fa-chevron-left"></i>
+              </button>
+              <div className="logo" onClick={() => navigate("/")}>
+                <img src={logo} alt="Logo" />
+              </div>
+              <button type="button" onClick={() => navigate("/directory")}>
+                <i className="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </div>
+          </div>
           <div className="body-area">
             <div className="common-back">
               <h3>Create a Note</h3>
@@ -195,11 +198,12 @@ const profileHandler = (addId) => {
                 </div>
                 {interval === "Custom" && (
                   <div className="col-50">
-                    <label  >Set a Reminder</label>
+                    <label>Set a Reminder</label>
                     <input
                       type="date"
+                      className="phone-birthday-details"
                       value={reminder}
-                      style={{cursor:"pointer"}}
+                      style={{ cursor: "pointer" }}
                       onChange={(e) => setReminder(e.target.value)}
                     />
                   </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ import FullScreenLoader from "../components/FullScreenLoader/FullScreenLoader";
 import OtpScreen from "../reusable/otp-screen/OtpScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { staticDataApi } from "../store/Services/AllApi";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -18,6 +19,10 @@ const Register = () => {
   const [formData, setFormData]: any = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [apiResponse, setApiReponse]: any = useState({});
+  const openPopup = () => setIsOpen(true);
+  const closePopup = () => setIsOpen(false);
 
   const apiCallHandler = (values: any) => {
     setLoading(true);
@@ -43,6 +48,8 @@ const Register = () => {
       });
   };
 
+  console.log("hola", apiResponse);
+
   const formik: any = useFormik({
     initialValues: {
       firstName: "",
@@ -51,6 +58,7 @@ const Register = () => {
       email: "",
       password: "",
       confirmPassword: "",
+      terms: false,
     },
     validationSchema: Yup.object({
       firstName: Yup.string()
@@ -78,11 +86,30 @@ const Register = () => {
       confirmPassword: Yup.string()
         .oneOf([Yup.ref("password")], "Passwords must match")
         .required("Confirm password is required"),
+      terms: Yup.boolean()
+        .oneOf([true], "You must accept the Terms and Conditions")
+        .required("You must accept the Terms and Conditions"),
     }),
     onSubmit: (values: any) => {
       apiCallHandler(values);
     },
   });
+
+  const apiCaller = () => {
+    staticDataApi({
+      query: {
+        topic: "terms",
+      },
+    })
+      .then((res: any) => {
+        setApiReponse(res?.data);
+      })
+      .catch((err: any) => console.log("err", err));
+  };
+
+  useEffect(() => {
+    apiCaller();
+  }, []);
 
   return (
     <>
@@ -94,6 +121,19 @@ const Register = () => {
           apiCallHandler={apiCallHandler}
           setLoading={setLoading}
         />
+      )}
+      {isOpen && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <button className="close-btn" onClick={closePopup}>
+              &times;
+            </button>
+            <h2>Terms and Conditions</h2>
+            {apiResponse?.content.split("\n").map((line: any, index: any) => (
+              <p key={index}>{line}</p>
+            ))}
+          </div>
+        </div>
       )}
       <div className={window.innerWidth < 480 ? "login-mobile" : "login"}>
         <div className="flex h-100">
@@ -240,6 +280,32 @@ const Register = () => {
                       <p className="error">{formik.errors.confirmPassword}</p>
                     )}
                 </div>
+              </div>
+              <div className="form-control">
+                <div className="checkbox-container">
+                  <input
+                    type="checkbox"
+                    name="terms"
+                    id="terms"
+                    checked={formik.values.terms}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    style={{ display: "none" }}
+                  />
+                  <span
+                    className="custom-checkbox"
+                    onClick={() =>
+                      formik.setFieldValue("terms", !formik.values.terms)
+                    }
+                  ></span>
+                  <span className="terms-text">
+                    I accept the{" "}
+                    <span onClick={openPopup}>Terms and Conditions</span>
+                  </span>
+                </div>
+                {formik.touched.terms && formik.errors.terms && (
+                  <p className="error">{formik.errors.terms}</p>
+                )}
               </div>
               <div className="form-control">
                 <button type="submit" className="submitBtn">

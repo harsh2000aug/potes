@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
 import user from "../images/user.png";
 import logo from "../images/logo.png";
+import dayjs from "dayjs";
 
 const AllNotes = () => {
   const location = useLocation();
@@ -185,53 +186,53 @@ const AllNotes = () => {
       });
   };
 
-  function formatDate(dateStringYMD) {
-    if (!dateStringYMD || typeof dateStringYMD !== "string") {
-      console.error("Invalid input: Please provide a date string.");
-      return null;
-    }
+  // function formatDate(dateStringYMD) {
+  //   if (!dateStringYMD || typeof dateStringYMD !== "string") {
+  //     console.error("Invalid input: Please provide a date string.");
+  //     return null;
+  //   }
 
-    const parts = dateStringYMD.split("-");
+  //   const parts = dateStringYMD.split("-");
 
-    if (parts.length !== 3) {
-      console.error(
-        `Invalid date format: Expected YYYY-MM-DD, but received "${dateStringYMD}"`
-      );
-      return null;
-    }
+  //   if (parts.length !== 3) {
+  //     console.error(
+  //       `Invalid date format: Expected YYYY-MM-DD, but received "${dateStringYMD}"`
+  //     );
+  //     return null;
+  //   }
 
-    const year = parts[0];
-    const month = parts[1];
-    const day = parts[2];
+  //   const year = parts[0];
+  //   const month = parts[1];
+  //   const day = parts[2];
 
-    if (
-      year.length !== 4 ||
-      month.length !== 2 ||
-      day.length !== 2 ||
-      isNaN(parseInt(year)) ||
-      isNaN(parseInt(month)) ||
-      isNaN(parseInt(day))
-    ) {
-      console.warn(
-        `Potentially invalid date parts in "${dateStringYMD}". Proceeding with formatting.`
-      );
-    }
+  //   if (
+  //     year.length !== 4 ||
+  //     month.length !== 2 ||
+  //     day.length !== 2 ||
+  //     isNaN(parseInt(year)) ||
+  //     isNaN(parseInt(month)) ||
+  //     isNaN(parseInt(day))
+  //   ) {
+  //     console.warn(
+  //       `Potentially invalid date parts in "${dateStringYMD}". Proceeding with formatting.`
+  //     );
+  //   }
 
-    return `${month}-${day}-${year}`;
-  }
+  //   return `${month}-${day}-${year}`;
+  // }
 
-  function formatDateToMmDdYyyy(isoTimestamp) {
-    const dateObj = new Date(isoTimestamp);
+  // function formatDateToMmDdYyyy(isoTimestamp) {
+  //   const dateObj = new Date(isoTimestamp);
 
-    const month = dateObj.getMonth() + 1;
-    const day = dateObj.getDate();
-    const year = dateObj.getFullYear();
+  //   const month = dateObj.getMonth() + 1;
+  //   const day = dateObj.getDate();
+  //   const year = dateObj.getFullYear();
 
-    const paddedMonth = String(month).padStart(2, "0");
-    const paddedDay = String(day).padStart(2, "0");
+  //   const paddedMonth = String(month).padStart(2, "0");
+  //   const paddedDay = String(day).padStart(2, "0");
 
-    return `${paddedMonth}-${paddedDay}-${year}`;
-  }
+  //   return `${paddedMonth}-${paddedDay}-${year}`;
+  // }
 
   return (
     <>
@@ -312,6 +313,7 @@ const AllNotes = () => {
                     <label>Set a Reminder</label>
                     <input
                       type="date"
+                      className="phone-birthday-details"
                       value={reminder}
                       style={{ cursor: "pointer" }}
                       onChange={(e) => setReminder(e.target.value)}
@@ -388,7 +390,9 @@ const AllNotes = () => {
                         <div className="mb-15 p-relate border" key={itm.id}>
                           <div className="date">
                             <p>
-                              {itm.reminder ? formatDate(itm.reminder) : ""}
+                              {itm.reminder
+                                ? dayjs(itm.reminder).format("MM-DD-YYYY")
+                                : ""}
                             </p>
                           </div>
                           <div className="note cut-size">
@@ -414,8 +418,8 @@ const AllNotes = () => {
                             </div>
                             <span>
                               (<i className="fa-solid fa-keyboard"></i>
-                              {itm.created_at
-                                ? formatDateToMmDdYyyy(itm.created_at)
+                              {itm.created_date
+                                ? dayjs(itm.created_date).format("MM-DD-YYYY")
                                 : ""}
                               )
                             </span>

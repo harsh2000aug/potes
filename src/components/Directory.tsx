@@ -5,6 +5,7 @@ import { allContactApi, profileContactApi } from "../store/Services/AllApi";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
+import dayjs from "dayjs";
 
 const Directory = () => {
   const [allContacts, setAllContacts] = useState<any[]>([]);
@@ -107,40 +108,40 @@ const Directory = () => {
       });
   };
 
-  function formatDate(dateStringYMD: any) {
-    if (!dateStringYMD || typeof dateStringYMD !== "string") {
-      console.error("Invalid input: Please provide a date string.");
-      return null;
-    }
+  // function formatDate(dateStringYMD: any) {
+  //   if (!dateStringYMD || typeof dateStringYMD !== "string") {
+  //     console.error("Invalid input: Please provide a date string.");
+  //     return null;
+  //   }
 
-    const parts = dateStringYMD.split("-");
+  //   const parts = dateStringYMD.split("-");
 
-    if (parts.length !== 3) {
-      console.error(
-        `Invalid date format: Expected YYYY-MM-DD, but received "${dateStringYMD}"`
-      );
-      return null;
-    }
+  //   if (parts.length !== 3) {
+  //     console.error(
+  //       `Invalid date format: Expected YYYY-MM-DD, but received "${dateStringYMD}"`
+  //     );
+  //     return null;
+  //   }
 
-    const year = parts[0];
-    const month = parts[1];
-    const day = parts[2];
+  //   const year = parts[0];
+  //   const month = parts[1];
+  //   const day = parts[2];
 
-    if (
-      year.length !== 4 ||
-      month.length !== 2 ||
-      day.length !== 2 ||
-      isNaN(parseInt(year)) ||
-      isNaN(parseInt(month)) ||
-      isNaN(parseInt(day))
-    ) {
-      console.warn(
-        `Potentially invalid date parts in "${dateStringYMD}". Proceeding with formatting.`
-      );
-    }
+  //   if (
+  //     year.length !== 4 ||
+  //     month.length !== 2 ||
+  //     day.length !== 2 ||
+  //     isNaN(parseInt(year)) ||
+  //     isNaN(parseInt(month)) ||
+  //     isNaN(parseInt(day))
+  //   ) {
+  //     console.warn(
+  //       `Potentially invalid date parts in "${dateStringYMD}". Proceeding with formatting.`
+  //     );
+  //   }
 
-    return `${month}-${day}-${year}`;
-  }
+  //   return `${month}-${day}-${year}`;
+  // }
 
   const showHeader = (currentItem: any, index: number) => {
     if (index === 0) return true;
@@ -241,11 +242,11 @@ const Directory = () => {
                                 </td>
                                 <td>
                                   {itm.email ? (
-                                    itm.email.length > 20 ? (
+                                    itm.email.length > 10 ? (
                                       <>
-                                        {itm.email.slice(0, 19)}
+                                        {itm.email.slice(0, 14)}
                                         <br />
-                                        {itm.email.slice(19)}
+                                        {itm.email.slice(14)}
                                       </>
                                     ) : (
                                       itm.email
@@ -257,7 +258,7 @@ const Directory = () => {
                                 <td>{itm.phone || "-"}</td>
                                 <td>
                                   {itm.birthday
-                                    ? formatDate(itm.birthday)
+                                    ? dayjs(itm.birthday).format("MM-DD-YYYY")
                                     : "-"}
                                 </td>
                               </tr>

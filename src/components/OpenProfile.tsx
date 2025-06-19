@@ -109,44 +109,44 @@ const OpenProfile = () => {
     });
   };
 
-  function formatDate(dateStringYMD: any) {
-    if (!dateStringYMD || typeof dateStringYMD !== "string") {
-      console.error("Invalid input: Please provide a date string.");
-      return null;
-    }
+  // function formatDate(dateStringYMD: any) {
+  //   if (!dateStringYMD || typeof dateStringYMD !== "string") {
+  //     console.error("Invalid input: Please provide a date string.");
+  //     return null;
+  //   }
 
-    const parts = dateStringYMD.split("-");
+  //   const parts = dateStringYMD.split("-");
 
-    if (parts.length !== 3) {
-      console.error(
-        `Invalid date format: Expected YYYY-MM-DD, but received "${dateStringYMD}"`
-      );
-      return null;
-    }
+  //   if (parts.length !== 3) {
+  //     console.error(
+  //       `Invalid date format: Expected YYYY-MM-DD, but received "${dateStringYMD}"`
+  //     );
+  //     return null;
+  //   }
 
-    const year = parts[0];
-    const month = parts[1];
-    const day = parts[2];
+  //   const year = parts[0];
+  //   const month = parts[1];
+  //   const day = parts[2];
 
-    if (
-      year.length !== 4 ||
-      month.length !== 2 ||
-      day.length !== 2 ||
-      isNaN(parseInt(year)) ||
-      isNaN(parseInt(month)) ||
-      isNaN(parseInt(day))
-    ) {
-      console.warn(
-        `Potentially invalid date parts in "${dateStringYMD}". Proceeding with formatting.`
-      );
-    }
+  //   if (
+  //     year.length !== 4 ||
+  //     month.length !== 2 ||
+  //     day.length !== 2 ||
+  //     isNaN(parseInt(year)) ||
+  //     isNaN(parseInt(month)) ||
+  //     isNaN(parseInt(day))
+  //   ) {
+  //     console.warn(
+  //       `Potentially invalid date parts in "${dateStringYMD}". Proceeding with formatting.`
+  //     );
+  //   }
 
-    return `${month}-${day}-${year}`;
-  }
+  //   return `${month}-${day}-${year}`;
+  // }
 
-  function formatDateToMmDdYyyy(timestamp: any, format = "MM-DD-YYYY") {
-    return dayjs(timestamp).format(format);
-  }
+  // function formatDateToMmDdYyyy(timestamp: any, format = "MM-DD-YYYY") {
+  //   return dayjs(timestamp).format(format);
+  // }
   const profileHandler = () => {
     profileContactApi({
       query: {
@@ -162,7 +162,7 @@ const OpenProfile = () => {
     editNote({
       query: { id: userId },
       body: {
-        note: localStorage.getItem("mouse"),
+        note: textComponent,
         reminder_type: interval || null,
         reminder: reminder || null,
       },
@@ -182,6 +182,7 @@ const OpenProfile = () => {
         setLoading(false);
       });
   };
+  console.log("munsi", textComponent);
 
   return (
     <>
@@ -331,7 +332,9 @@ const OpenProfile = () => {
                             <li>
                               <b>Birthday:</b>{" "}
                               {profileData?.birthday
-                                ? formatDate(profileData?.birthday)
+                                ? dayjs(profileData?.birthday).format(
+                                    "MM-DD-YYYY"
+                                  )
                                 : "-"}
                             </li>
                             <li>
@@ -345,7 +348,9 @@ const OpenProfile = () => {
                             <li>
                               <b>Anniversary:</b>{" "}
                               {profileData?.anniversary
-                                ? formatDate(profileData?.anniversary)
+                                ? dayjs(profileData?.anniversary).format(
+                                    "MM-DD-YYYY"
+                                  )
                                 : "-"}
                             </li>
                           </ul>
@@ -371,7 +376,9 @@ const OpenProfile = () => {
                             <li>
                               <b>Spouse Birthday:</b>{" "}
                               {profileData.spouse_birthday
-                                ? formatDate(profileData.spouse_birthday)
+                                ? dayjs(profileData.spouse_birthday).format(
+                                    "MM-DD-YYYY"
+                                  )
                                 : "-"}
                             </li>
                             <li>
@@ -403,7 +410,7 @@ const OpenProfile = () => {
                                 <li>
                                   <b>Child Birthday:</b>{" "}
                                   {itm.birthday
-                                    ? formatDate(itm.birthday)
+                                    ? dayjs(itm.birthday).format("MM-DD-YYYY")
                                     : "-"}
                                 </li>
                                 <li>
@@ -607,7 +614,9 @@ const OpenProfile = () => {
                                     display: itm.reminder ? "block" : "none",
                                   }}
                                 ></i>
-                                {itm.reminder ? formatDate(itm.reminder) : ""}
+                                {itm.reminder
+                                  ? dayjs(itm.reminder).format("MM-DD-YYYY")
+                                  : ""}
                               </p>
                             </div>
                             <div
@@ -621,8 +630,8 @@ const OpenProfile = () => {
                             <p>Note created at</p>
                             <p>
                               <i className="fa-solid fa-keyboard"></i>
-                              {itm.created_at
-                                ? formatDateToMmDdYyyy(itm.created_at)
+                              {itm.created_date
+                                ? dayjs(itm.created_date).format("MM-DD-YYYY")
                                 : ""}
                             </p>
                           </div>
@@ -670,6 +679,7 @@ const OpenProfile = () => {
                     <label>Set a Reminder</label>
                     <input
                       type="date"
+                      className="phone-birthday-details"
                       value={reminder}
                       style={{ cursor: "pointer" }}
                       onChange={(e) => setReminder(e.target.value)}
@@ -680,7 +690,13 @@ const OpenProfile = () => {
 
               <div className="form-group flex space-bw">
                 <div className="col-50 btn">
-                  <button type="button" onClick={() => setOpenEdit(false)}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOpenEdit(false);
+                      setTextComponent("");
+                    }}
+                  >
                     Cancel
                   </button>
                 </div>

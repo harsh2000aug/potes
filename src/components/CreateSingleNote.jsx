@@ -67,63 +67,63 @@ const CreateNote = () => {
   //   };
   // }, [finalTranscript]);
   useEffect(() => {
-      if (
-        !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
-      ) {
-        alert("Your browser does not support Speech Recognition.");
-        return;
-      }
-  
-      const SpeechRecognition =
+    if (
+      !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
+    ) {
+      alert("Your browser does not support Speech Recognition.");
+      return;
+    }
+
+    const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = true;
-      recognitionRef.current.interimResults = true;
-      recognitionRef.current.lang = "en-US";
-  
-      let silenceTimeout; 
-  
-      recognitionRef.current.onstart = () => {
-        setIsListening(true);
-      };
-  
-      recognitionRef.current.onend = () => {
-        setIsListening(false);
-      };
-  
-      recognitionRef.current.onresult = (event) => {
-        clearTimeout(silenceTimeout);
-  
-        let interimTranscript = "";
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          let result = event.results[i];
-          interimTranscript += result[0].transcript;
-  
-          if (result.isFinal) {
-            setFinalTranscript(
-              (prevFinalTranscript) =>
-                prevFinalTranscript + result[0].transcript + " "
-            ); 
-          }
+    recognitionRef.current = new SpeechRecognition();
+    recognitionRef.current.continuous = true;
+    recognitionRef.current.interimResults = true;
+    recognitionRef.current.lang = "en-US";
+
+    let silenceTimeout;
+
+    recognitionRef.current.onstart = () => {
+      setIsListening(true);
+    };
+
+    recognitionRef.current.onend = () => {
+      setIsListening(false);
+    };
+
+    recognitionRef.current.onresult = (event) => {
+      clearTimeout(silenceTimeout);
+
+      let interimTranscript = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        let result = event.results[i];
+        interimTranscript += result[0].transcript;
+
+        if (result.isFinal) {
+          setFinalTranscript(
+            (prevFinalTranscript) =>
+              prevFinalTranscript + result[0].transcript + " "
+          );
         }
-        setText(finalTranscript + interimTranscript);
-  
-        silenceTimeout = setTimeout(() => {
-          recognitionRef.current.stop();
-        }, 3000);
-      };
-  
-      recognitionRef.current.onerror = (event) => {
-        console.error("Speech Recognition Error:", event.error);
-      };
-  
-      return () => {
-        if (recognitionRef.current) {
-          recognitionRef.current.stop();
-        }
-        clearTimeout(silenceTimeout);
-      };
-    }, [finalTranscript]);
+      }
+      setText(finalTranscript + interimTranscript);
+
+      silenceTimeout = setTimeout(() => {
+        recognitionRef.current.stop();
+      }, 3000);
+    };
+
+    recognitionRef.current.onerror = (event) => {
+      console.error("Speech Recognition Error:", event.error);
+    };
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      clearTimeout(silenceTimeout);
+    };
+  }, [finalTranscript]);
 
   const startListening = () => {
     if (recognitionRef.current && !isListening) {
@@ -178,18 +178,18 @@ const CreateNote = () => {
         <Sidebar current="Create Note" />
         <div className="main-area">
           <div className="back-btn">
-                        <div className="flex al-center space-bw">
-                          <button type="button" onClick={() => navigate(-1)}>
-                            <i className="fa-solid fa-chevron-left"></i>
-                          </button>
-                          <div className="logo" onClick={() => navigate("/")}>
-                            <img src={logo} alt="Logo" />
-                          </div>
-                          <button type="button" onClick={() => navigate("/directory")}>
-                            <i className="fa-solid fa-magnifying-glass"></i>
-                          </button>
-                        </div>
-                      </div>
+            <div className="flex al-center space-bw">
+              <button type="button" onClick={() => navigate(-1)}>
+                <i className="fa-solid fa-chevron-left"></i>
+              </button>
+              <div className="logo" onClick={() => navigate("/")}>
+                <img src={logo} alt="Logo" />
+              </div>
+              <button type="button" onClick={() => navigate("/directory")}>
+                <i className="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </div>
+          </div>
           <div className="body-area">
             <div className="common-back">
               <h3>Create a Note</h3>
@@ -213,7 +213,7 @@ const CreateNote = () => {
               <div className="form-group mic-btn">
                 <label>Enter the Note</label>
                 <textarea
-                placeholder="Enter your note"
+                  placeholder="Enter your note"
                   value={text}
                   onChange={(e) => {
                     setText(e.target.value);
@@ -248,8 +248,9 @@ const CreateNote = () => {
                     <label>Set a Reminder</label>
                     <input
                       type="date"
+                      className="phone-birthday-details"
                       value={reminder}
-                      style={{cursor:"pointer"}}
+                      style={{ cursor: "pointer" }}
                       onChange={(e) => setReminder(e.target.value)}
                     />
                   </div>
