@@ -760,7 +760,7 @@ const Dashboard = () => {
                                 ) : (
                                   <i className="fa-regular fa-circle-user"></i>
                                 )}
-                                <p>{itm.full_name}</p>
+                                <p className="choti-width">{itm.full_name}</p>
                               </div>
                               <p>
                                 {itm.birthday
@@ -801,7 +801,7 @@ const Dashboard = () => {
                                 ) : (
                                   <i className="fa-regular fa-circle-user"></i>
                                 )}
-                                <p>{itm.full_name}</p>
+                                <p className="choti-width">{itm.full_name}</p>
                               </div>
                               <p>
                                 {dayjs(itm.anniversary).format("MM-DD-YYYY")}
@@ -840,7 +840,7 @@ const Dashboard = () => {
                                 ) : (
                                   <i className="fa-regular fa-circle-user"></i>
                                 )}
-                                <p>
+                                <p className="choti-width">
                                   {itm.spouse_name} ({itm.full_name}'s Spouse)
                                 </p>
                               </div>
@@ -883,7 +883,7 @@ const Dashboard = () => {
                                 ) : (
                                   <i className="fa-regular fa-circle-user"></i>
                                 )}
-                                <p>
+                                <p className="choti-width">
                                   {itm.name} ({itm.contact__full_name}'s Child)
                                 </p>
                               </div>

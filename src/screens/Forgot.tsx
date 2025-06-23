@@ -48,7 +48,7 @@ const Forgot = () => {
   return (
     <div>
       {" "}
-      <div className="login">
+      <div className={window.innerWidth < 480 ? "login-mobile" : "login"}>
         <div className="flex h-100">
           <div className="col-40 login-left">
             <h1>Organize, Connect, and Stay in Touch Effortlessly!</h1>

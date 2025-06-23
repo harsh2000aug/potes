@@ -487,7 +487,7 @@ const OpenProfile = () => {
                                   <b>University Name:</b> {itm.name || "-"}
                                 </li>
                                 <li>
-                                  <b>University Details:</b>
+                                  <b>University Details:</b>{" "}
                                   {itm.details || "-"}
                                 </li>
                               </ul>

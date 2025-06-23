@@ -1039,7 +1039,7 @@ td {
 }
 
 .back-btn .logo img {
-  width: 80px;
+  width: 100px;
   height: unset;
   border-radius: 0;
   margin-right: 0;
@@ -1357,6 +1357,7 @@ td {
   .btn button {
     padding: 8px 5px;
     font-size: 12px;
+    margin: 5px 5px 5px 0;
   }
 
   .mr {
@@ -1610,7 +1611,7 @@ table img {
     left: 0;
     background: #727272;
     z-index: 2;
-    width: 250px;
+    width: 150px;
   }
 
   .table-container td:first-child p {
@@ -1753,11 +1754,18 @@ select {
   color: red;
 }
 
+.choti-width {
+  width: 350px;
+}
+
 @media (max-width: 767px) {
   .checkbox-container {
     margin: 10px 0;
   }
   .popup-content {
     width: 90%;
+  }
+  .choti-width {
+    width: 200px;
   }
 }
