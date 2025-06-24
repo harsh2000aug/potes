@@ -160,7 +160,13 @@ const EditContact = () => {
 
   const editContactApiHandler = async () => {
     const formData = new FormData();
-    formData.append("full_name", personalDetail.full_name);
+    if (personalDetail.full_name) {
+      formData.append("full_name", personalDetail.full_name);
+    } else {
+      toast.error("Please enter full name");
+      return;
+    }
+
     formData.append("phone", personalDetail.phone_no);
     formData.append(
       "birthday",
@@ -207,6 +213,7 @@ const EditContact = () => {
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+      toast.error("Failed to update contact");
     }
   };
   const handleInputChange = (field: string, value: string) => {

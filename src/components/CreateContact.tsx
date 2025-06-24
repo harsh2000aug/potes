@@ -151,7 +151,6 @@ const CreateContact = () => {
 
     if (file) {
       try {
-        // Compress the image
         const options = {
           maxSizeMB: 1, // Compress to under 1MB
           maxWidthOrHeight: 800, // Optional: resize dimensions
@@ -160,7 +159,6 @@ const CreateContact = () => {
 
         const compressedFile = await imageCompression(file, options);
 
-        // Set compressed image for preview and upload
         setImageFile(compressedFile);
         setContactImage(URL.createObjectURL(compressedFile));
       } catch (error) {
