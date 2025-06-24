@@ -7,6 +7,8 @@ import $ from "jquery";
 import user from "../images/user.png";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import imageCompression from "browser-image-compression";
+
 import logo from "../images/logo.png";
 const CreateContact = () => {
   const [children, setChildren]: any = useState([
@@ -144,11 +146,27 @@ const CreateContact = () => {
     setCustomField(updatedCustomField);
   };
 
-  const changeImageHandler = (event: any) => {
+  const changeImageHandler = async (event: any) => {
     const file: File | null = event.target.files[0];
+
     if (file) {
-      setImageFile(file);
-      setContactImage(URL.createObjectURL(file));
+      try {
+        // Compress the image
+        const options = {
+          maxSizeMB: 1, // Compress to under 1MB
+          maxWidthOrHeight: 800, // Optional: resize dimensions
+          useWebWorker: true,
+        };
+
+        const compressedFile = await imageCompression(file, options);
+
+        // Set compressed image for preview and upload
+        setImageFile(compressedFile);
+        setContactImage(URL.createObjectURL(compressedFile));
+      } catch (error) {
+        console.error("Image compression failed:", error);
+        toast.error("Image compression failed");
+      }
     }
   };
 

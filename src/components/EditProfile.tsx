@@ -7,6 +7,7 @@ import {
   editProfile,
 } from "../store/Services/AllApi";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import imageCompression from "browser-image-compression";
 import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -54,7 +55,21 @@ const EditProfile = () => {
     formData.append("last_name", changeLastName);
 
     if (imageFile) {
-      formData.append("profile_pic", imageFile, imageFile.name);
+      try {
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 800,
+          useWebWorker: true,
+        };
+
+        const compressedFile = await imageCompression(imageFile, options);
+
+        formData.append("profile_pic", compressedFile, compressedFile.name);
+      } catch (compressError) {
+        console.error("Image compression failed:", compressError);
+        toast.error("Image compression failed");
+        return;
+      }
     }
 
     try {
@@ -79,18 +94,29 @@ const EditProfile = () => {
 
   const changeImageHandler = async (event: any) => {
     const file: File | null = event.target.files[0];
+
     if (file) {
-      setImageFile(file);
-      setContactImage(URL.createObjectURL(file));
-      const formData = new FormData();
-
-      formData.append("profile_pic", file, file.name);
-
       try {
+        // Compress the image
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 800,
+          useWebWorker: true,
+        };
+
+        const compressedFile = await imageCompression(file, options);
+
+        // Set preview and store compressed image
+        setImageFile(compressedFile);
+        setContactImage(URL.createObjectURL(compressedFile));
+
+        const formData = new FormData();
+        formData.append("profile_pic", compressedFile, compressedFile.name);
+
         await changeProfileName({ body: formData });
         toast.success("Profile updated successfully");
       } catch (error) {
-        console.error("Error submitting form:", error);
+        console.error("Error compressing or submitting image:", error);
         toast.error("Failed to update profile");
       }
     }

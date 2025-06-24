@@ -10,6 +10,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import $ from "jquery";
 import user from "../images/user.png";
 import logo from "../images/logo.png";
+import imageCompression from "browser-image-compression";
+
 const EditContact = () => {
   const location = useLocation();
   const [emailError, setEmailError] = useState("");
@@ -117,13 +119,31 @@ const EditContact = () => {
     updatedCustomField[index].values.splice(valueIndex, 1);
     setCustomField(updatedCustomField);
   };
-  const changeImageHandler = (event: any) => {
+
+  const changeImageHandler = async (event: any) => {
     const file: File | null = event.target.files[0];
+
     if (file) {
-      setImageFile(file);
-      setContactImage(URL.createObjectURL(file));
+      try {
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 800,
+          useWebWorker: true,
+        };
+
+        const compressedFile = await imageCompression(file, options);
+
+        setImageFile(compressedFile);
+        setContactImage(URL.createObjectURL(compressedFile));
+      } catch (error) {
+        console.error("Image compression failed:", error);
+        toast.error("Image compression failed");
+        // Fallback to original file if compression fails
+        setImageFile(file);
+        setContactImage(URL.createObjectURL(file));
+      }
     } else {
-      setContactImage(user);
+      setContactImage(user); // Fallback image
       setImageFile(null);
     }
   };

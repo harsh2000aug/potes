@@ -373,6 +373,7 @@ const AllNotes = () => {
                     style={{ marginBottom: "10px", cursor: "pointer" }}
                   >
                     <img
+                      className="margin-right"
                       src={
                         allNotes[0]?.contact_photo
                           ? allNotes[0]?.contact_photo
