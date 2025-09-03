@@ -218,7 +218,7 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
                       </li>
                     ))
                   ) : (
-                    <li>No note found</li>
+                    <li>No notes yet for this contact</li>
                   )}
                 </ul>
               </div>

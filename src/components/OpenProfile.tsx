@@ -195,14 +195,14 @@ const OpenProfile = () => {
             <div className="modal-footer justify-content-center btn">
               <button
                 type="button"
-                className="btn-secondary"
+                className="btn-danger"
                 onClick={deleteContactHandler}
               >
                 Yes
               </button>
               <button
                 type="button"
-                className="btn-danger"
+                className="btn-secondary"
                 onClick={handleDeletePart}
               >
                 No
@@ -390,13 +390,13 @@ const OpenProfile = () => {
                       )}
                     </div>
 
-                    {/* children Details Accordion */}
+                    {/* Family Member Details Accordion */}
                     <div className="accordion">
                       <div
                         className="accordion-header"
                         onClick={() => toggleSection("children")}
                       >
-                        <h3>Children Details +</h3>
+                        <h3>Family Member Details +</h3>
                       </div>
                       {openSections.includes("children") && (
                         <div className="accordion-content">
@@ -405,29 +405,30 @@ const OpenProfile = () => {
                             profileData.children.map((itm: any) => (
                               <ul key={itm.id}>
                                 <li>
-                                  <b>Child Name:</b> {itm.name || "-"}
+                                  <b>Family Member:</b> {itm.name || "-"}
                                 </li>
                                 <li>
-                                  <b>Child Birthday:</b>{" "}
+                                  <b>Family Member Birthday:</b>{" "}
                                   {itm.birthday
                                     ? dayjs(itm.birthday).format("MM-DD-YYYY")
                                     : "-"}
                                 </li>
                                 <li>
-                                  <b>Child Details:</b> {itm.details || "-"}
+                                  <b>Family Member Details:</b>{" "}
+                                  {itm.details || "-"}
                                 </li>
                               </ul>
                             ))
                           ) : (
                             <ul>
                               <li>
-                                <b>Child Name:</b> -
+                                <b>Family Member:</b> -
                               </li>
                               <li>
-                                <b>Child Birthday:</b> -
+                                <b>Family Member Birthday:</b> -
                               </li>
                               <li>
-                                <b>Child Details:</b>-
+                                <b>Family Member Details:</b>-
                               </li>
                             </ul>
                           )}
@@ -638,7 +639,13 @@ const OpenProfile = () => {
                         </div>
                       ))
                     ) : (
-                      <p>No note found</p>
+                      <p
+                        style={{
+                          textAlign: "center",
+                        }}
+                      >
+                        No notes yet for this contact
+                      </p>
                     )}
                   </div>
                 </div>

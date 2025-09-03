@@ -118,7 +118,9 @@ const AllNotes = () => {
       })
       .catch((err) => {
         toast.error(
-          err?.data?.error.length > 0 ? err?.data?.error : "No note found"
+          err?.data?.error.length > 0
+            ? err?.data?.error
+            : "No notes yet for this contact"
         );
         console.log(err);
       })
@@ -381,7 +383,13 @@ const AllNotes = () => {
                       }
                       alt=""
                     />
-                    <h4 style={{ fontSize: "15px" }}>
+                    <h4
+                      style={{
+                        fontSize: "14px",
+                        width: "85%",
+                        wordWrap: "break-word",
+                      }}
+                    >
                       {allNotes?.[0]?.contact_full_name}
                     </h4>
                   </div>
@@ -428,7 +436,7 @@ const AllNotes = () => {
                         </div>
                       ))
                     ) : (
-                      <p>No Note found</p>
+                      <p>No notes yet for this contact</p>
                     )}
                   </div>
                 </div>

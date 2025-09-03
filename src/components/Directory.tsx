@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
 import dayjs from "dayjs";
-
+import user from "../images/user.png";
 const Directory = () => {
   const [allContacts, setAllContacts] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -213,7 +213,11 @@ const Directory = () => {
                                         }
                                       />
                                     ) : (
-                                      <i className="fa-regular fa-circle-user default-user-icon"></i>
+                                      <img
+                                        className="margin-right"
+                                        src={user}
+                                        alt="duck"
+                                      />
                                     )}
                                     <div
                                       className={

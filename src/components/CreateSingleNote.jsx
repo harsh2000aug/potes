@@ -196,18 +196,27 @@ const CreateNote = () => {
               <div className="form-group">
                 <label>Contact Name</label>
                 <select
-                  name=""
-                  id=""
                   value={selectedContact}
                   onChange={(e) => setSelectedContact(e.target.value)}
                 >
                   <option>Select any contact</option>
                   {Array.isArray(storeRes) &&
-                    storeRes.map((itm) => (
-                      <option key={itm?.id} value={itm?.id}>
-                        {itm?.full_name}
-                      </option>
-                    ))}
+                    storeRes.map((itm) => {
+                      const displayName =
+                        itm?.full_name.length > 50
+                          ? itm?.full_name.slice(0, 50) + "..."
+                          : itm?.full_name;
+
+                      return (
+                        <option
+                          key={itm?.id}
+                          value={itm?.id}
+                          title={itm?.full_name}
+                        >
+                          {displayName}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
               <div className="form-group mic-btn">

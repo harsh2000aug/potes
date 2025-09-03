@@ -497,7 +497,7 @@ const EditContact = () => {
                         ></i>
                         <div className="flex space-bw form-group">
                           <div className="col-50">
-                            <label>Child Name</label>
+                            <label>Family Member</label>
                             <input
                               type="text"
                               value={child.name}
@@ -523,7 +523,7 @@ const EditContact = () => {
                           </div>
                         </div>
                         <div className="form-group">
-                          <label>Child Details</label>
+                          <label>Family Member Details</label>
                           <textarea
                             value={child.details}
                             onChange={(e) =>
@@ -540,7 +540,7 @@ const EditContact = () => {
                   ))}
                   <div className="profile-p">
                     <p onClick={addChild} style={{ cursor: "pointer" }}>
-                      Add Children <i className="fa-solid fa-plus"></i>
+                      Add Family Member <i className="fa-solid fa-plus"></i>
                     </p>
                   </div>
                 </div>

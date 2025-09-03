@@ -192,7 +192,7 @@ const SearchResult = () => {
                                   alt={`${
                                     itm.contact?.full_name || "Contact"
                                   } profile`}
-                                  src={itm.contact?.photo || user}
+                                  src={itm?.photo || user}
                                   onError={(e) => (e.currentTarget.src = user)}
                                   className="search-result-avatar"
                                 />
@@ -218,7 +218,7 @@ const SearchResult = () => {
                   <div className="common-back mb-15">
                     <div className="notes-search">
                       <h4>
-                        <b>Children</b>
+                        <b>Family Member</b>
                       </h4>
                       <ul
                         style={{
@@ -243,7 +243,7 @@ const SearchResult = () => {
                                   alt={`${
                                     itm.contact?.full_name || "Contact"
                                   } profile`}
-                                  src={itm.contact?.photo || user}
+                                  src={itm?.photo || user}
                                   onError={(e) => (e.currentTarget.src = user)}
                                   className="search-result-avatar"
                                 />
@@ -294,7 +294,7 @@ const SearchResult = () => {
                                   alt={`${
                                     itm.contact?.full_name || "Contact"
                                   } profile`}
-                                  src={itm.contact?.photo || user}
+                                  src={itm?.photo || user}
                                   onError={(e) => (e.currentTarget.src = user)}
                                   className="search-result-avatar"
                                 />
@@ -345,7 +345,7 @@ const SearchResult = () => {
                                   alt={`${
                                     itm.contact?.full_name || "Contact"
                                   } profile`}
-                                  src={itm.contact?.photo || user}
+                                  src={itm?.photo || user}
                                   onError={(e) => (e.currentTarget.src = user)}
                                   className="search-result-avatar"
                                 />
@@ -396,7 +396,7 @@ const SearchResult = () => {
                                   alt={`${
                                     itm.contact?.full_name || "Contact"
                                   } profile`}
-                                  src={itm.contact?.photo || user}
+                                  src={itm?.photo || user}
                                   onError={(e) => (e.currentTarget.src = user)}
                                   className="search-result-avatar"
                                 />

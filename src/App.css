@@ -502,6 +502,9 @@ li {
 .form-group select {
   cursor: pointer;
 }
+.form-group select option {
+  word-wrap: break-word;
+}
 .form-group .btn button {
   width: 100%;
   font-weight: 600;
@@ -599,6 +602,7 @@ li {
 .userDetail ul li {
   color: #fff;
   margin-bottom: 10px;
+  word-wrap: break-word;
 }
 .userDetail ul li:last-child {
   margin-bottom: 0;
@@ -1330,6 +1334,11 @@ td {
   .profile-pic-upload {
     width: 80px;
     height: 80px;
+    margin: 0px auto 20px;
+  }
+
+  .nameChanged h4 {
+    text-align: center;
   }
 
   .p-image {
@@ -1579,6 +1588,10 @@ table img {
   margin-right: 10px;
 }
 
+.marquee {
+  width: calc(100% - 30px);
+}
+
 @media screen and (max-width: 320px) {
   table {
     min-width: unset;
@@ -1768,6 +1781,10 @@ select {
   width: 350px;
 }
 
+.nameChanged h4 {
+  word-wrap: break-word;
+}
+
 @media (max-width: 767px) {
   .checkbox-container {
     margin: 10px 0;
@@ -1776,14 +1793,18 @@ select {
     width: 90%;
   }
   .choti-width {
-    width: 200px;
+    width: 180px;
   }
   .body-area img {
     border-radius: 50%;
-    margin-right: 0px;
+    margin-right: 5px;
     object-fit: cover;
   }
 }
 .margin-right {
   margin-right: 5px !important;
+}
+
+.note-head h4 {
+  margin-bottom: 0;
 }

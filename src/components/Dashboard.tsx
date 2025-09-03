@@ -76,6 +76,7 @@ const ReminderComponent = ({
                 style={{
                   fontSize: "14px",
                   color: manageCheck === true ? "#00FF00" : "#fff",
+                  visibility: "hidden",
                 }}
                 onClick={() => handleCompleteTask(itm.id)}
               ></i>
@@ -363,6 +364,13 @@ const Dashboard = () => {
                                     )} ... ${itm.note.slice(-25)}`
                                   : itm.note}
                               </p>
+                              <i
+                                className={"fa-solid fa-circle"}
+                                style={{
+                                  fontSize: "14px",
+                                  visibility: "hidden",
+                                }}
+                              ></i>
                             </div>
                           </div>
                         </li>
@@ -430,6 +438,13 @@ const Dashboard = () => {
                                     )} ... ${itm.note.slice(-25)}`
                                   : itm.note}
                               </p>
+                              <i
+                                className={"fa-solid fa-circle"}
+                                style={{
+                                  fontSize: "14px",
+                                  visibility: "hidden",
+                                }}
+                              ></i>
                             </div>
                           </div>
                         </li>
@@ -756,11 +771,21 @@ const Dashboard = () => {
                             <div className="flex space-bw al-center">
                               <div className="flex al-center">
                                 {itm?.photo ? (
-                                  <img src={itm?.photo} alt="" />
+                                  <img
+                                    className="margin-right"
+                                    src={itm?.photo}
+                                    alt=""
+                                  />
                                 ) : (
-                                  <i className="fa-regular fa-circle-user"></i>
+                                  <img
+                                    className="margin-right"
+                                    src={user}
+                                    alt="duck"
+                                  />
                                 )}
-                                <p className="choti-width">{itm.full_name}</p>
+                                <p className="choti-width">
+                                  <b>{itm.full_name}</b>
+                                </p>
                               </div>
                               <p>
                                 {itm.birthday
@@ -799,9 +824,15 @@ const Dashboard = () => {
                                 {itm?.photo ? (
                                   <img src={itm?.photo} alt="" />
                                 ) : (
-                                  <i className="fa-regular fa-circle-user"></i>
+                                  <img
+                                    className="margin-right"
+                                    src={user}
+                                    alt="duck"
+                                  />
                                 )}
-                                <p className="choti-width">{itm.full_name}</p>
+                                <p className="choti-width">
+                                  <b>{itm.full_name}</b>
+                                </p>
                               </div>
                               <p>
                                 {dayjs(itm.anniversary).format("MM-DD-YYYY")}
@@ -838,10 +869,16 @@ const Dashboard = () => {
                                 {itm?.photo ? (
                                   <img src={itm?.photo} alt="" />
                                 ) : (
-                                  <i className="fa-regular fa-circle-user"></i>
+                                  <img
+                                    className="margin-right"
+                                    src={user}
+                                    alt="duck"
+                                  />
                                 )}
                                 <p className="choti-width">
-                                  {itm.spouse_name} ({itm.full_name}'s Spouse)
+                                  <b>
+                                    {itm.spouse_name} ({itm.full_name}'s Spouse)
+                                  </b>
                                 </p>
                               </div>
                               <p>
@@ -864,7 +901,7 @@ const Dashboard = () => {
                         fontWeight: 700,
                       }}
                     >
-                      Child's Birthdays
+                      Family Member's Birthday
                     </h5>
                     <ul>
                       {childBirthdays && childBirthdays.length > 0 ? (
@@ -881,10 +918,17 @@ const Dashboard = () => {
                                 {itm?.contact__photo ? (
                                   <img src={itm?.contact__photo} alt="" />
                                 ) : (
-                                  <i className="fa-regular fa-circle-user"></i>
+                                  <img
+                                    className="margin-right"
+                                    src={user}
+                                    alt="duck"
+                                  />
                                 )}
                                 <p className="choti-width">
-                                  {itm.name} ({itm.contact__full_name}'s Child)
+                                  <b>
+                                    {itm.name} ({itm.contact__full_name}'s
+                                    Family Member)
+                                  </b>
                                 </p>
                               </div>
                               <p>{dayjs(itm.birthday).format("MM-DD-YYYY")}</p>
@@ -892,7 +936,7 @@ const Dashboard = () => {
                           </li>
                         ))
                       ) : (
-                        <p>No child's birthdays found</p>
+                        <p>No Family Member's Birthday found</p>
                       )}
                     </ul>
                   </div>
