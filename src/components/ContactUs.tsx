@@ -5,9 +5,10 @@ import * as Yup from "yup";
 import { contactUsApi } from "../store/Services/AllApi";
 import toast from "react-hot-toast";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../images/logo.png";
 const ContactUs = () => {
+  const location = useLocation();
   const [contactUs, setContactUs]: any = useState();
   const [loading, setLoading]: any = useState(false);
   const navigate = useNavigate();
@@ -53,8 +54,12 @@ const ContactUs = () => {
     <div className="contactUs">
       {loading && <FullScreenLoader />}
       <div className="flex h-100">
-        <Sidebar current={"Contact Us"} />
-        <div className="main-area">
+        {location.pathname != "/contact" && <Sidebar current={"Contact Us"} />}
+        <div
+          className={
+            location.pathname != "/contact" ? "main-area" : "main-area2"
+          }
+        >
           <div className="back-btn">
             <div className="flex al-center space-bw">
               <button type="button" onClick={() => navigate(-1)}>

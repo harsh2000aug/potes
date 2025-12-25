@@ -169,4 +169,32 @@ export const allApi = {
       uri: "/update-reminders/",
     },
   },
+  deleteAccountApi: {
+    v1: {
+      ...defaults.methods.DELETE,
+      ...defaults.versions.v1,
+      uri: "/delete-account/",
+    },
+  },
+  postAiChat: {
+    v1: {
+      ...defaults.methods.POST,
+      ...defaults.versions.v1,
+      uri: "/chat/",
+    },
+  },
+  getAiChat: {
+    v1: {
+      ...defaults.methods.GET,
+      ...defaults.versions.v1,
+      uri: "/aichat/",
+    },
+  },
+  deleteAiChat: {
+    v1: {
+      ...defaults.methods.DELETE,
+      ...defaults.versions.v1,
+      uri: "/aichat/",
+    },
+  },
 };

@@ -196,6 +196,14 @@ const Login = () => {
               </div>
             </div>
             <div className="form-control">
+              <span className="terms-text">
+                For more information, please visit our{" "}
+                <span onClick={() => navigate("/about")}>About Us</span> and{" "}
+                <span onClick={() => navigate("/contact")}>Contact Us</span>{" "}
+                pages.
+              </span>
+            </div>
+            <div className="form-control">
               <input type="submit" className="submitBtn" value="Log In" />
             </div>
           </form>

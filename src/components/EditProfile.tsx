@@ -14,6 +14,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
 import user from "../images/user.png";
 import FullScreenLoader from "./FullScreenLoader/FullScreenLoader";
+import { useNavigate } from "react-router-dom";
 
 const EditProfile = () => {
   const [editUserProfile, setEditUserProfile]: any = useState([]);
@@ -25,6 +26,9 @@ const EditProfile = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading]: any = useState(false);
+  const [deleteAccount, setDeleteAccount]: any = useState(false);
+
+  const navigate = useNavigate();
 
   const handleIconClick = () => {
     if (fileInputRef.current) {
@@ -283,7 +287,7 @@ const EditProfile = () => {
                   />
                 </div>
               </div>
-              <div className="form-group flex">
+              <div className="form-group flex al-center">
                 <div className="col-33 btn">
                   <button type="button" onClick={handleProfileUpdate}>
                     Update Name
@@ -293,6 +297,9 @@ const EditProfile = () => {
                   <button type="button" onClick={handlepasspopup}>
                     Change Password
                   </button>
+                </div>
+                <div className="col-33 delete-account">
+                  <p onClick={() => setDeleteAccount(true)}>Delete account?</p>
                 </div>
               </div>
             </div>
@@ -453,6 +460,27 @@ const EditProfile = () => {
           </div>
         </div>
       )} */}
+      {deleteAccount && (
+        <div id="logoutPopup" className="overlay">
+          <div className="popup">
+            <h2>Are you sure you want to Delete Account?</h2>
+            <div className="btn-group">
+              <button
+                className="cancel-btn"
+                onClick={() => setDeleteAccount(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="logout-btn"
+                onClick={() => navigate("/delete-account")}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

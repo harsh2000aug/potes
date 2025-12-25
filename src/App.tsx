@@ -22,9 +22,23 @@ import UserProfile from "./components/UserProfile";
 import CreateSingleNote from "./components/CreateSingleNote";
 import Forgot from "./screens/Forgot";
 import EditContact from "./components/EditContact";
+import Privacy from "./components/Privacy";
+import DeleteAccount from "./components/DeleteAccount";
+import { useEffect, useState } from "react";
 
 function App() {
-  const isLoggedIn = !!localStorage.getItem("accessToken");
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!localStorage.getItem("accessToken")
+  );
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsLoggedIn(!!localStorage.getItem("accessToken"));
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   const ProtectedLayout = () => {
     if (!isLoggedIn) {
@@ -47,8 +61,9 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/directory" element={<Directory />} />
           <Route path="/create-contact" element={<CreateContact />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/contact-us" element={<ContactUs />} />
+
+          <Route path="/privacy" element={<Privacy />} />
+
           <Route path="/create-note" element={<CreateNote />} />
           <Route path="/search-result" element={<SearchResult />} />
           <Route path="/profile" element={<OpenProfile />} />
@@ -58,12 +73,17 @@ function App() {
           <Route path="/user-profile" element={<UserProfile />} />
           <Route path="/create-a-note" element={<CreateSingleNote />} />
           <Route path="/edit-contact" element={<EditContact />} />
+          <Route path="/delete-account" element={<DeleteAccount />} />
+          <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/about-us" element={<AboutUs />} />
         </Route>
 
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot" element={<Forgot />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/about" element={<AboutUs />} />
         </Route>
 
         <Route

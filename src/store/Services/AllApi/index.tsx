@@ -99,6 +99,11 @@ export const contactUsApi = ({ body }: any) =>
     uriEndPoint: allApi.contactUsApi.v1,
     body,
   });
+export const deleteAccountApi = ({ body }: any) =>
+  callApi({
+    uriEndPoint: allApi.deleteAccountApi.v1,
+    body,
+  });
 export const staticDataApi = ({ query }: any) =>
   callApi({
     uriEndPoint: allApi.staticData.v1,
@@ -124,4 +129,18 @@ export const completeTaskApi = ({ query }: any) =>
 export const updateReminders = () =>
   callApi({
     uriEndPoint: allApi.updateReminders.v1,
+  });
+export const postAiChat = ({ body }: any) =>
+  callApi({
+    uriEndPoint: allApi.postAiChat.v1,
+    body,
+  });
+
+export const getAiChat = () =>
+  callApi({
+    uriEndPoint: allApi.getAiChat.v1,
+  });
+export const deleteAiChat = () =>
+  callApi({
+    uriEndPoint: allApi.deleteAiChat.v1,
   });

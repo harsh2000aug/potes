@@ -137,6 +137,10 @@ const TopArea = ({ search, setSearch, imageFile }: any) => {
                     <i className="fa-solid fa-phone"></i>
                     Contact Us
                   </li>
+                  <li onClick={() => navigate("/privacy")}>
+                    <i className="fa-solid fa-shield-halved"></i>
+                    Privacy Policy
+                  </li>
                   <li
                     onClick={() => {
                       setIsOpen(false);

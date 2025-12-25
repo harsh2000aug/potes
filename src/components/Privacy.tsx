@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../reusable/Sidebar";
 import { staticDataApi } from "../store/Services/AllApi";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import logo from "../images/logo.png";
-const AboutUs = () => {
-  const location = useLocation();
+const Privacy = () => {
   const navigate = useNavigate();
   const [apiResponse, setApiReponse]: any = useState({});
   const apiCaller = () => {
     staticDataApi({
       query: {
-        topic: "about",
+        topic: "privacy-policy",
       },
     })
       .then((res: any) => {
@@ -25,10 +24,8 @@ const AboutUs = () => {
   return (
     <div className="aboutUs">
       <div className="flex h-100">
-        {location.pathname != "/about" && <Sidebar current={"About Us"} />}
-        <div
-          className={location.pathname != "/about" ? "main-area" : "main-area2"}
-        >
+        <Sidebar current={"Privacy Policy"} />
+        <div className="main-area">
           <div className="body-area">
             <div className="back-btn">
               <div className="flex al-center space-bw">
@@ -44,7 +41,7 @@ const AboutUs = () => {
               </div>
             </div>
             <div className="common-back">
-              <h3>About Us</h3>
+              <h3>Privacy Policy</h3>
               <p>{apiResponse?.content}</p>
             </div>
           </div>
@@ -54,4 +51,4 @@ const AboutUs = () => {
   );
 };
 
-export default AboutUs;
+export default Privacy;

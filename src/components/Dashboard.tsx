@@ -13,6 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import dayjs from "dayjs";
+import ChatBot from "./ChatAi/ChatBot";
 
 const ReminderComponent = ({
   itm,
@@ -76,7 +77,7 @@ const ReminderComponent = ({
                 style={{
                   fontSize: "14px",
                   color: manageCheck === true ? "#00FF00" : "#fff",
-                  visibility: "hidden",
+                  visibility: text == "missed" ? "visible" : "hidden",
                 }}
                 onClick={() => handleCompleteTask(itm.id)}
               ></i>
@@ -261,6 +262,7 @@ const Dashboard = () => {
         <div className="main-area">
           <TopArea />
           <div className="body-area">
+            <ChatBot />
             <div className="flex space-bw">
               <div className="col-50 common-back">
                 <h3>Reminders</h3>
